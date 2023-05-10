@@ -1,4 +1,3 @@
-pip --upgrade
 numpy
 numba
 tensorflow
@@ -11,3 +10,6 @@ aiohttp
 anyio
 pygame
 cython
+pyglet
+vulkan
+PYOpenGL
