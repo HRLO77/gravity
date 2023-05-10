@@ -1,16 +1,17 @@
 # from math import atan2
 # print(atan2(4.5, 4.5)) # note to self: 
-import classes, math, constants, asyncio, pygame, threading, queue, pygame_classes, pickle, statistics, cmath
+import constants, pygame_classes, statistics, pygame
 import numpy as np
 print(pygame.init())
-screen = pygame.display.set_mode((constants.X, constants.Y))
+pygame.event.set_allowed([pygame.QUIT])
+screen = pygame.display.set_mode((constants.X, constants.Y), pygame.DOUBLEBUF | pygame.GL_DOUBLEBUFFER | pygame.HWACCEL | pygame.HWSURFACE | pygame.HWPALETTE, 1)
 pygame.display.set_caption("Gravity simulation")
 
 all_sprites_list = pygame.sprite.Group()
-handler = pygame_classes.handler([*[[np.random.randint(100_000, 10_000_000), np.random.randint(-500, 500), np.random.randint(-500, 500), np.random.randint(1000, 100_000)] for p in range(constants.BODIES)]])
+handler = pygame_classes.handler([(10e200, 0, 0, 1), *[[np.random.randint(100_000, 10_000_000), np.random.randint(-500, 500), np.random.randint(-500, 500), np.random.randint(1000, 100_000)] for p in range(constants.BODIES)]])
 clock = pygame.time.Clock()
 
-
+np.ALLOW_THREADS = True
 # p1 = classes.particle(50, 0, 0)
 
 # p2 = classes.particle(50, -1, -1)
@@ -37,13 +38,6 @@ clock = pygame.time.Clock()
 # threading.Thread(target=cont, args=[handler]).start()
 
 
-def get_iterables(iterables: list | tuple | set, obj_ignore):
-    '''Iterates through the iterables given, and returns it without the obj_ignore.'''
-    y = [*iterables]
-    y.remove(obj_ignore)
-    return y
-
-
 all_sprites_list.add(handler.particles)
 # if ('y' in input("Render realtime [Y] or fast? [N]: ").lower()):
     # print('Going')
@@ -56,11 +50,11 @@ while running:
         # while Q.qsize() < 1:
         #     pass
     all_sprites_list.update()
-    handler.move_timestep(first=7, last=-3, take_part=20, direction_func=statistics.median_grouped, limit=5)
+    handler.move_timestep(first=5, last=-3, take_part=100, limit=25, skip=10, direction_func=np.median)
     screen.fill((0, 0, 0))
     all_sprites_list.draw(screen)
-    pygame.display.flip()
-    clock.tick(360)
+    pygame.display.update()
+    clock.tick(30)
 # else:
     
 #     handler.move_timestep()
