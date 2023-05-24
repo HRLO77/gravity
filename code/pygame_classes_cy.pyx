@@ -1,15 +1,13 @@
 # cython: wraparound=False
 # cython: infer_types=True
 # cython: language_level=3
-import cython
 import math
-import constants_cy as constants
-cimport constants_cy as constants
-import numpy as np
-import classes_cy as classes
-cimport classes_cy as classes
+import cython
 cimport cython
+import numpy as np
+cimport constants_cy as constants
 cimport pygame_classes_cy as pygame_classes
+cimport classes_cy as classes
 cimport numpy as np
 np.ALLOW_THREADS = True
 
@@ -28,7 +26,7 @@ cdef class handler:
         # print(self.particles)
         cdef unsigned long long int length = self.particle.shape[0]
         ranged = range(length)
-        cdef np.ndarray parts = self.particles.copy()
+        cdef classes.particle[:,] parts = self.particles.copy()
         cdef classes.particle[:,] array
         for index in ranged:
             array = self.parts[:index]+self.parts[index+1:]

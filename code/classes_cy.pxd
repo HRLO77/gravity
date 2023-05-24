@@ -2,11 +2,9 @@
 # cython: infer_types=True
 # cython: language_level=3
 import math
-import constants_cy as constants
-cimport constants_cy as constants
 import numpy as np
+cimport constants_cy as constants
 cimport numpy as np
-import pygame_classes_cy as pygame_classes
 cimport pygame_classes_cy as pygame_classes
 np.ALLOW_THREADS = True
 

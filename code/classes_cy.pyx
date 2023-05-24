@@ -2,12 +2,10 @@
 # cython: infer_types=True
 # cython: language_level=3
 import math
-import constants_cy as constants
+import numpy as np
 cimport constants_cy as constants
-import pygame_classes_cy as pygame_classes
 cimport pygame_classes_cy as pygame_classes
 cimport classes_cy as classes
-import numpy as np
 cimport numpy as np
 from libc.math cimport sin, cos, atan2                                        
 np.ALLOW_THREADS = True
@@ -85,14 +83,14 @@ cdef class particle:
         return t
         
       
-    cdef void move(self, particle[:,] others):
+    cdef void move(self, classes.particle[:,] others):
         '''Based on a dict (key is x and y, value is rate of bending in 3d dimension.), calculate direction to move to and speed at which to move. Returns direction (radians), force (newtons)'''
         # cdef np.ndarray[object, ndim=1] others_arr
         #cdef np.ndarray[long int, ndim=1] arange_others_arr
         #cdef np.ndarray[(float, float), ndim=2] calculations
         #cdef np.ndarray[float, ndim=1] Fx
         #cdef np.ndarray[float, ndim=1] Fy
-        cdef particle[:,] others_arr
+        cdef classes.particle[:,] others_arr
         cdef float[:,:] calculations
         cdef float[:,] Fx, Fy
         cdef float net_f_x, net_f_y, net_force, vx_current, vy_current, vx_net, vy_net, f_required_x, f_required_y, force_required, direction, f

@@ -1263,7 +1263,7 @@ typedef npy_cdouble __pyx_t_5numpy_complex_t;
 struct __pyx_ctuple_int__and_int;
 typedef struct __pyx_ctuple_int__and_int __pyx_ctuple_int__and_int;
 
-/* "code/constants_cy.pyx":12
+/* "code/constants_cy.pyx":13
  * cdef int X_SUB = np.ceil(X/2)
  * cdef int Y_SUB = np.ceil(Y/2)
  * cdef (int, int) ORIGIN = (X-X_SUB, Y-Y_SUB)             # <<<<<<<<<<<<<<
@@ -2908,7 +2908,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_input = __Pyx_GetBuiltinName(__pyx_n_s_input); if (!__pyx_builtin_input) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_builtin_input = __Pyx_GetBuiltinName(__pyx_n_s_input); if (!__pyx_builtin_input) __PYX_ERR(0, 21, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 944, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -2941,33 +2941,33 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "code/constants_cy.pyx":20
+  /* "code/constants_cy.pyx":21
  * cdef float RADIAN_DIV = 180/np.pi
  * cdef int SIZE = 5
  * cdef float FACTOR=float(input("Enter factor: "))             # <<<<<<<<<<<<<<
  * cdef int BODIES = int(input("Enter bodies: "))
  * cdef bint DISSIPATE = bool(int(input('Enter dissipation: ')))
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_u_Enter_factor); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_u_Enter_factor); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "code/constants_cy.pyx":21
+  /* "code/constants_cy.pyx":22
  * cdef int SIZE = 5
  * cdef float FACTOR=float(input("Enter factor: "))
  * cdef int BODIES = int(input("Enter bodies: "))             # <<<<<<<<<<<<<<
  * cdef bint DISSIPATE = bool(int(input('Enter dissipation: ')))
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_Enter_bodies); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_Enter_bodies); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "code/constants_cy.pyx":22
+  /* "code/constants_cy.pyx":23
  * cdef float FACTOR=float(input("Enter factor: "))
  * cdef int BODIES = int(input("Enter bodies: "))
  * cdef bint DISSIPATE = bool(int(input('Enter dissipation: ')))             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_u_Enter_dissipation); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_u_Enter_dissipation); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
   __Pyx_RefNannyFinishContext();
@@ -3323,43 +3323,43 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "code/constants_cy.pyx":3
+  /* "code/constants_cy.pyx":4
+ * # cython: infer_types=True
  * # cython: language_level=3
- * 
  * import math             # <<<<<<<<<<<<<<
  * import numpy as np
  * cimport numpy as np
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_math, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_math, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_math, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_math, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "code/constants_cy.pyx":4
- * 
+  /* "code/constants_cy.pyx":5
+ * # cython: language_level=3
  * import math
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "code/constants_cy.pyx":7
+  /* "code/constants_cy.pyx":8
  * cimport numpy as np
  * 
  * np.ALLOW_THREADS = True             # <<<<<<<<<<<<<<
  * cdef int X = 1800
  * cdef int Y = 1200
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_PyObject_SetAttrStr(__pyx_t_1, __pyx_n_s_ALLOW_THREADS, Py_True) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_t_1, __pyx_n_s_ALLOW_THREADS, Py_True) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "code/constants_cy.pyx":8
+  /* "code/constants_cy.pyx":9
  * 
  * np.ALLOW_THREADS = True
  * cdef int X = 1800             # <<<<<<<<<<<<<<
@@ -3368,7 +3368,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_4code_12constants_cy_X = 0x708;
 
-  /* "code/constants_cy.pyx":9
+  /* "code/constants_cy.pyx":10
  * np.ALLOW_THREADS = True
  * cdef int X = 1800
  * cdef int Y = 1200             # <<<<<<<<<<<<<<
@@ -3377,51 +3377,51 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_4code_12constants_cy_Y = 0x4B0;
 
-  /* "code/constants_cy.pyx":10
+  /* "code/constants_cy.pyx":11
  * cdef int X = 1800
  * cdef int Y = 1200
  * cdef int X_SUB = np.ceil(X/2)             # <<<<<<<<<<<<<<
  * cdef int Y_SUB = np.ceil(Y/2)
  * cdef (int, int) ORIGIN = (X-X_SUB, Y-Y_SUB)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_ceil); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_ceil); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyFloat_FromDouble((((double)__pyx_v_4code_12constants_cy_X) / 2.0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((((double)__pyx_v_4code_12constants_cy_X) / 2.0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 10, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_4code_12constants_cy_X_SUB = __pyx_t_4;
 
-  /* "code/constants_cy.pyx":11
+  /* "code/constants_cy.pyx":12
  * cdef int Y = 1200
  * cdef int X_SUB = np.ceil(X/2)
  * cdef int Y_SUB = np.ceil(Y/2)             # <<<<<<<<<<<<<<
  * cdef (int, int) ORIGIN = (X-X_SUB, Y-Y_SUB)
  * # K = 50  # n particles
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_ceil); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_ceil); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyFloat_FromDouble((((double)__pyx_v_4code_12constants_cy_Y) / 2.0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble((((double)__pyx_v_4code_12constants_cy_Y) / 2.0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_4code_12constants_cy_Y_SUB = __pyx_t_4;
 
-  /* "code/constants_cy.pyx":12
+  /* "code/constants_cy.pyx":13
  * cdef int X_SUB = np.ceil(X/2)
  * cdef int Y_SUB = np.ceil(Y/2)
  * cdef (int, int) ORIGIN = (X-X_SUB, Y-Y_SUB)             # <<<<<<<<<<<<<<
@@ -3432,7 +3432,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_5.f1 = (__pyx_v_4code_12constants_cy_Y - __pyx_v_4code_12constants_cy_Y_SUB);
   __pyx_v_4code_12constants_cy_ORIGIN = __pyx_t_5;
 
-  /* "code/constants_cy.pyx":15
+  /* "code/constants_cy.pyx":16
  * # K = 50  # n particles
  * # grid: list[list[list]] = [[[] for y in '~'*Y] for x in '~'*X]  # grid
  * cdef float G = 6.67430*10e-11  # gravitational constant             # <<<<<<<<<<<<<<
@@ -3441,7 +3441,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_4code_12constants_cy_G = (6.67430 * 10e-11);
 
-  /* "code/constants_cy.pyx":16
+  /* "code/constants_cy.pyx":17
  * # grid: list[list[list]] = [[[] for y in '~'*Y] for x in '~'*X]  # grid
  * cdef float G = 6.67430*10e-11  # gravitational constant
  * cdef float SOFTEN = 10e-20  # the softening factor             # <<<<<<<<<<<<<<
@@ -3450,26 +3450,26 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_4code_12constants_cy_SOFTEN = 10e-20;
 
-  /* "code/constants_cy.pyx":18
+  /* "code/constants_cy.pyx":19
  * cdef float SOFTEN = 10e-20  # the softening factor
  * # with open('pi.txt') as f:
  * cdef float RADIAN_DIV = 180/np.pi             # <<<<<<<<<<<<<<
  * cdef int SIZE = 5
  * cdef float FACTOR=float(input("Enter factor: "))
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_pi); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_pi); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_int_180, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_int_180, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_6 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_6 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_4code_12constants_cy_RADIAN_DIV = __pyx_t_6;
 
-  /* "code/constants_cy.pyx":19
+  /* "code/constants_cy.pyx":20
  * # with open('pi.txt') as f:
  * cdef float RADIAN_DIV = 180/np.pi
  * cdef int SIZE = 5             # <<<<<<<<<<<<<<
@@ -3478,52 +3478,52 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_4code_12constants_cy_SIZE = 5;
 
-  /* "code/constants_cy.pyx":20
+  /* "code/constants_cy.pyx":21
  * cdef float RADIAN_DIV = 180/np.pi
  * cdef int SIZE = 5
  * cdef float FACTOR=float(input("Enter factor: "))             # <<<<<<<<<<<<<<
  * cdef int BODIES = int(input("Enter bodies: "))
  * cdef bint DISSIPATE = bool(int(input('Enter dissipation: ')))
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_input, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_input, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = __Pyx_PyObject_AsDouble(__pyx_t_2); if (unlikely(__pyx_t_7 == ((double)((double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_AsDouble(__pyx_t_2); if (unlikely(__pyx_t_7 == ((double)((double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_4code_12constants_cy_FACTOR = __pyx_t_7;
 
-  /* "code/constants_cy.pyx":21
+  /* "code/constants_cy.pyx":22
  * cdef int SIZE = 5
  * cdef float FACTOR=float(input("Enter factor: "))
  * cdef int BODIES = int(input("Enter bodies: "))             # <<<<<<<<<<<<<<
  * cdef bint DISSIPATE = bool(int(input('Enter dissipation: ')))
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_input, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_input, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_4code_12constants_cy_BODIES = __pyx_t_4;
 
-  /* "code/constants_cy.pyx":22
+  /* "code/constants_cy.pyx":23
  * cdef float FACTOR=float(input("Enter factor: "))
  * cdef int BODIES = int(input("Enter bodies: "))
  * cdef bint DISSIPATE = bool(int(input('Enter dissipation: ')))             # <<<<<<<<<<<<<<
  */
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_input, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_input, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_4code_12constants_cy_DISSIPATE = (!(!__pyx_t_8));
 
   /* "code/constants_cy.pyx":1
- * # cython: language_level=3             # <<<<<<<<<<<<<<
- * 
- * import math
+ * # cython: wraparound=False             # <<<<<<<<<<<<<<
+ * # cython: infer_types=True
+ * # cython: language_level=3
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);

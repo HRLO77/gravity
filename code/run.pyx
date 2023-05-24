@@ -1,14 +1,13 @@
+# cython: wraparound=False
+# cython: infer_types=True
+# cython: language_level=3
 import pickle, random
-import numpy as np
-cimport numpy as np
-import io
-import classes_cy as classes
+cimport numpy as npx
 cimport classes_cy as classes
-import constants_cy as constants
 cimport constants_cy as constants
-import pygame_classes_cy as pygame_classes
 cimport pygame_classes_cy as pygame_classes
 import time
+import numpy as np
 cdef float begin, end
 begin = <float>(time.perf_counter())
 aranged = range(constants.BODIES)
