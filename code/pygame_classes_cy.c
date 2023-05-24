@@ -12,7 +12,7 @@
         ],
         "include_dirs": [
             "C:\\Users\\owner\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\include",
-            "./code/"
+            "code"
         ],
         "name": "code.pygame_classes_cy",
         "sources": [
