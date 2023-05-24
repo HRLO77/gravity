@@ -1,16 +1,17 @@
 import glob, os
 f = False
-for pyx in glob.glob('./*.pyx'):
+ext='pxd'
+for pyx in glob.glob('./*.'+ext):
     if '_1' in pyx:
         f = True
         pass
     else:
         continue
-    os.rename(pyx, '.'+pyx.rsplit('.')[1][:-2]+'.pyx')
+    os.rename(pyx, '.'+pyx.rsplit('.')[1][:-2]+'.'+ext)
 
 if f:
     exit()
-for pyx in glob.glob('./*.pyx'):
+for pyx in glob.glob('./*.'+ext):
     if '_1' in pyx:
         continue
-    os.rename(pyx, '.'+pyx.rsplit('.')[1]+'_1.pyx')
+    os.rename(pyx, '.'+pyx.rsplit('.')[1]+'_1.'+ext)
