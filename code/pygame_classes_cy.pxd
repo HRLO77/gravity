@@ -4,9 +4,7 @@
 import math, pygame
 import cython
 import numpy as np
-cimport constants_cy as constants
-cimport classes_cy as classes
-cimport cython
+from . cimport classes_cy as classes
 cimport numpy as np
 np.ALLOW_THREADS = True
 

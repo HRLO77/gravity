@@ -1263,10 +1263,10 @@ typedef npy_cdouble __pyx_t_5numpy_complex_t;
 struct __pyx_ctuple_int__and_int;
 typedef struct __pyx_ctuple_int__and_int __pyx_ctuple_int__and_int;
 
-/* "code/constants_cy.pyx":13
- * cdef int X_SUB = np.ceil(X/2)
- * cdef int Y_SUB = np.ceil(Y/2)
- * cdef (int, int) ORIGIN = (X-X_SUB, Y-Y_SUB)             # <<<<<<<<<<<<<<
+/* "code/constants_cy.pxd":9
+ * cdef int X_SUB
+ * cdef int Y_SUB
+ * cdef (int, int) ORIGIN             # <<<<<<<<<<<<<<
  * # K = 50  # n particles
  * # grid: list[list[list]] = [[[] for y in '~'*Y] for x in '~'*X]  # grid
  */
@@ -1718,6 +1718,9 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 /* CheckBinaryVersion.proto */
 static int __Pyx_check_binary_version(void);
 
+/* VoidPtrExport.proto */
+static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig);
+
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
@@ -1780,16 +1783,29 @@ int __pyx_module_is_main_code__constants_cy = 0;
 /* Implementation of 'code.constants_cy' */
 static PyObject *__pyx_builtin_input;
 static PyObject *__pyx_builtin_ImportError;
+static const char __pyx_k_G[] = "G";
+static const char __pyx_k_X[] = "X";
+static const char __pyx_k_Y[] = "Y";
 static const char __pyx_k_np[] = "np";
 static const char __pyx_k_pi[] = "pi";
+static const char __pyx_k_SIZE[] = "SIZE";
 static const char __pyx_k_ceil[] = "ceil";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_math[] = "math";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_X_SUB[] = "X_SUB";
+static const char __pyx_k_Y_SUB[] = "Y_SUB";
 static const char __pyx_k_input[] = "input";
 static const char __pyx_k_numpy[] = "numpy";
+static const char __pyx_k_BODIES[] = "BODIES";
+static const char __pyx_k_FACTOR[] = "FACTOR";
+static const char __pyx_k_ORIGIN[] = "ORIGIN";
+static const char __pyx_k_SOFTEN[] = "SOFTEN";
 static const char __pyx_k_import[] = "__import__";
+static const char __pyx_k_pyx_capi[] = "__pyx_capi__";
+static const char __pyx_k_DISSIPATE[] = "DISSIPATE";
+static const char __pyx_k_RADIAN_DIV[] = "RADIAN_DIV";
 static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_Enter_bodies[] = "Enter bodies: ";
 static const char __pyx_k_Enter_factor[] = "Enter factor: ";
@@ -1799,10 +1815,22 @@ static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 static PyObject *__pyx_n_s_ALLOW_THREADS;
+static PyObject *__pyx_n_s_BODIES;
+static PyObject *__pyx_n_s_DISSIPATE;
 static PyObject *__pyx_kp_u_Enter_bodies;
 static PyObject *__pyx_kp_u_Enter_dissipation;
 static PyObject *__pyx_kp_u_Enter_factor;
+static PyObject *__pyx_n_s_FACTOR;
+static PyObject *__pyx_n_s_G;
 static PyObject *__pyx_n_s_ImportError;
+static PyObject *__pyx_n_s_ORIGIN;
+static PyObject *__pyx_n_s_RADIAN_DIV;
+static PyObject *__pyx_n_s_SIZE;
+static PyObject *__pyx_n_s_SOFTEN;
+static PyObject *__pyx_n_s_X;
+static PyObject *__pyx_n_s_X_SUB;
+static PyObject *__pyx_n_s_Y;
+static PyObject *__pyx_n_s_Y_SUB;
 static PyObject *__pyx_n_s_ceil;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_import;
@@ -1812,9 +1840,10 @@ static PyObject *__pyx_n_s_math;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
-static PyObject *__pyx_kp_u_numpy_core_multiarray_failed_to;
-static PyObject *__pyx_kp_u_numpy_core_umath_failed_to_impor;
+static PyObject *__pyx_kp_s_numpy_core_multiarray_failed_to;
+static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
 static PyObject *__pyx_n_s_pi;
+static PyObject *__pyx_n_s_pyx_capi;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_int_180;
 static PyObject *__pyx_tuple_;
@@ -2888,10 +2917,22 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ALLOW_THREADS, __pyx_k_ALLOW_THREADS, sizeof(__pyx_k_ALLOW_THREADS), 0, 0, 1, 1},
+  {&__pyx_n_s_BODIES, __pyx_k_BODIES, sizeof(__pyx_k_BODIES), 0, 0, 1, 1},
+  {&__pyx_n_s_DISSIPATE, __pyx_k_DISSIPATE, sizeof(__pyx_k_DISSIPATE), 0, 0, 1, 1},
   {&__pyx_kp_u_Enter_bodies, __pyx_k_Enter_bodies, sizeof(__pyx_k_Enter_bodies), 0, 1, 0, 0},
   {&__pyx_kp_u_Enter_dissipation, __pyx_k_Enter_dissipation, sizeof(__pyx_k_Enter_dissipation), 0, 1, 0, 0},
   {&__pyx_kp_u_Enter_factor, __pyx_k_Enter_factor, sizeof(__pyx_k_Enter_factor), 0, 1, 0, 0},
+  {&__pyx_n_s_FACTOR, __pyx_k_FACTOR, sizeof(__pyx_k_FACTOR), 0, 0, 1, 1},
+  {&__pyx_n_s_G, __pyx_k_G, sizeof(__pyx_k_G), 0, 0, 1, 1},
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
+  {&__pyx_n_s_ORIGIN, __pyx_k_ORIGIN, sizeof(__pyx_k_ORIGIN), 0, 0, 1, 1},
+  {&__pyx_n_s_RADIAN_DIV, __pyx_k_RADIAN_DIV, sizeof(__pyx_k_RADIAN_DIV), 0, 0, 1, 1},
+  {&__pyx_n_s_SIZE, __pyx_k_SIZE, sizeof(__pyx_k_SIZE), 0, 0, 1, 1},
+  {&__pyx_n_s_SOFTEN, __pyx_k_SOFTEN, sizeof(__pyx_k_SOFTEN), 0, 0, 1, 1},
+  {&__pyx_n_s_X, __pyx_k_X, sizeof(__pyx_k_X), 0, 0, 1, 1},
+  {&__pyx_n_s_X_SUB, __pyx_k_X_SUB, sizeof(__pyx_k_X_SUB), 0, 0, 1, 1},
+  {&__pyx_n_s_Y, __pyx_k_Y, sizeof(__pyx_k_Y), 0, 0, 1, 1},
+  {&__pyx_n_s_Y_SUB, __pyx_k_Y_SUB, sizeof(__pyx_k_Y_SUB), 0, 0, 1, 1},
   {&__pyx_n_s_ceil, __pyx_k_ceil, sizeof(__pyx_k_ceil), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
@@ -2901,9 +2942,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
-  {&__pyx_kp_u_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 1, 0, 0},
-  {&__pyx_kp_u_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 1, 0, 0},
+  {&__pyx_kp_s_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 0, 1, 0},
+  {&__pyx_kp_s_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 0, 1, 0},
   {&__pyx_n_s_pi, __pyx_k_pi, sizeof(__pyx_k_pi), 0, 0, 1, 1},
+  {&__pyx_n_s_pyx_capi, __pyx_k_pyx_capi, sizeof(__pyx_k_pyx_capi), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
@@ -2926,7 +2968,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 944, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 944, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
@@ -2937,7 +2979,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(1, 950, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(1, 950, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
@@ -3003,10 +3045,28 @@ static int __Pyx_modinit_global_init_code(void) {
 
 static int __Pyx_modinit_variable_export_code(void) {
   __Pyx_RefNannyDeclarations
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_variable_export_code", 0);
   /*--- Variable export code ---*/
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_X, (void *)&__pyx_v_4code_12constants_cy_X, "int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_Y, (void *)&__pyx_v_4code_12constants_cy_Y, "int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_X_SUB, (void *)&__pyx_v_4code_12constants_cy_X_SUB, "int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_Y_SUB, (void *)&__pyx_v_4code_12constants_cy_Y_SUB, "int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_ORIGIN, (void *)&__pyx_v_4code_12constants_cy_ORIGIN, "__pyx_ctuple_int__and_int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_G, (void *)&__pyx_v_4code_12constants_cy_G, "float") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_SOFTEN, (void *)&__pyx_v_4code_12constants_cy_SOFTEN, "float") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_RADIAN_DIV, (void *)&__pyx_v_4code_12constants_cy_RADIAN_DIV, "float") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_SIZE, (void *)&__pyx_v_4code_12constants_cy_SIZE, "int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_FACTOR, (void *)&__pyx_v_4code_12constants_cy_FACTOR, "float") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_BODIES, (void *)&__pyx_v_4code_12constants_cy_BODIES, "int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_DISSIPATE, (void *)&__pyx_v_4code_12constants_cy_DISSIPATE, "int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_modinit_function_export_code(void) {
@@ -3312,7 +3372,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_InitCachedConstants() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Global type/function init code ---*/
   (void)__Pyx_modinit_global_init_code();
-  (void)__Pyx_modinit_variable_export_code();
+  if (unlikely(__Pyx_modinit_variable_export_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
   (void)__Pyx_modinit_function_export_code();
   (void)__Pyx_modinit_type_init_code();
   if (unlikely(__Pyx_modinit_type_import_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -5554,6 +5614,37 @@ static int __Pyx_check_binary_version(void) {
         return PyErr_WarnEx(NULL, message, 1);
     }
     return 0;
+}
+
+/* VoidPtrExport */
+static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig) {
+    PyObject *d;
+    PyObject *cobj = 0;
+    d = PyDict_GetItem(__pyx_d, __pyx_n_s_pyx_capi);
+    Py_XINCREF(d);
+    if (!d) {
+        d = PyDict_New();
+        if (!d)
+            goto bad;
+        if (__Pyx_PyObject_SetAttrStr(__pyx_m, __pyx_n_s_pyx_capi, d) < 0)
+            goto bad;
+    }
+#if PY_VERSION_HEX >= 0x02070000
+    cobj = PyCapsule_New(p, sig, 0);
+#else
+    cobj = PyCObject_FromVoidPtrAndDesc(p, (void *)sig, 0);
+#endif
+    if (!cobj)
+        goto bad;
+    if (PyDict_SetItem(d, name, cobj) < 0)
+        goto bad;
+    Py_DECREF(cobj);
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(cobj);
+    Py_XDECREF(d);
+    return -1;
 }
 
 /* InitStrings */

@@ -2,10 +2,10 @@
 # cython: infer_types=True
 # cython: language_level=3
 import pickle, random
-cimport numpy as npx
-cimport classes_cy as classes
-cimport constants_cy as constants
-cimport pygame_classes_cy as pygame_classes
+cimport numpy as np
+from . cimport classes_cy as classes
+from . cimport constants_cy as constants
+from . cimport pygame_classes_cy as pygame_classes
 import time
 import numpy as np
 cdef float begin, end

@@ -3,48 +3,11 @@
 # cython: language_level=3
 import math
 import numpy as np
-cimport constants_cy as constants
-cimport pygame_classes_cy as pygame_classes
-cimport classes_cy as classes
-cimport numpy as np
-from libc.math cimport sin, cos, atan2                                        
+from . cimport constants_cy as constants
+from . cimport pygame_classes_cy as pygame_classes
+import numpy as np
+from libc.math cimport sin, cos, atan2
 np.ALLOW_THREADS = True
-# class unit:
-#     '''Represents a single unit in spatial co-ordinate plane, cannot be moved through higher dimensions.'''
-
-#     def __init__(self, mass: float, x: int, y: int) -> None:
-#         self.mass = mass
-#         self.x = x
-#         self.y = y
-        
-
-#     def calculate_force(self, other=None, weight: float | None=None, position=None):
-#         '''Calculates the force of attraction (in newtons) between this particle and another body (particle, unit of space, or position and weight) in a higher dimension.'''
-#         assert isinstance(other, self.__class__) or isinstance(other, unit) or other==None, "Must be comparing to another particle of a unit in space."
-#         if isinstance(other, self.__class__):
-#             f = (math.dist((other.x, self.y), (other.x, self.y)))
-#             if f > 0:
-#                 return (constants.G*self.mass*other.mass)/f**2+(f*constants.SOFTEN)
-#             return (constants.G*self.mass*other.mass)/1+(1*constants.SOFTEN)
-#         else:
-#             f = (math.dist((self.x, self.y), ((position[0]), (position[1]))))
-#             if f > 0:
-#                 return (constants.G*self.mass*weight)/f**2+(f*constants.SOFTEN)
-#             return (constants.G*self.mass*weight)/1+(1*constants.SOFTEN)
-    
-
-#     def calculate_direction(self, other=None, position=None):
-#         '''Calculates the direction (slope and radians) to another particle, unit of space or position in space.'''
-#         assert isinstance(other, self.__class__) or isinstance(other, unit) or other==None, "Must be comparing to another particle of a unit in space."
-#         assert isinstance(position, tuple) or position==None
-#         if isinstance(other, self.__class__):
-#             t = np.arctan2(self.y-other.y, self.x-other.x)
-#             # slope = math.tan(t)
-#             return t/constants.RADIAN_DIV
-#         else:
-#             t = np.arctan2((position[1])-self.y, (position[0])-self.x)
-#             # slope = math.tan(t)
-#             return t/constants.RADIAN_DIV
 
 cdef class particle:
     '''Represents a single particle, can be moved through higher dimensions.'''
@@ -83,14 +46,14 @@ cdef class particle:
         return t
         
       
-    cdef void move(self, classes.particle[:,] others):
+    cdef void move(self, particle[:,] others):
         '''Based on a dict (key is x and y, value is rate of bending in 3d dimension.), calculate direction to move to and speed at which to move. Returns direction (radians), force (newtons)'''
         # cdef np.ndarray[object, ndim=1] others_arr
         #cdef np.ndarray[long int, ndim=1] arange_others_arr
         #cdef np.ndarray[(float, float), ndim=2] calculations
         #cdef np.ndarray[float, ndim=1] Fx
         #cdef np.ndarray[float, ndim=1] Fy
-        cdef classes.particle[:,] others_arr
+        cdef particle[:,] others_arr
         cdef float[:,:] calculations
         cdef float[:,] Fx, Fy
         cdef float net_f_x, net_f_y, net_force, vx_current, vy_current, vx_net, vy_net, f_required_x, f_required_y, force_required, direction, f

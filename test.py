@@ -1,3 +1,3 @@
-import code
+from code import run
 
-print(len(code.run.particles)+' Frames captured.')
+print(len(run.particles)+' Frames captured.')
