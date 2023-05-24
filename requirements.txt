@@ -1,15 +1,4 @@
 numpy
-numba
-tensorflow
-jax
 # "jax" -f https://whls.blob.core.windows.net/unstable/index.html --use-deprecated legacy-resolver # windows only, replace with jaxlib otherwise
-pandas
-pillow
-aiofiles
-aiohttp
-anyio
 pygame
 cython
-pyglet
-vulkan
-PYOpenGL

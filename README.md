@@ -3,9 +3,10 @@ this was a project i made for fun
 this simulate interactions between N bodies through gravity
 
 I really dont have the energy to explain all this extremely badly written code and math systems
+# requirements
+install by `py -m pip install -r requirements.txt` and `py -m pip install setuptools -U`
 
-
-What you need to know is on line #59 in `./code/test.py` (which is what you should probably run)
+What you need to know is on line #59 in `./code/python_code/test.py` (which is what you should probably run)
 
 contains everything you want
 
@@ -23,3 +24,18 @@ contains everything you want
 * The argument `limit` is how many unit of spaces (pixels in this case) should be close to one particle before they are all grouped as one. Because particles group together, and if they are in the exact same area, you can cut down on calculations a lot, and treat them as one.
 
 * The argument `skip` is how many of the last particles you want to skip, it is defauled to `1`, which means you take all the `last` particles without skipping between them, if you have a lot of particle, higher values can help you get a more accurate distribution of particles faraway since it will skip some particles and move closer. This may backfire however if it is too high.
+
+Or you can just run test.cmd or test.exe to run the nuitka compiled code (i cant tell the speed difference)
+# pypy
+
+I have an unzipped pypy folder because i could not figure out how to install it.
+
+./code/code/ has scripts related to computing all the data with pypy, WITHOUT rendering it. After running test.py with pypy, ctrl+c will stop the computing and dump all the data into data.pickle, formatted like `[[int (the number of the frame, lower is closer to first) tuple[particle]]]` the particle class has the data you want (mainly the x and y positions), rendering it is YOUR JOB, not mine.
+
+# cython
+
+Same with cython, cython files are in ./code/cython_code/ . If you need to compile them again, run `py cyth.py build_ext --inplace` 
+
+run `py test.py` to start the computing. When ctrl+c is pressed, computing is stopped and the particles collected are dumped in-order in `data.pickle`
+
+Again, your job to figure out how to render them.
