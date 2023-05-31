@@ -1,6 +1,7 @@
 # cython: wraparound=False
 # cython: infer_types=True
 # cython: language_level=3
+# cython: boundscheck=False
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
 import math
@@ -17,7 +18,7 @@ cdef class handler:
 
     def __cinit__(self, int[:,:,] weights):
         '''Accepts a tuple of tuples, each tuple having the mass, starting x, and starting y positions for each particle.'''
-        self.particles = np.array((classes.particle(<int>np.round(mass), <float>x, <float>y, <float>force) for mass, x, y, force in weights))
+        self.particles = np.array((classes.particle.__new__(classes.particle, <int>np.round(mass), <float>x, <float>y, <float>force) for mass, x, y, force in weights))
         
     
     cdef object[:,] move_timestep(self):

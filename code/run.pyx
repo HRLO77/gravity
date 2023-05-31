@@ -1,6 +1,7 @@
 # cython: wraparound=False
 # cython: infer_types=True
 # cython: language_level=3
+# cython: boundscheck=False
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
 import pickle, random
@@ -18,8 +19,8 @@ from numpy.random import randint
 cdef float begin, end
 begin = <float>(time.perf_counter())
 #aranged = range(constants.BODIES)
-cdef int[:,:,] np_data = [(randint(1_000, 10_000), randint(-700, 700), randint(-700, 700), 1) for i in range(constants.BODIES)]
-cdef object handler = pygame_classes.handler(np_data)
+cdef int[:,:,] np_data = np.array([(randint(1_000, 10_000), randint(-700, 700), randint(-700, 700), 1) for i in range(constants.BODIES)])
+cdef object handler = pygame_classes.handler.__new__(pygame_classes.handler, np_data)
 
 cdef object[:,:,] particles
 particles += [handler.particles]
