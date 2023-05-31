@@ -6,17 +6,15 @@
 
 import math
 import numpy as np
-from cython.parallel import prange
-from . cimport constants_cy as constants
+from . import constants_cy as constants
 import numpy as np
 from libc.math cimport sin, cos, atan2
 np.ALLOW_THREADS = True
 
 cdef class particle:
     '''Represents a single particle, can be moved through higher dimensions.'''
-    cdef float x, direction, y, force
-    cdef int mass
-    
+    cdef public float x, direction, y, force
+    cdef public int mass
 
     def __cinit__(self, int mass, float x, float y , float force = 0):
         self.mass = mass
@@ -26,7 +24,7 @@ cdef class particle:
         self.force = <float>force
         
       
-    cdef float calculate_force(self, (float, float) position, float weight, ):
+    cdef public float calculate_force(self, (float, float) position, float weight, ):
         '''Calculates the force of attraction (in newtons) between this particle and another body (particle, unit of space, or position and weight) in a higher dimension.'''
         cdef float posx = position[0]
         cdef float posy = position[1]
@@ -39,17 +37,12 @@ cdef class particle:
         return f
         
       
-    cdef float calculate_direction(self, (float, float) position):
+    cdef public inline float calculate_direction(self, (float, float) position):
         '''Calculates the direction (slope and radians) to another particle, unit of space or position in space.'''
-        cdef float posx = position[0]
-        cdef float posy = position[1]
-        cdef float t
-        # slope = math.tan(t)
-        t = <float>(atan2((posy)-self.y, (posx)-self.x)/constants.RADIAN_DIV)
-        return t
+        return <float>(atan2((position[1])-self.y, (position[0])-self.x)/constants.RADIAN_DIV)
         
       
-    cdef void move(self, particle[:,] others):
+    cdef public void move(self, particle[:,] others):
         '''Based on a dict (key is x and y, value is rate of bending in 3d dimension.), calculate direction to move to and speed at which to move. Returns direction (radians), force (newtons)'''
         # cdef np.ndarray[object, ndim=1] others_arr
         #cdef np.ndarray[long int, ndim=1] arange_others_arr
@@ -113,7 +106,7 @@ cdef class particle:
         return
 
     
-    cdef void goto(self):
+    cdef public void goto(self):
         '''Moves X and Y position based on a timestep, current direction and force.'''
         cdef float far
         cdef float move_x

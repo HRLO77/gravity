@@ -20,10 +20,8 @@ cdef float begin, end
 begin = <float>(time.perf_counter())
 #aranged = range(constants.BODIES)
 cdef int[:,:,] np_data = np.array([(randint(1_000, 10_000), randint(-700, 700), randint(-700, 700), 1) for i in range(constants.BODIES)])
-cdef object handler = pygame_classes.handler.__new__(pygame_classes.handler, np_data)
-
-cdef object[:,:,] particles
-particles += [handler.particles]
+cdef object handler = pygame_classes.handler(np_data)
+cdef object[:,:,] particles = np.array([handler.particles])  # if movement does not occur, thats because this is a single memory view, copy instead
 with open('data.pickle', 'wb') as file:
     pickle.dump(None, file)
 try:

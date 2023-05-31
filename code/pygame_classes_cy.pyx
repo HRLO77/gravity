@@ -10,18 +10,19 @@ import numpy as np
 from . import constants_cy as constants
 from . import classes_cy as classes
 cimport numpy as np
+cimport cython
 np.ALLOW_THREADS = True
 
+@cython.freelist(1024)
 cdef class handler:
     '''A class wrapper to handle multiple pygame classes.particles, wrapping particles.'''
-    cdef object[:,] particles
+    cdef public object[:,] particles
 
     def __cinit__(self, int[:,:,] weights):
         '''Accepts a tuple of tuples, each tuple having the mass, starting x, and starting y positions for each particle.'''
-        self.particles = np.array((classes.particle.__new__(classes.particle, <int>np.round(mass), <float>x, <float>y, <float>force) for mass, x, y, force in weights))
-        
+        self.particles = np.array([classes.particle(<int>np.round(mass), <float>x, <float>y, <float>force) for mass, x, y, force in weights])
     
-    cdef object[:,] move_timestep(self):
+    cdef public object[:,] move_timestep(self):
         '''Moves all the particles one time step.'''
         # print('running')
         # print(self.particles)

@@ -3,9 +3,7 @@
 # cython: language_level=3
 import math
 import numpy as np
-from . cimport constants_cy as constants
 cimport numpy as np
-from . cimport pygame_classes_cy as pygame_classes
 np.ALLOW_THREADS = True
 
 # cdef class particle:
