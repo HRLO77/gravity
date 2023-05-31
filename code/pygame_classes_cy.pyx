@@ -1,34 +1,33 @@
 # cython: wraparound=False
 # cython: infer_types=True
 # cython: language_level=3
+# distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
+
 import math
-import cython
-cimport cython
+from cython.parallel import prange
 import numpy as np
-from . cimport constants_cy as constants
-from . cimport pygame_classes_cy as pygame_classes
-from . cimport classes_cy as classes
+from . import constants_cy as constants
+from . import classes_cy as classes
 cimport numpy as np
 np.ALLOW_THREADS = True
 
 cdef class handler:
     '''A class wrapper to handle multiple pygame classes.particles, wrapping particles.'''
-    cdef classes.particle[:,] particles
+    cdef object[:,] particles
 
     def __cinit__(self, int[:,:,] weights):
         '''Accepts a tuple of tuples, each tuple having the mass, starting x, and starting y positions for each particle.'''
         self.particles = np.array((classes.particle(<int>np.round(mass), <float>x, <float>y, <float>force) for mass, x, y, force in weights))
         
     
-    cdef classes.particle[:,] move_timestep(self):
+    cdef object[:,] move_timestep(self):
         '''Moves all the particles one time step.'''
         # print('running')
         # print(self.particles)
         cdef unsigned long long int length = self.particle.shape[0]
-        ranged = range(length)
-        cdef classes.particle[:,] parts = self.particles.copy()
-        cdef classes.particle[:,] array
-        for index in ranged:
+        cdef object[:,] parts = self.particles.copy()
+        cdef object[:,] array
+        for index in range(length):
             array = self.parts[:index]+self.parts[index+1:]
             parts[index].move(array)  # perform calculations
             parts[index].goto()  # move accordingly

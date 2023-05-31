@@ -1,6 +1,6 @@
 import glob, os
 f = False
-ext='pyx'
+ext='pxd'
 for pyx in glob.glob('./*.'+ext):
     if '_1' in pyx:
         f = True

@@ -1,10 +1,12 @@
 # cython: wraparound=False
 # cython: infer_types=True
 # cython: language_level=3
+# distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
+
 import math
 import numpy as np
+from cython.parallel import prange
 from . cimport constants_cy as constants
-from . cimport pygame_classes_cy as pygame_classes
 import numpy as np
 from libc.math cimport sin, cos, atan2
 np.ALLOW_THREADS = True

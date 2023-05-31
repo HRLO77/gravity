@@ -1,20 +1,26 @@
 # cython: wraparound=False
 # cython: infer_types=True
 # cython: language_level=3
+# distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
+
 import pickle, random
+import cython
 cimport numpy as np
 from . cimport classes_cy as classes
 from . cimport constants_cy as constants
 from . cimport pygame_classes_cy as pygame_classes
+from . import classes_cy as classes
+from . import constants_cy as constants
+from . import pygame_classes_cy as pygame_classes
 import time
 import numpy as np
 cdef float begin, end
 begin = <float>(time.perf_counter())
-aranged = range(constants.BODIES)
+#aranged = range(constants.BODIES)
+cdef unsigned int[:,:,] np_data = ((np.random.randint(1_000, 20_000), np.random.randint(-700, 700), np.random.randint(-700, 700), 1) for i in range(constants.BODIES))
+cdef object handler = pygame_classes.handler(np_data)
 
-cdef pygame_classes.handler handler = pygame_classes.handler([(np.random.randint(1_000, 20_000), np.random.randint(-700, 700), np.random.randint(-700, 700), 1) for i in aranged])
-
-cdef classes.particle[:,:,] particles
+cdef object[:,:,] particles
 particles += [handler.particles]
 with open('data.pickle', 'wb') as file:
     pickle.dump(None, file)
