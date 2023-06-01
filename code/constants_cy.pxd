@@ -17,3 +17,4 @@ cdef public int SIZE
 cdef public float FACTOR
 cdef public int BODIES
 cdef public bint DISSIPATE
+cdef public bint OUTPUT

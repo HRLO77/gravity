@@ -3,6 +3,10 @@
 # cython: infer_types=True
 # cython: wrap_around=False
 # cython: bounds_check=False
+# cython: c_division=True
+# cython: overflow_check=False
+# cython: none_check=False
+# cython: initialized_check=False
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
 import math
@@ -25,4 +29,5 @@ cdef public int SIZE = 5
 cdef public double FACTOR=float(input("Enter factor: "))
 cdef public int BODIES = int(input("Enter bodies: "))
 cdef public bint DISSIPATE = bool(int(input('Enter dissipation: ')))
+cdef public bint OUTPUT = bool(int(input('Print progress?: ')))
 __all__ = globals()
