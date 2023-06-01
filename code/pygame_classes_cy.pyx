@@ -9,30 +9,29 @@ from cython.parallel import prange
 import numpy as np
 from . import constants_cy as constants
 from . import classes_cy as classes
-cimport numpy as np
+cimport numpy as npc
 cimport cython
 np.ALLOW_THREADS = True
 
-@cython.freelist(1024)
+@cython.freelist(8192)
 cdef class handler:
     '''A class wrapper to handle multiple pygame classes.particles, wrapping particles.'''
     cdef public object[:,] particles
 
     def __cinit__(self, int[:,:,] weights):
         '''Accepts a tuple of tuples, each tuple having the mass, starting x, and starting y positions for each particle.'''
-        self.particles = np.array([classes.particle(<int>np.round(mass), <float>x, <float>y, <float>force) for mass, x, y, force in weights])
+        self.particles = np.array([classes.particle.__new__(classes.particle, <unsigned int>np.round(mass), <double>x, <double>y, <double>force) for mass, x, y, force in weights])
     
-    cdef public object[:,] move_timestep(self):
+    cpdef public void move_timestep(self) except *:
         '''Moves all the particles one time step.'''
         # print('running')
         # print(self.particles)
-        cdef unsigned long long int length = self.particle.shape[0]
-        cdef object[:,] parts = self.particles.copy()
+        cdef unsigned long long int length = self.particles.shape[0]
+        cdef unsigned int index
         cdef object[:,] array
         for index in range(length):
-            array = self.parts[:index]+self.parts[index+1:]
-            parts[index].move(array)  # perform calculations
-            parts[index].goto()  # move accordingly
+            array = np.delete(self.particles, index)
+            self.particles[index].move(array)  # perform calculations
             # comp_arr = arr[:ind1]+arr[ind1+1:]
             # p = [*sorted(((comp_arr[p].particle, math.dist((arr[ind1].particle.x, arr[ind1].particle.y), (comp_arr[p].particle.x, comp_arr[p].particle.y))) for p in ranged[:length-1]), key=lambda x: x[-1])]
             # asp = []
@@ -80,8 +79,7 @@ cdef class handler:
             # print(fp + asp) 
             
             # exit()
-            self.particles = parts
-            return parts
+            return
     
     
     def __eq__(self, __value):

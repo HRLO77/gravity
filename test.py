@@ -1,3 +1,3 @@
 from code import run
 
-print(len(run.particles)+' Frames captured.')
+print(f'{run.particles} Frames captured.')
