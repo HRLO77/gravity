@@ -1,17 +1,21 @@
-# cython: wraparound=False
-# cython: boundscheck=False
-# cython: infer_types=True
 # cython: language_level=3
+# distutils: language=c
+# cython: infer_types=True
+# cython: wrap_around=False
+# cython: bounds_check=False
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
 import math
 import numpy as np
-#from . import constants_cy as constants
 from . cimport constants_cy as constants
-import numpy as np
+cimport numpy as npc
+from numpy import array
+import cython
+cimport cython
 from libc.math cimport sin, cos, atan2
 np.ALLOW_THREADS = True
 
+@cython.auto_pickle(True)
 cdef class particle:
     '''Represents a single particle, can be moved through higher dimensions.'''
     cdef public double x, direction, y, force
@@ -45,85 +49,48 @@ cdef class particle:
       
     cpdef public void move(self, particle[:,] others) except *:
         '''Based on a dict (key is x and y, value is rate of bending in 3d dimension.), calculate direction to move to and speed at which to move. Returns direction (radians), force (newtons)'''
-        # cdef np.ndarray[object, ndim=1] others_arr
-        #cdef np.ndarray[long int, ndim=1] arange_others_arr
-        #cdef np.ndarray[(double, double), ndim=2] calculations
-        #cdef np.ndarray[double, ndim=1] Fx
-        #cdef np.ndarray[double, ndim=1] Fy
-        cdef particle[:,] others_arr
-        cdef double[:,:,] calculations, zipped
-        cdef double[:,] Fx, Fy
-        cdef unsigned int p_index, index
-        cdef double net_f_x, net_f_y, net_force, vx_current, vy_current, vx_net, vy_net, f_required_x, f_required_y, force_required, direction, f, temp_dir, temp_force
-        others_arr = np.array(others)
-        arange_others_arr = range(others_arr.shape[0])
-        for p_index in arange_others_arr:
-            temp_dir = self.calculate_direction((others_arr[p_index].x, others_arr[p_index].y))
-            temp_force = self.calculate_force((others_arr[p_index].x, others_arr[p_index].y), others_arr[p_index].mass)
-            if p_index == 0:
-                calculations = np.array([(temp_dir, temp_force)])
-            else:
-                calculations = calculations + np.array([(temp_dir, temp_force)])
-        # if type(others)==dict:
-        #     calculations = sorted([(self.calculate_direction(position=p), self.calculate_force(position=p, weight=w))] for p, w in others.items())  # calculate directions to face to, and the force of attraction
-        # else:
-
-        #     Fx, Fy = zip(*[(part.force*np.cos(part.direction, dtype=double), part.force*np.sin(part.direction, dtype=double)) for part in others])
-        # print(Fx, Fy, [(part.force*np.cos(part.direction), part.force*np.sin(part.direction)) for part in others])
-        # exit()
-        a = []
-        # max_d, max_f = calculations[0]
+        cdef double[:,:,] zipped, calculations
+        cdef unsigned int index
+        #cdef double[:,] Fx, Fy
+        #cdef double net_f_x, net_f_y, net_force, vx_current, vy_current, vx_net, vy_net, f_required_x, f_required_y, force_required, direction, f, temp_dir, temp_force
+        cdef double net_f_x, net_f_y, net_force, force_required, direction, f
+        arange_others = range(others.shape[0])
+        calculations = array([(self.calculate_direction((others[index].x, others[index].y)), self.calculate_force((others[index].x, others[index].y), others[index].mass)) for index in arange_others])
         f = self.force
-
-        zipped = np.array([*zip(*[(calculations[index][1]*cos(calculations[index][0]),calculations[index][1]*sin(calculations[index][0])) for index in arange_others_arr])])
+        zipped = array([*zip(*[(calculations[index][1]*cos(calculations[index][0]),calculations[index][1]*sin(calculations[index][0])) for index in arange_others])])
         
-        Fx, Fy = np.array(zipped[0]), np.array(zipped[1])
+        #Fx, Fy = array(zipped[0]), array(zipped[1])
         
-        net_f_x = ((np.sum(Fx)))
-        net_f_y = ((np.sum(Fy,)))
+        net_f_x = ((np.sum(zipped[0])))
+        net_f_y = ((np.sum(zipped[1])))
 
         net_force = (((net_f_x**2) + (net_f_y**2))**0.5)
-        # print(net_force, 'net')
 
-        vx_current = self.force * cos(self.direction,)
-        vy_current = self.force * sin(self.direction,)
+        #vx_current = self.force * cos(self.direction,)
+        #vy_current = self.force * sin(self.direction,)
 
-        vx_net = -vx_current + (net_f_x / self.mass)
-        vy_net = -vy_current + (net_f_y / self.mass)
-        # vx_required = ((vx_current**2)+(vy_current**2))**0.5
+        #vx_net = -(self.force * cos(self.direction,)) + (net_f_x / self.mass)
+        #vy_net = -(self.force * cos(self.direction,)) + (net_f_y / self.mass)
 
-        f_required_x = self.mass*vx_net
-        f_required_y = self.mass*vy_net
-        force_required = ((f_required_x**2)+(f_required_y**2))**0.5
+        #f_required_x = self.mass*(-(self.force * cos(self.direction,)) + (net_f_x / self.mass))
+        #f_required_y = self.mass*(-(self.force * cos(self.direction,)) + (net_f_y / self.mass))
+        #force_required = (((self.mass*(-(self.force * cos(self.direction,)) + (net_f_x / self.mass)))**2)+((self.mass*(-(self.force * cos(self.direction,)) + (net_f_y / self.mass)))**2))**0.5
+        
+        # README: The commented out lines above are for determining velocity required to bypass pulls, if the energy of the system does not obey the laws of thermodynamics, fix HERE!
 
         direction = atan2(net_f_y, net_f_x)
-        
-        # print(f ** 2, net_force, force_required)
+    
 
-            # p = f*f
-        # p = double(f'{f}'.split('e')[0][:10])
-        
-        # exit()
-        # print(p)
+        if f>0:f = (((net_force / (f))))
+        else:f = (net_force) # subtract required force here
 
-        if f>0:f = (((net_force / (f)))-force_required)
-        else:f = (net_force-force_required)
-
-        # print(f, force_required, direction)
-        # exit()
-        # print(f, direction)
-        self.direction = <double>direction
-        # try:
-        self.force = <double>(f)
-        # except ValueError as e:
-            # print(str(e))
-        # print(prev, 'test', f, net_force, factor_to_move, 'test', (net_f_x*net_f_x) + (net_f_y*net_f_y), net_f_x, net_f_y)
-            # exit()
+        self.direction = direction
+        self.force = f
         self.goto()
         return
 
     
-    cdef public void goto(self):
+    cdef public void goto(self) except *:
         '''Moves X and Y position based on a timestep, current direction and force.'''
         cdef double far
         cdef double move_x
@@ -151,3 +118,6 @@ cdef class particle:
     
     def __hash__(self):
         return hash((self.force, self.x, self.y, self.mass, self.direction))
+
+    def __reduce__(self):
+        return (self.__class__.__new__, (self.mass, self.x, self.y, self.force))

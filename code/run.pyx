@@ -1,17 +1,15 @@
-# cython: wraparound=False
-# cython: infer_types=True
 # cython: language_level=3
-# cython: boundscheck=False
+# distutils: language=c
+# cython: infer_types=True
+# cython: wrap_around=False
+# cython: bounds_check=False
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
 import pickle, random
 import cython
 cimport numpy as npc
-from . cimport classes_cy as classes
-from . cimport constants_cy as constants
-from . cimport pygame_classes_cy as pygame_classes
 from . import classes_cy as classes
-from . import constants_cy as constants
+from . cimport constants_cy as constants
 from . import pygame_classes_cy as pygame_classes
 import time
 import numpy as np

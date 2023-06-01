@@ -1,7 +1,8 @@
-# cython: wraparound=False
-# cython: boundscheck=False
-# cython: infer_types=True
 # cython: language_level=3
+# distutils: language=c
+# cython: infer_types=True
+# cython: wrap_around=False
+# cython: bounds_check=False
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
 import math
@@ -16,12 +17,12 @@ cdef public int Y_SUB = np.ceil(Y/2)
 cdef public (int, int) ORIGIN = (X-X_SUB, Y-Y_SUB)
 # K = 50  # n particles
 # grid: list[list[list]] = [[[] for y in '~'*Y] for x in '~'*X]  # grid
-cdef public float G = 6.67430*10e-11  # gravitational constant
-cdef public float SOFTEN = 10e-20  # the softening factor
+cdef public double G = 6.67430*10e-11  # gravitational constant
+cdef public double SOFTEN = 10e-20  # the softening factor
 # with open('pi.txt') as f:
-cdef public float RADIAN_DIV = 180/np.pi
+cdef public double RADIAN_DIV = 180/np.pi
 cdef public int SIZE = 5
-cdef public float FACTOR=float(input("Enter factor: "))
+cdef public double FACTOR=float(input("Enter factor: "))
 cdef public int BODIES = int(input("Enter bodies: "))
 cdef public bint DISSIPATE = bool(int(input('Enter dissipation: ')))
 __all__ = globals()
