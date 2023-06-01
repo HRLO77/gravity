@@ -8,7 +8,8 @@
 # cython: none_check=False
 # cython: initialized_check=False
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
-
+# cython: profile=True
+# cython: linetrace=True
 import pickle, random
 import cython
 cimport numpy as npc

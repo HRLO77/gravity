@@ -8,10 +8,12 @@
 # cython: none_check=False
 # cython: initialized_check=False
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
-
+# cython: profile=True
+# cython: linetrace=True
 import math
 from cython.parallel import prange
 import numpy as np
+from numpy import array
 from . import constants_cy as constants
 from . import classes_cy as classes
 cimport numpy as npc
@@ -26,21 +28,17 @@ cdef class handler:
 
     def __cinit__(self, int[:,:,] weights):
         '''Accepts a tuple of tuples, each tuple having the mass, starting x, and starting y positions for each particle.'''
-        self.particles = np.array([classes.particle.__new__(classes.particle, <unsigned int>np.round(mass), <double>x, <double>y, <double>force) for mass, x, y, force in weights])
+        self.particles = array([classes.particle.__new__(classes.particle, <unsigned int>np.round(mass), <double>x, <double>y, <double>force) for mass, x, y, force in weights])
     
     cpdef public void move_timestep(self) except *:
         '''Moves all the particles one time step.'''
-        # print('running')
-        # print(self.particles)
         cdef unsigned long long int length = self.particles.shape[0]
         cdef unsigned int index
-        cdef object[:,] array
+        #cdef object[:,] array
         for index in range(length):
-            array = np.delete(self.particles, index)
-            self.particles[index].move(array)  # perform calculations and move accordingly
+            #array = np.delete(self.particles, index)
+            self.particles[index].move(np.append(self.particles[:index], self.particles[index+1:]))  # perform calculations and move accordingly
         
-    
-    
     def __eq__(self, __value):
         return __value.particles == self.particles
     
