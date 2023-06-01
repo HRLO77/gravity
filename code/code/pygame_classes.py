@@ -41,7 +41,6 @@ class handler:
                 p = [*self.particles]
                 p.pop(c)
                 sprite.update_physics([i.particle for i in p])
-                return self.particles
             else:
                 p = ((p.particle, math.dist((sprite.particle.x, sprite.particle.y), (p.particle.x, p.particle.y))) for p in self.particles[:c]+self.particles[c+1:])
                 p = [*sorted(p, key=lambda x: x[-1])]

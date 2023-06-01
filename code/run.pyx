@@ -46,13 +46,11 @@ cdef unsigned int run():
         
     except BaseException as e:
         print(f'Error: {e}')
-
+    end = <double>(time.perf_counter())
+    print(f'Time: {end-begin}')
     printf('Dumping data...')
     with open('data.pickle', 'wb') as file:
         pickle.dump(<object>particles, file)
     printf('Done!')
-    end = <double>(time.perf_counter())
-
-    printf(f'Time: {end-begin}')
     return <unsigned int>len(particles)
 globals()['particles'] = run()

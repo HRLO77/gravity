@@ -36,7 +36,7 @@ def forever():
         while qu.qsize() == 0:
             time.sleep(0.1)
         data += [qu.get_nowait() for i in range(qu.qsize())]
-        if 'EXIT' in data:
+        if [-0] in data:
             break
     print('Loading data...')
     with open('data.pickle', 'wb') as f:
@@ -56,7 +56,7 @@ try:
 except BaseException as e:
     print(str(e))
 print(time.perf_counter()-t)
-qu.put_nowait('EXIT')
+qu.put_nowait([-0])
 time.sleep(1)
 # else:
     
