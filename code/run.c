@@ -1869,9 +1869,6 @@ static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tsta
         PyObject_Format(s, f))
 #endif
 
-/* RaiseException.proto */
-static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
-
 /* SwapException.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_ExceptionSwap(type, value, tb)  __Pyx__ExceptionSwap(__pyx_tstate, type, value, tb)
@@ -1884,6 +1881,9 @@ static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value,
 static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
+
+/* RaiseException.proto */
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
 /* RaiseArgTupleInvalid.proto */
 static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
@@ -3585,7 +3585,7 @@ static unsigned int __pyx_f_4code_3run_run(void) {
  * 
  *     except BaseException as e:             # <<<<<<<<<<<<<<
  *         print(f'Error: {e}')
- *         raise e
+ *     end = <double>(time.perf_counter())
  */
     __pyx_t_5 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_BaseException);
     if (__pyx_t_5) {
@@ -3602,8 +3602,8 @@ static unsigned int __pyx_f_4code_3run_run(void) {
  * 
  *     except BaseException as e:
  *         print(f'Error: {e}')             # <<<<<<<<<<<<<<
- *         raise e
  *     end = <double>(time.perf_counter())
+ *     print(f'Time: {end-begin}')
  */
         __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_v_e, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L40_error)
         __Pyx_GOTREF(__pyx_t_1);
@@ -3614,16 +3614,6 @@ static unsigned int __pyx_f_4code_3run_run(void) {
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-        /* "code/run.pyx":51
- *     except BaseException as e:
- *         print(f'Error: {e}')
- *         raise e             # <<<<<<<<<<<<<<
- *     end = <double>(time.perf_counter())
- *     print(f'Time: {end-begin}')
- */
-        __Pyx_Raise(__pyx_v_e, 0, 0, 0);
-        __PYX_ERR(0, 51, __pyx_L40_error)
       }
 
       /* "code/run.pyx":49
@@ -3631,9 +3621,14 @@ static unsigned int __pyx_f_4code_3run_run(void) {
  * 
  *     except BaseException as e:             # <<<<<<<<<<<<<<
  *         print(f'Error: {e}')
- *         raise e
+ *     end = <double>(time.perf_counter())
  */
       /*finally:*/ {
+        /*normal exit:*/{
+          __Pyx_DECREF(__pyx_v_e);
+          __pyx_v_e = NULL;
+          goto __pyx_L41;
+        }
         __pyx_L40_error:;
         /*exception exit:*/{
           __Pyx_PyThreadState_declare
@@ -3672,7 +3667,12 @@ static unsigned int __pyx_f_4code_3run_run(void) {
           __pyx_lineno = __pyx_t_5; __pyx_clineno = __pyx_t_6; __pyx_filename = __pyx_t_21;
           goto __pyx_L21_except_error;
         }
+        __pyx_L41:;
       }
+      __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+      goto __pyx_L20_exception_handled;
     }
     goto __pyx_L21_except_error;
     __pyx_L21_except_error:;
@@ -3689,19 +3689,24 @@ static unsigned int __pyx_f_4code_3run_run(void) {
     __Pyx_XGIVEREF(__pyx_t_16);
     __Pyx_ExceptionReset(__pyx_t_14, __pyx_t_17, __pyx_t_16);
     goto __pyx_L1_error;
+    __pyx_L20_exception_handled:;
+    __Pyx_XGIVEREF(__pyx_t_14);
+    __Pyx_XGIVEREF(__pyx_t_17);
+    __Pyx_XGIVEREF(__pyx_t_16);
+    __Pyx_ExceptionReset(__pyx_t_14, __pyx_t_17, __pyx_t_16);
     __pyx_L24_try_end:;
   }
 
-  /* "code/run.pyx":52
+  /* "code/run.pyx":51
+ *     except BaseException as e:
  *         print(f'Error: {e}')
- *         raise e
  *     end = <double>(time.perf_counter())             # <<<<<<<<<<<<<<
  *     print(f'Time: {end-begin}')
  *     printf('Dumping data...')
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -3716,34 +3721,34 @@ static unsigned int __pyx_f_4code_3run_run(void) {
   }
   __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_end = ((double)__pyx_t_4);
 
-  /* "code/run.pyx":53
- *         raise e
+  /* "code/run.pyx":52
+ *         print(f'Error: {e}')
  *     end = <double>(time.perf_counter())
  *     print(f'Time: {end-begin}')             # <<<<<<<<<<<<<<
  *     printf('Dumping data...')
  *     with open('data.pickle', 'wb') as file:
  */
-  __pyx_t_2 = PyFloat_FromDouble((__pyx_v_end - __pyx_v_begin)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble((__pyx_v_end - __pyx_v_begin)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_10 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Time, __pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Time, __pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_builtin_print, __pyx_t_2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_builtin_print, __pyx_t_2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-  /* "code/run.pyx":54
+  /* "code/run.pyx":53
  *     end = <double>(time.perf_counter())
  *     print(f'Time: {end-begin}')
  *     printf('Dumping data...')             # <<<<<<<<<<<<<<
@@ -3752,7 +3757,7 @@ static unsigned int __pyx_f_4code_3run_run(void) {
  */
   (void)(printf(((char const *)"Dumping data...")));
 
-  /* "code/run.pyx":55
+  /* "code/run.pyx":54
  *     print(f'Time: {end-begin}')
  *     printf('Dumping data...')
  *     with open('data.pickle', 'wb') as file:             # <<<<<<<<<<<<<<
@@ -3760,11 +3765,11 @@ static unsigned int __pyx_f_4code_3run_run(void) {
  *     printf('Done!')
  */
   /*with:*/ {
-    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 55, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 54, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_16 = __Pyx_PyObject_LookupSpecial(__pyx_t_10, __pyx_n_s_exit); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 55, __pyx_L1_error)
+    __pyx_t_16 = __Pyx_PyObject_LookupSpecial(__pyx_t_10, __pyx_n_s_exit); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 54, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_3 = __Pyx_PyObject_LookupSpecial(__pyx_t_10, __pyx_n_s_enter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L46_error)
+    __pyx_t_3 = __Pyx_PyObject_LookupSpecial(__pyx_t_10, __pyx_n_s_enter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L46_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_1 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -3778,7 +3783,7 @@ static unsigned int __pyx_f_4code_3run_run(void) {
     }
     __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L46_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L46_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = __pyx_t_2;
@@ -3796,21 +3801,21 @@ static unsigned int __pyx_f_4code_3run_run(void) {
           __Pyx_XDECREF_SET(__pyx_v_file, __pyx_t_3);
           __pyx_t_3 = 0;
 
-          /* "code/run.pyx":56
+          /* "code/run.pyx":55
  *     printf('Dumping data...')
  *     with open('data.pickle', 'wb') as file:
  *         pickle.dump(list(particles), file)             # <<<<<<<<<<<<<<
  *     printf('Done!')
  *     return <unsigned int>len(particles)
  */
-          __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_pickle); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 56, __pyx_L50_error)
+          __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_pickle); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 55, __pyx_L50_error)
           __Pyx_GOTREF(__pyx_t_10);
-          __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_dump); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L50_error)
+          __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_dump); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L50_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-          __pyx_t_10 = __pyx_memoryview_fromslice(__pyx_v_particles, 2, (PyObject *(*)(char *)) __pyx_memview_get_object, (int (*)(char *, PyObject *)) __pyx_memview_set_object, 1);; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 56, __pyx_L50_error)
+          __pyx_t_10 = __pyx_memoryview_fromslice(__pyx_v_particles, 2, (PyObject *(*)(char *)) __pyx_memview_get_object, (int (*)(char *, PyObject *)) __pyx_memview_set_object, 1);; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 55, __pyx_L50_error)
           __Pyx_GOTREF(__pyx_t_10);
-          __pyx_t_1 = PySequence_List(__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L50_error)
+          __pyx_t_1 = PySequence_List(__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L50_error)
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
           __pyx_t_10 = NULL;
@@ -3828,7 +3833,7 @@ static unsigned int __pyx_f_4code_3run_run(void) {
           #if CYTHON_FAST_PYCALL
           if (PyFunction_Check(__pyx_t_2)) {
             PyObject *__pyx_temp[3] = {__pyx_t_10, __pyx_t_1, __pyx_v_file};
-            __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L50_error)
+            __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L50_error)
             __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
             __Pyx_GOTREF(__pyx_t_3);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3837,14 +3842,14 @@ static unsigned int __pyx_f_4code_3run_run(void) {
           #if CYTHON_FAST_PYCCALL
           if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
             PyObject *__pyx_temp[3] = {__pyx_t_10, __pyx_t_1, __pyx_v_file};
-            __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L50_error)
+            __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L50_error)
             __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
             __Pyx_GOTREF(__pyx_t_3);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           } else
           #endif
           {
-            __pyx_t_8 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 56, __pyx_L50_error)
+            __pyx_t_8 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 55, __pyx_L50_error)
             __Pyx_GOTREF(__pyx_t_8);
             if (__pyx_t_10) {
               __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_10); __pyx_t_10 = NULL;
@@ -3855,14 +3860,14 @@ static unsigned int __pyx_f_4code_3run_run(void) {
             __Pyx_GIVEREF(__pyx_v_file);
             PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_6, __pyx_v_file);
             __pyx_t_1 = 0;
-            __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L50_error)
+            __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L50_error)
             __Pyx_GOTREF(__pyx_t_3);
             __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           }
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-          /* "code/run.pyx":55
+          /* "code/run.pyx":54
  *     print(f'Time: {end-begin}')
  *     printf('Dumping data...')
  *     with open('data.pickle', 'wb') as file:             # <<<<<<<<<<<<<<
@@ -3886,20 +3891,20 @@ static unsigned int __pyx_f_4code_3run_run(void) {
         __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
         /*except:*/ {
           __Pyx_AddTraceback("code.run.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
-          if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_2, &__pyx_t_8) < 0) __PYX_ERR(0, 55, __pyx_L52_except_error)
+          if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_2, &__pyx_t_8) < 0) __PYX_ERR(0, 54, __pyx_L52_except_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_GOTREF(__pyx_t_8);
-          __pyx_t_1 = PyTuple_Pack(3, __pyx_t_3, __pyx_t_2, __pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L52_except_error)
+          __pyx_t_1 = PyTuple_Pack(3, __pyx_t_3, __pyx_t_2, __pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L52_except_error)
           __Pyx_GOTREF(__pyx_t_1);
           __pyx_t_24 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_1, NULL);
           __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-          if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 55, __pyx_L52_except_error)
+          if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 54, __pyx_L52_except_error)
           __Pyx_GOTREF(__pyx_t_24);
           __pyx_t_20 = __Pyx_PyObject_IsTrue(__pyx_t_24);
           __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-          if (__pyx_t_20 < 0) __PYX_ERR(0, 55, __pyx_L52_except_error)
+          if (__pyx_t_20 < 0) __PYX_ERR(0, 54, __pyx_L52_except_error)
           __pyx_t_19 = ((!(__pyx_t_20 != 0)) != 0);
           if (__pyx_t_19) {
             __Pyx_GIVEREF(__pyx_t_3);
@@ -3907,7 +3912,7 @@ static unsigned int __pyx_f_4code_3run_run(void) {
             __Pyx_XGIVEREF(__pyx_t_8);
             __Pyx_ErrRestoreWithState(__pyx_t_3, __pyx_t_2, __pyx_t_8);
             __pyx_t_3 = 0; __pyx_t_2 = 0; __pyx_t_8 = 0; 
-            __PYX_ERR(0, 55, __pyx_L52_except_error)
+            __PYX_ERR(0, 54, __pyx_L52_except_error)
           }
           __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3933,7 +3938,7 @@ static unsigned int __pyx_f_4code_3run_run(void) {
         if (__pyx_t_16) {
           __pyx_t_25 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_tuple__6, NULL);
           __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-          if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 55, __pyx_L1_error)
+          if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 54, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_25);
           __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
         }
@@ -3948,7 +3953,7 @@ static unsigned int __pyx_f_4code_3run_run(void) {
     __pyx_L59:;
   }
 
-  /* "code/run.pyx":57
+  /* "code/run.pyx":56
  *     with open('data.pickle', 'wb') as file:
  *         pickle.dump(list(particles), file)
  *     printf('Done!')             # <<<<<<<<<<<<<<
@@ -3957,7 +3962,7 @@ static unsigned int __pyx_f_4code_3run_run(void) {
  */
   (void)(printf(((char const *)"Done!")));
 
-  /* "code/run.pyx":58
+  /* "code/run.pyx":57
  *         pickle.dump(list(particles), file)
  *     printf('Done!')
  *     return <unsigned int>len(particles)             # <<<<<<<<<<<<<<
@@ -19873,16 +19878,16 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "code/run.pyx":59
+  /* "code/run.pyx":58
  *     printf('Done!')
  *     return <unsigned int>len(particles)
  * globals()['particles'] = run()             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_f_4code_3run_run()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_f_4code_3run_run()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_Globals(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Globals(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (unlikely(PyObject_SetItem(__pyx_t_2, __pyx_n_u_particles, __pyx_t_1) < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_2, __pyx_n_u_particles, __pyx_t_1) < 0)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -20765,6 +20770,81 @@ static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tsta
 }
 #endif
 
+/* SwapException */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx__ExceptionSwap(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    #if CYTHON_USE_EXC_INFO_STACK
+    _PyErr_StackItem *exc_info = tstate->exc_info;
+    tmp_type = exc_info->exc_type;
+    tmp_value = exc_info->exc_value;
+    tmp_tb = exc_info->exc_traceback;
+    exc_info->exc_type = *type;
+    exc_info->exc_value = *value;
+    exc_info->exc_traceback = *tb;
+    #else
+    tmp_type = tstate->exc_type;
+    tmp_value = tstate->exc_value;
+    tmp_tb = tstate->exc_traceback;
+    tstate->exc_type = *type;
+    tstate->exc_value = *value;
+    tstate->exc_traceback = *tb;
+    #endif
+    *type = tmp_type;
+    *value = tmp_value;
+    *tb = tmp_tb;
+}
+#else
+static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value, PyObject **tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    PyErr_GetExcInfo(&tmp_type, &tmp_value, &tmp_tb);
+    PyErr_SetExcInfo(*type, *value, *tb);
+    *type = tmp_type;
+    *value = tmp_value;
+    *tb = tmp_tb;
+}
+#endif
+
+/* WriteUnraisableException */
+static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
+                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
+                                  int full_traceback, CYTHON_UNUSED int nogil) {
+    PyObject *old_exc, *old_val, *old_tb;
+    PyObject *ctx;
+    __Pyx_PyThreadState_declare
+#ifdef WITH_THREAD
+    PyGILState_STATE state;
+    if (nogil)
+        state = PyGILState_Ensure();
+    else state = (PyGILState_STATE)0;
+#endif
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
+    if (full_traceback) {
+        Py_XINCREF(old_exc);
+        Py_XINCREF(old_val);
+        Py_XINCREF(old_tb);
+        __Pyx_ErrRestore(old_exc, old_val, old_tb);
+        PyErr_PrintEx(1);
+    }
+    #if PY_MAJOR_VERSION < 3
+    ctx = PyString_FromString(name);
+    #else
+    ctx = PyUnicode_FromString(name);
+    #endif
+    __Pyx_ErrRestore(old_exc, old_val, old_tb);
+    if (!ctx) {
+        PyErr_WriteUnraisable(Py_None);
+    } else {
+        PyErr_WriteUnraisable(ctx);
+        Py_DECREF(ctx);
+    }
+#ifdef WITH_THREAD
+    if (nogil)
+        PyGILState_Release(state);
+#endif
+}
+
 /* RaiseException */
 #if PY_MAJOR_VERSION < 3
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb,
@@ -20923,81 +21003,6 @@ bad:
     return;
 }
 #endif
-
-/* SwapException */
-#if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx__ExceptionSwap(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    #if CYTHON_USE_EXC_INFO_STACK
-    _PyErr_StackItem *exc_info = tstate->exc_info;
-    tmp_type = exc_info->exc_type;
-    tmp_value = exc_info->exc_value;
-    tmp_tb = exc_info->exc_traceback;
-    exc_info->exc_type = *type;
-    exc_info->exc_value = *value;
-    exc_info->exc_traceback = *tb;
-    #else
-    tmp_type = tstate->exc_type;
-    tmp_value = tstate->exc_value;
-    tmp_tb = tstate->exc_traceback;
-    tstate->exc_type = *type;
-    tstate->exc_value = *value;
-    tstate->exc_traceback = *tb;
-    #endif
-    *type = tmp_type;
-    *value = tmp_value;
-    *tb = tmp_tb;
-}
-#else
-static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value, PyObject **tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    PyErr_GetExcInfo(&tmp_type, &tmp_value, &tmp_tb);
-    PyErr_SetExcInfo(*type, *value, *tb);
-    *type = tmp_type;
-    *value = tmp_value;
-    *tb = tmp_tb;
-}
-#endif
-
-/* WriteUnraisableException */
-static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
-                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
-                                  int full_traceback, CYTHON_UNUSED int nogil) {
-    PyObject *old_exc, *old_val, *old_tb;
-    PyObject *ctx;
-    __Pyx_PyThreadState_declare
-#ifdef WITH_THREAD
-    PyGILState_STATE state;
-    if (nogil)
-        state = PyGILState_Ensure();
-    else state = (PyGILState_STATE)0;
-#endif
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
-    if (full_traceback) {
-        Py_XINCREF(old_exc);
-        Py_XINCREF(old_val);
-        Py_XINCREF(old_tb);
-        __Pyx_ErrRestore(old_exc, old_val, old_tb);
-        PyErr_PrintEx(1);
-    }
-    #if PY_MAJOR_VERSION < 3
-    ctx = PyString_FromString(name);
-    #else
-    ctx = PyUnicode_FromString(name);
-    #endif
-    __Pyx_ErrRestore(old_exc, old_val, old_tb);
-    if (!ctx) {
-        PyErr_WriteUnraisable(Py_None);
-    } else {
-        PyErr_WriteUnraisable(ctx);
-        Py_DECREF(ctx);
-    }
-#ifdef WITH_THREAD
-    if (nogil)
-        PyGILState_Release(state);
-#endif
-}
 
 /* RaiseArgTupleInvalid */
 static void __Pyx_RaiseArgtupleInvalid(

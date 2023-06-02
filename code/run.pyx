@@ -48,7 +48,6 @@ cdef unsigned int run():
         
     except BaseException as e:
         print(f'Error: {e}')
-        raise e
     end = <double>(time.perf_counter())
     print(f'Time: {end-begin}')
     printf('Dumping data...')
