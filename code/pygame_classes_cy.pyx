@@ -11,7 +11,6 @@
 # cython: profile=True
 # cython: linetrace=True
 import math
-from cython.parallel import prange
 import numpy as np
 from numpy import array
 from . import constants_cy as constants

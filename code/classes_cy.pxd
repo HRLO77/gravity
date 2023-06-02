@@ -6,7 +6,7 @@ import numpy as np
 cimport numpy as np
 np.ALLOW_THREADS = True
 
-# cdef class particle:
+#cdef class particle:
 #     '''Represents a single particle, can be moved through higher dimensions.'''
 #     cdef public:
 #         float x, y, direction, force

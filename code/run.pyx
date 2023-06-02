@@ -10,6 +10,7 @@
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 # cython: profile=True
 # cython: linetrace=True
+import typing
 import pickle, random
 import cython
 cimport numpy as npc
@@ -26,7 +27,7 @@ cdef unsigned int run():
     #aranged = range(constants.BODIES)
     cdef int[:,:,] np_data = np.array([(randint(1_000, 10_000), randint(-700, 700), randint(-700, 700), 1) for i in range(constants.BODIES)])
     cdef object handler = pygame_classes.handler.__new__(pygame_classes.handler, np_data)
-    cdef list particles = [handler.particles]  # if movement does not occur, thats because this is a single memory view, copy instead
+    cdef list[object] particles = [handler.particles]  # if movement does not occur, thats because this is a single memory view, copy instead
     cdef unsigned long long int c = 0
     with open('data.pickle', 'wb') as file:
         pickle.dump(None, file)
@@ -50,7 +51,7 @@ cdef unsigned int run():
     print(f'Time: {end-begin}')
     printf('Dumping data...')
     with open('data.pickle', 'wb') as file:
-        pickle.dump(<object>particles, file)
+        pickle.dump(list(particles), file)
     printf('Done!')
     return <unsigned int>len(particles)
 globals()['particles'] = run()
