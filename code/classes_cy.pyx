@@ -18,7 +18,6 @@ cimport cython
 from libc.math cimport sin, cos, atan2, fabs
 np.ALLOW_THREADS = True
 
-@cython.auto_pickle(True)
 cdef class particle:
     '''Represents a single particle, can be moved through higher dimensions.'''
     cdef public double x, direction, y, force
@@ -42,9 +41,9 @@ cdef class particle:
         #return (atan2(position[1]-self.y, position[0]-self.x)/constants.RADIAN_DIV)
         return fabs((1/sin(angle))*position[0]-self.x)
     
-    cdef public inline (double, double) trig_put(self, double direction):
-        '''Applies cosine and sine to the direction and returns a vector in that order.'''
-        return (cos(direction), sin(direction))
+    #cdef public inline (double, double) trig_put(self, double direction):
+    #    '''Applies cosine and sine to the direction and returns a vector in that order.'''
+    #    return (cos(direction), sin(direction))
       
     cpdef public void move(self, particle[:,] others) except *:
         '''Based on a dict (key is x and y, value is rate of bending in 3d dimension.), calculate direction to move to and speed at which to move. Returns direction (radians), force (newtons)'''

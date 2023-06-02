@@ -1403,7 +1403,7 @@ struct __pyx_ctuple_int__and_int {
 struct __pyx_ctuple_double__and_double;
 typedef struct __pyx_ctuple_double__and_double __pyx_ctuple_double__and_double;
 
-/* "code/classes_cy.pyx":35
+/* "code/classes_cy.pyx":34
  * 
  * 
  *     cdef public inline double calculate_force(self, (double, double) position, unsigned int weight, double angle) except -1.0:             # <<<<<<<<<<<<<<
@@ -1415,9 +1415,9 @@ struct __pyx_ctuple_double__and_double {
   double f1;
 };
 
-/* "code/classes_cy.pyx":22
+/* "code/classes_cy.pyx":21
+ * np.ALLOW_THREADS = True
  * 
- * @cython.auto_pickle(True)
  * cdef class particle:             # <<<<<<<<<<<<<<
  *     '''Represents a single particle, can be moved through higher dimensions.'''
  *     cdef public double x, direction, y, force
@@ -1511,9 +1511,9 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "code/classes_cy.pyx":22
+/* "code/classes_cy.pyx":21
+ * np.ALLOW_THREADS = True
  * 
- * @cython.auto_pickle(True)
  * cdef class particle:             # <<<<<<<<<<<<<<
  *     '''Represents a single particle, can be moved through higher dimensions.'''
  *     cdef public double x, direction, y, force
@@ -1522,14 +1522,12 @@ struct __pyx_memoryviewslice_obj {
 struct __pyx_vtabstruct_4code_10classes_cy_particle {
   double (*calculate_force)(struct __pyx_obj_4code_10classes_cy_particle *, __pyx_ctuple_double__and_double, unsigned int, double);
   double (*calculate_direction)(struct __pyx_obj_4code_10classes_cy_particle *, __pyx_ctuple_double__and_double, double);
-  __pyx_ctuple_double__and_double (*trig_put)(struct __pyx_obj_4code_10classes_cy_particle *, double);
   void (*move)(struct __pyx_obj_4code_10classes_cy_particle *, __Pyx_memviewslice, int __pyx_skip_dispatch);
   void (*__pyx_goto)(struct __pyx_obj_4code_10classes_cy_particle *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_4code_10classes_cy_particle *__pyx_vtabptr_4code_10classes_cy_particle;
 static CYTHON_INLINE double __pyx_f_4code_10classes_cy_8particle_calculate_force(struct __pyx_obj_4code_10classes_cy_particle *, __pyx_ctuple_double__and_double, unsigned int, double);
 static CYTHON_INLINE double __pyx_f_4code_10classes_cy_8particle_calculate_direction(struct __pyx_obj_4code_10classes_cy_particle *, __pyx_ctuple_double__and_double, double);
-static CYTHON_INLINE __pyx_ctuple_double__and_double __pyx_f_4code_10classes_cy_8particle_trig_put(struct __pyx_obj_4code_10classes_cy_particle *, double);
 
 
 /* "View.MemoryView":106
@@ -2348,7 +2346,6 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 CYTHON_INLINE double __pyx_f_4code_10classes_cy_8particle_calculate_force(struct __pyx_obj_4code_10classes_cy_particle *__pyx_v_self, __pyx_ctuple_double__and_double __pyx_v_position, unsigned int __pyx_v_weight, CYTHON_UNUSED double __pyx_v_angle); /* proto*/
 CYTHON_INLINE double __pyx_f_4code_10classes_cy_8particle_calculate_direction(struct __pyx_obj_4code_10classes_cy_particle *__pyx_v_self, __pyx_ctuple_double__and_double __pyx_v_position, double __pyx_v_angle); /* proto*/
-CYTHON_INLINE __pyx_ctuple_double__and_double __pyx_f_4code_10classes_cy_8particle_trig_put(CYTHON_UNUSED struct __pyx_obj_4code_10classes_cy_particle *__pyx_v_self, double __pyx_v_direction); /* proto*/
 void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_cy_particle *__pyx_v_self, __Pyx_memviewslice __pyx_v_others, int __pyx_skip_dispatch); /* proto*/
 void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_cy_particle *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_array_get_memview(struct __pyx_array_obj *__pyx_v_self); /* proto*/
@@ -2800,7 +2797,7 @@ static PyObject *__pyx_tuple__27;
 static PyObject *__pyx_codeobj__28;
 /* Late includes */
 
-/* "code/classes_cy.pyx":27
+/* "code/classes_cy.pyx":26
  *     cdef public unsigned int mass
  * 
  *     def __cinit__(self, int mass, double x, double y , double force = 0):             # <<<<<<<<<<<<<<
@@ -2848,13 +2845,13 @@ static int __pyx_pw_4code_10classes_cy_8particle_1__cinit__(PyObject *__pyx_v_se
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, 1); __PYX_ERR(0, 27, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, 1); __PYX_ERR(0, 26, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_y)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, 2); __PYX_ERR(0, 27, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, 2); __PYX_ERR(0, 26, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -2864,7 +2861,7 @@ static int __pyx_pw_4code_10classes_cy_8particle_1__cinit__(PyObject *__pyx_v_se
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 27, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 26, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2877,18 +2874,18 @@ static int __pyx_pw_4code_10classes_cy_8particle_1__cinit__(PyObject *__pyx_v_se
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_mass = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_mass == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L3_error)
-    __pyx_v_x = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_x == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L3_error)
-    __pyx_v_y = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_y == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L3_error)
+    __pyx_v_mass = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_mass == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 26, __pyx_L3_error)
+    __pyx_v_x = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_x == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 26, __pyx_L3_error)
+    __pyx_v_y = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_y == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 26, __pyx_L3_error)
     if (values[3]) {
-      __pyx_v_force = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_force == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L3_error)
+      __pyx_v_force = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_force == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 26, __pyx_L3_error)
     } else {
       __pyx_v_force = ((double)0.0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 27, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 26, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("code.classes_cy.particle.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2906,7 +2903,7 @@ static int __pyx_pf_4code_10classes_cy_8particle___cinit__(struct __pyx_obj_4cod
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "code/classes_cy.pyx":28
+  /* "code/classes_cy.pyx":27
  * 
  *     def __cinit__(self, int mass, double x, double y , double force = 0):
  *         self.mass = <unsigned int>mass             # <<<<<<<<<<<<<<
@@ -2915,7 +2912,7 @@ static int __pyx_pf_4code_10classes_cy_8particle___cinit__(struct __pyx_obj_4cod
  */
   __pyx_v_self->mass = ((unsigned int)__pyx_v_mass);
 
-  /* "code/classes_cy.pyx":29
+  /* "code/classes_cy.pyx":28
  *     def __cinit__(self, int mass, double x, double y , double force = 0):
  *         self.mass = <unsigned int>mass
  *         self.x = <double>x             # <<<<<<<<<<<<<<
@@ -2924,7 +2921,7 @@ static int __pyx_pf_4code_10classes_cy_8particle___cinit__(struct __pyx_obj_4cod
  */
   __pyx_v_self->x = ((double)__pyx_v_x);
 
-  /* "code/classes_cy.pyx":30
+  /* "code/classes_cy.pyx":29
  *         self.mass = <unsigned int>mass
  *         self.x = <double>x
  *         self.y = <double>y             # <<<<<<<<<<<<<<
@@ -2933,7 +2930,7 @@ static int __pyx_pf_4code_10classes_cy_8particle___cinit__(struct __pyx_obj_4cod
  */
   __pyx_v_self->y = ((double)__pyx_v_y);
 
-  /* "code/classes_cy.pyx":31
+  /* "code/classes_cy.pyx":30
  *         self.x = <double>x
  *         self.y = <double>y
  *         self.direction = 1.0             # <<<<<<<<<<<<<<
@@ -2942,7 +2939,7 @@ static int __pyx_pf_4code_10classes_cy_8particle___cinit__(struct __pyx_obj_4cod
  */
   __pyx_v_self->direction = 1.0;
 
-  /* "code/classes_cy.pyx":32
+  /* "code/classes_cy.pyx":31
  *         self.y = <double>y
  *         self.direction = 1.0
  *         self.force = <double>force             # <<<<<<<<<<<<<<
@@ -2951,7 +2948,7 @@ static int __pyx_pf_4code_10classes_cy_8particle___cinit__(struct __pyx_obj_4cod
  */
   __pyx_v_self->force = ((double)__pyx_v_force);
 
-  /* "code/classes_cy.pyx":27
+  /* "code/classes_cy.pyx":26
  *     cdef public unsigned int mass
  * 
  *     def __cinit__(self, int mass, double x, double y , double force = 0):             # <<<<<<<<<<<<<<
@@ -2965,7 +2962,7 @@ static int __pyx_pf_4code_10classes_cy_8particle___cinit__(struct __pyx_obj_4cod
   return __pyx_r;
 }
 
-/* "code/classes_cy.pyx":35
+/* "code/classes_cy.pyx":34
  * 
  * 
  *     cdef public inline double calculate_force(self, (double, double) position, unsigned int weight, double angle) except -1.0:             # <<<<<<<<<<<<<<
@@ -2978,7 +2975,7 @@ CYTHON_INLINE double __pyx_f_4code_10classes_cy_8particle_calculate_force(struct
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("calculate_force", 0);
 
-  /* "code/classes_cy.pyx":37
+  /* "code/classes_cy.pyx":36
  *     cdef public inline double calculate_force(self, (double, double) position, unsigned int weight, double angle) except -1.0:
  *         '''Calculates the force of attraction (in newtons) between this particle and another body (particle, unit of space, or position and weight) in a higher dimension.'''
  *         return (constants.G*self.mass*weight)/(fabs(position[0]**2)+fabs(position[1])**2+(constants.SOFTEN))  # if (self.f) > 0 else (constants.G*self.mass*weight)/1+(constants.SOFTEN)             # <<<<<<<<<<<<<<
@@ -2988,7 +2985,7 @@ CYTHON_INLINE double __pyx_f_4code_10classes_cy_8particle_calculate_force(struct
   __pyx_r = (((double)((__pyx_v_4code_12constants_cy_G * __pyx_v_self->mass) * __pyx_v_weight)) / ((fabs(pow(__pyx_v_position.f0, 2.0)) + pow(fabs(__pyx_v_position.f1), 2.0)) + __pyx_v_4code_12constants_cy_SOFTEN));
   goto __pyx_L0;
 
-  /* "code/classes_cy.pyx":35
+  /* "code/classes_cy.pyx":34
  * 
  * 
  *     cdef public inline double calculate_force(self, (double, double) position, unsigned int weight, double angle) except -1.0:             # <<<<<<<<<<<<<<
@@ -3002,7 +2999,7 @@ CYTHON_INLINE double __pyx_f_4code_10classes_cy_8particle_calculate_force(struct
   return __pyx_r;
 }
 
-/* "code/classes_cy.pyx":40
+/* "code/classes_cy.pyx":39
  * 
  * 
  *     cdef public inline double calculate_direction(self, (double, double) position, double angle) except -1.0:             # <<<<<<<<<<<<<<
@@ -3015,17 +3012,17 @@ CYTHON_INLINE double __pyx_f_4code_10classes_cy_8particle_calculate_direction(st
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("calculate_direction", 0);
 
-  /* "code/classes_cy.pyx":43
+  /* "code/classes_cy.pyx":42
  *         '''Calculates the direction (slope and radians) to another particle, unit of space or position in space.'''
  *         #return (atan2(position[1]-self.y, position[0]-self.x)/constants.RADIAN_DIV)
  *         return fabs((1/sin(angle))*position[0]-self.x)             # <<<<<<<<<<<<<<
  * 
- *     cdef public inline (double, double) trig_put(self, double direction):
+ *     #cdef public inline (double, double) trig_put(self, double direction):
  */
   __pyx_r = fabs((((1.0 / sin(__pyx_v_angle)) * __pyx_v_position.f0) - __pyx_v_self->x));
   goto __pyx_L0;
 
-  /* "code/classes_cy.pyx":40
+  /* "code/classes_cy.pyx":39
  * 
  * 
  *     cdef public inline double calculate_direction(self, (double, double) position, double angle) except -1.0:             # <<<<<<<<<<<<<<
@@ -3039,48 +3036,8 @@ CYTHON_INLINE double __pyx_f_4code_10classes_cy_8particle_calculate_direction(st
   return __pyx_r;
 }
 
-/* "code/classes_cy.pyx":45
- *         return fabs((1/sin(angle))*position[0]-self.x)
- * 
- *     cdef public inline (double, double) trig_put(self, double direction):             # <<<<<<<<<<<<<<
- *         '''Applies cosine and sine to the direction and returns a vector in that order.'''
- *         return (cos(direction), sin(direction))
- */
-
-CYTHON_INLINE __pyx_ctuple_double__and_double __pyx_f_4code_10classes_cy_8particle_trig_put(CYTHON_UNUSED struct __pyx_obj_4code_10classes_cy_particle *__pyx_v_self, double __pyx_v_direction) {
-  __pyx_ctuple_double__and_double __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __pyx_ctuple_double__and_double __pyx_t_1;
-  __Pyx_RefNannySetupContext("trig_put", 0);
-
-  /* "code/classes_cy.pyx":47
- *     cdef public inline (double, double) trig_put(self, double direction):
- *         '''Applies cosine and sine to the direction and returns a vector in that order.'''
- *         return (cos(direction), sin(direction))             # <<<<<<<<<<<<<<
- * 
- *     cpdef public void move(self, particle[:,] others) except *:
- */
-  __pyx_t_1.f0 = cos(__pyx_v_direction);
-  __pyx_t_1.f1 = sin(__pyx_v_direction);
-  __pyx_r = __pyx_t_1;
-  goto __pyx_L0;
-
-  /* "code/classes_cy.pyx":45
- *         return fabs((1/sin(angle))*position[0]-self.x)
- * 
- *     cdef public inline (double, double) trig_put(self, double direction):             # <<<<<<<<<<<<<<
- *         '''Applies cosine and sine to the direction and returns a vector in that order.'''
- *         return (cos(direction), sin(direction))
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "code/classes_cy.pyx":49
- *         return (cos(direction), sin(direction))
+/* "code/classes_cy.pyx":48
+ *     #    return (cos(direction), sin(direction))
  * 
  *     cpdef public void move(self, particle[:,] others) except *:             # <<<<<<<<<<<<<<
  *         '''Based on a dict (key is x and y, value is rate of bending in 3d dimension.), calculate direction to move to and speed at which to move. Returns direction (radians), force (newtons)'''
@@ -3125,11 +3082,11 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_4code_10classes_cy_8particle_3move)) {
-        if (unlikely(!__pyx_v_others.memview)) { __Pyx_RaiseUnboundLocalError("others"); __PYX_ERR(0, 49, __pyx_L1_error) }
-        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_others, 1, (PyObject *(*)(char *)) __pyx_memview_get_object, (int (*)(char *, PyObject *)) __pyx_memview_set_object, 1);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L1_error)
+        if (unlikely(!__pyx_v_others.memview)) { __Pyx_RaiseUnboundLocalError("others"); __PYX_ERR(0, 48, __pyx_L1_error) }
+        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_others, 1, (PyObject *(*)(char *)) __pyx_memview_get_object, (int (*)(char *, PyObject *)) __pyx_memview_set_object, 1);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -3145,7 +3102,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
         __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3165,7 +3122,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     #endif
   }
 
-  /* "code/classes_cy.pyx":57
+  /* "code/classes_cy.pyx":56
  *         #cdef double net_f_x, net_f_y, net_force, vx_current, vy_current, vx_net, vy_net, f_required_x, f_required_y, force_required, direction, f, temp_dir, temp_force
  *         cdef double net_f_x, net_f_y, net_force, temp_dir, temp_force, to_atan
  *         net_f_x, net_f_y = (0, 0)             # <<<<<<<<<<<<<<
@@ -3177,22 +3134,22 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
   __pyx_v_net_f_x = __pyx_t_6;
   __pyx_v_net_f_y = __pyx_t_7;
 
-  /* "code/classes_cy.pyx":58
+  /* "code/classes_cy.pyx":57
  *         cdef double net_f_x, net_f_y, net_force, temp_dir, temp_force, to_atan
  *         net_f_x, net_f_y = (0, 0)
  *         arange_others = range(others.shape[0])             # <<<<<<<<<<<<<<
  *         #calculations = array([(self.calculate_direction((others[index].x, others[index].y)), self.calculate_force((others[index].x, others[index].y), others[index].mass)) for index in arange_others])
  *         #zipped = array([*zip(*[array([self.calculate_force((others[index].x, others[index].y), others[index].mass)]*2)*self.trig_put(self.calculate_direction((others[index].x, others[index].y))) for index in arange_others])])
  */
-  __pyx_t_1 = PyInt_FromSsize_t((__pyx_v_others.shape[0])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t((__pyx_v_others.shape[0])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_arange_others = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "code/classes_cy.pyx":61
+  /* "code/classes_cy.pyx":60
  *         #calculations = array([(self.calculate_direction((others[index].x, others[index].y)), self.calculate_force((others[index].x, others[index].y), others[index].mass)) for index in arange_others])
  *         #zipped = array([*zip(*[array([self.calculate_force((others[index].x, others[index].y), others[index].mass)]*2)*self.trig_put(self.calculate_direction((others[index].x, others[index].y))) for index in arange_others])])
  *         for index in arange_others:             # <<<<<<<<<<<<<<
@@ -3203,26 +3160,26 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     __pyx_t_2 = __pyx_v_arange_others; __Pyx_INCREF(__pyx_t_2); __pyx_t_8 = 0;
     __pyx_t_9 = NULL;
   } else {
-    __pyx_t_8 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_arange_others); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_8 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_arange_others); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_9 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 60, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_9)) {
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 60, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 60, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -3232,17 +3189,17 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 61, __pyx_L1_error)
+          else __PYX_ERR(0, 60, __pyx_L1_error)
         }
         break;
       }
       __Pyx_GOTREF(__pyx_t_1);
     }
-    __pyx_t_10 = __Pyx_PyInt_As_unsigned_int(__pyx_t_1); if (unlikely((__pyx_t_10 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyInt_As_unsigned_int(__pyx_t_1); if (unlikely((__pyx_t_10 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_index = __pyx_t_10;
 
-    /* "code/classes_cy.pyx":62
+    /* "code/classes_cy.pyx":61
  *         #zipped = array([*zip(*[array([self.calculate_force((others[index].x, others[index].y), others[index].mass)]*2)*self.trig_put(self.calculate_direction((others[index].x, others[index].y))) for index in arange_others])])
  *         for index in arange_others:
  *             to_atan = atan2(others[index].y-self.y, others[index].x-self.x)             # <<<<<<<<<<<<<<
@@ -3254,7 +3211,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     if (unlikely(__pyx_t_11 >= (size_t)__pyx_v_others.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 62, __pyx_L1_error)
+      __PYX_ERR(0, 61, __pyx_L1_error)
     }
     __pyx_t_1 = (PyObject *) *((struct __pyx_obj_4code_10classes_cy_particle * *) ( /* dim=0 */ (__pyx_v_others.data + __pyx_t_11 * __pyx_v_others.strides[0]) ));
     if (unlikely(__pyx_t_1 == NULL)) __pyx_t_1 = Py_None;
@@ -3264,7 +3221,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     if (unlikely(__pyx_t_11 >= (size_t)__pyx_v_others.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 62, __pyx_L1_error)
+      __PYX_ERR(0, 61, __pyx_L1_error)
     }
     __pyx_t_4 = (PyObject *) *((struct __pyx_obj_4code_10classes_cy_particle * *) ( /* dim=0 */ (__pyx_v_others.data + __pyx_t_11 * __pyx_v_others.strides[0]) ));
     if (unlikely(__pyx_t_4 == NULL)) __pyx_t_4 = Py_None;
@@ -3273,7 +3230,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     __Pyx_DECREF(((PyObject *)__pyx_t_1)); __pyx_t_1 = 0;
     __Pyx_DECREF(((PyObject *)__pyx_t_4)); __pyx_t_4 = 0;
 
-    /* "code/classes_cy.pyx":63
+    /* "code/classes_cy.pyx":62
  *         for index in arange_others:
  *             to_atan = atan2(others[index].y-self.y, others[index].x-self.x)
  *             temp_dir = self.calculate_direction((others[index].x, others[index].y), to_atan)             # <<<<<<<<<<<<<<
@@ -3285,7 +3242,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     if (unlikely(__pyx_t_11 >= (size_t)__pyx_v_others.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 63, __pyx_L1_error)
+      __PYX_ERR(0, 62, __pyx_L1_error)
     }
     __pyx_t_4 = (PyObject *) *((struct __pyx_obj_4code_10classes_cy_particle * *) ( /* dim=0 */ (__pyx_v_others.data + __pyx_t_11 * __pyx_v_others.strides[0]) ));
     if (unlikely(__pyx_t_4 == NULL)) __pyx_t_4 = Py_None;
@@ -3295,7 +3252,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     if (unlikely(__pyx_t_11 >= (size_t)__pyx_v_others.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 63, __pyx_L1_error)
+      __PYX_ERR(0, 62, __pyx_L1_error)
     }
     __pyx_t_1 = (PyObject *) *((struct __pyx_obj_4code_10classes_cy_particle * *) ( /* dim=0 */ (__pyx_v_others.data + __pyx_t_11 * __pyx_v_others.strides[0]) ));
     if (unlikely(__pyx_t_1 == NULL)) __pyx_t_1 = Py_None;
@@ -3304,10 +3261,10 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     __pyx_t_13.f1 = ((struct __pyx_obj_4code_10classes_cy_particle *)__pyx_t_1)->y;
     __Pyx_DECREF(((PyObject *)__pyx_t_4)); __pyx_t_4 = 0;
     __Pyx_DECREF(((PyObject *)__pyx_t_1)); __pyx_t_1 = 0;
-    __pyx_t_7 = __pyx_f_4code_10classes_cy_8particle_calculate_direction(__pyx_v_self, __pyx_t_13, __pyx_v_to_atan); if (unlikely(__pyx_t_7 == ((double)(-1.0)))) __PYX_ERR(0, 63, __pyx_L1_error)
+    __pyx_t_7 = __pyx_f_4code_10classes_cy_8particle_calculate_direction(__pyx_v_self, __pyx_t_13, __pyx_v_to_atan); if (unlikely(__pyx_t_7 == ((double)(-1.0)))) __PYX_ERR(0, 62, __pyx_L1_error)
     __pyx_v_temp_dir = __pyx_t_7;
 
-    /* "code/classes_cy.pyx":64
+    /* "code/classes_cy.pyx":63
  *             to_atan = atan2(others[index].y-self.y, others[index].x-self.x)
  *             temp_dir = self.calculate_direction((others[index].x, others[index].y), to_atan)
  *             temp_force = self.calculate_force((others[index].x, others[index].y), others[index].mass, to_atan)             # <<<<<<<<<<<<<<
@@ -3319,7 +3276,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     if (unlikely(__pyx_t_11 >= (size_t)__pyx_v_others.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 64, __pyx_L1_error)
+      __PYX_ERR(0, 63, __pyx_L1_error)
     }
     __pyx_t_1 = (PyObject *) *((struct __pyx_obj_4code_10classes_cy_particle * *) ( /* dim=0 */ (__pyx_v_others.data + __pyx_t_11 * __pyx_v_others.strides[0]) ));
     if (unlikely(__pyx_t_1 == NULL)) __pyx_t_1 = Py_None;
@@ -3329,7 +3286,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     if (unlikely(__pyx_t_11 >= (size_t)__pyx_v_others.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 64, __pyx_L1_error)
+      __PYX_ERR(0, 63, __pyx_L1_error)
     }
     __pyx_t_4 = (PyObject *) *((struct __pyx_obj_4code_10classes_cy_particle * *) ( /* dim=0 */ (__pyx_v_others.data + __pyx_t_11 * __pyx_v_others.strides[0]) ));
     if (unlikely(__pyx_t_4 == NULL)) __pyx_t_4 = Py_None;
@@ -3343,16 +3300,16 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     if (unlikely(__pyx_t_11 >= (size_t)__pyx_v_others.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 64, __pyx_L1_error)
+      __PYX_ERR(0, 63, __pyx_L1_error)
     }
     __pyx_t_4 = (PyObject *) *((struct __pyx_obj_4code_10classes_cy_particle * *) ( /* dim=0 */ (__pyx_v_others.data + __pyx_t_11 * __pyx_v_others.strides[0]) ));
     if (unlikely(__pyx_t_4 == NULL)) __pyx_t_4 = Py_None;
     __Pyx_INCREF((PyObject*)__pyx_t_4);
-    __pyx_t_7 = __pyx_f_4code_10classes_cy_8particle_calculate_force(__pyx_v_self, __pyx_t_13, ((struct __pyx_obj_4code_10classes_cy_particle *)__pyx_t_4)->mass, __pyx_v_to_atan); if (unlikely(__pyx_t_7 == ((double)(-1.0)))) __PYX_ERR(0, 64, __pyx_L1_error)
+    __pyx_t_7 = __pyx_f_4code_10classes_cy_8particle_calculate_force(__pyx_v_self, __pyx_t_13, ((struct __pyx_obj_4code_10classes_cy_particle *)__pyx_t_4)->mass, __pyx_v_to_atan); if (unlikely(__pyx_t_7 == ((double)(-1.0)))) __PYX_ERR(0, 63, __pyx_L1_error)
     __Pyx_DECREF(((PyObject *)__pyx_t_4)); __pyx_t_4 = 0;
     __pyx_v_temp_force = __pyx_t_7;
 
-    /* "code/classes_cy.pyx":65
+    /* "code/classes_cy.pyx":64
  *             temp_dir = self.calculate_direction((others[index].x, others[index].y), to_atan)
  *             temp_force = self.calculate_force((others[index].x, others[index].y), others[index].mass, to_atan)
  *             net_f_x += cos(temp_dir)*temp_force             # <<<<<<<<<<<<<<
@@ -3361,7 +3318,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
  */
     __pyx_v_net_f_x = (__pyx_v_net_f_x + (cos(__pyx_v_temp_dir) * __pyx_v_temp_force));
 
-    /* "code/classes_cy.pyx":66
+    /* "code/classes_cy.pyx":65
  *             temp_force = self.calculate_force((others[index].x, others[index].y), others[index].mass, to_atan)
  *             net_f_x += cos(temp_dir)*temp_force
  *             net_f_x += sin(temp_dir)*temp_force             # <<<<<<<<<<<<<<
@@ -3370,7 +3327,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
  */
     __pyx_v_net_f_x = (__pyx_v_net_f_x + (sin(__pyx_v_temp_dir) * __pyx_v_temp_force));
 
-    /* "code/classes_cy.pyx":61
+    /* "code/classes_cy.pyx":60
  *         #calculations = array([(self.calculate_direction((others[index].x, others[index].y)), self.calculate_force((others[index].x, others[index].y), others[index].mass)) for index in arange_others])
  *         #zipped = array([*zip(*[array([self.calculate_force((others[index].x, others[index].y), others[index].mass)]*2)*self.trig_put(self.calculate_direction((others[index].x, others[index].y))) for index in arange_others])])
  *         for index in arange_others:             # <<<<<<<<<<<<<<
@@ -3380,7 +3337,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "code/classes_cy.pyx":74
+  /* "code/classes_cy.pyx":73
  *         #net_f_y = ((sum(zipped[1])))
  * 
  *         net_force = (((net_f_x**2) + (net_f_y**2))*0.1)  # may have to perform **0.5 maybe?             # <<<<<<<<<<<<<<
@@ -3389,7 +3346,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
  */
   __pyx_v_net_force = ((pow(__pyx_v_net_f_x, 2.0) + pow(__pyx_v_net_f_y, 2.0)) * 0.1);
 
-  /* "code/classes_cy.pyx":88
+  /* "code/classes_cy.pyx":87
  *         # README: The commented out lines above are for determining velocity required to bypass pulls, if the energy of the system does not obey the laws of thermodynamics, fix HERE!
  * 
  *         self.direction = atan2(net_f_y, net_f_x)             # <<<<<<<<<<<<<<
@@ -3398,7 +3355,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
  */
   __pyx_v_self->direction = atan2(__pyx_v_net_f_y, __pyx_v_net_f_x);
 
-  /* "code/classes_cy.pyx":91
+  /* "code/classes_cy.pyx":90
  * 
  * 
  *         if self.force>0:self.force = (((net_force / (self.force))))             # <<<<<<<<<<<<<<
@@ -3411,7 +3368,7 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
     goto __pyx_L5;
   }
 
-  /* "code/classes_cy.pyx":92
+  /* "code/classes_cy.pyx":91
  * 
  *         if self.force>0:self.force = (((net_force / (self.force))))
  *         else:self.force = (net_force) # subtract required force here             # <<<<<<<<<<<<<<
@@ -3423,16 +3380,16 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
   }
   __pyx_L5:;
 
-  /* "code/classes_cy.pyx":93
+  /* "code/classes_cy.pyx":92
  *         if self.force>0:self.force = (((net_force / (self.force))))
  *         else:self.force = (net_force) # subtract required force here
  *         self.goto()             # <<<<<<<<<<<<<<
  *         return
  * 
  */
-  ((struct __pyx_vtabstruct_4code_10classes_cy_particle *)__pyx_v_self->__pyx_vtab)->__pyx_goto(__pyx_v_self, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_4code_10classes_cy_particle *)__pyx_v_self->__pyx_vtab)->__pyx_goto(__pyx_v_self, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L1_error)
 
-  /* "code/classes_cy.pyx":94
+  /* "code/classes_cy.pyx":93
  *         else:self.force = (net_force) # subtract required force here
  *         self.goto()
  *         return             # <<<<<<<<<<<<<<
@@ -3441,8 +3398,8 @@ void __pyx_f_4code_10classes_cy_8particle_move(struct __pyx_obj_4code_10classes_
  */
   goto __pyx_L0;
 
-  /* "code/classes_cy.pyx":49
- *         return (cos(direction), sin(direction))
+  /* "code/classes_cy.pyx":48
+ *     #    return (cos(direction), sin(direction))
  * 
  *     cpdef public void move(self, particle[:,] others) except *:             # <<<<<<<<<<<<<<
  *         '''Based on a dict (key is x and y, value is rate of bending in 3d dimension.), calculate direction to move to and speed at which to move. Returns direction (radians), force (newtons)'''
@@ -3474,7 +3431,7 @@ static PyObject *__pyx_pw_4code_10classes_cy_8particle_3move(PyObject *__pyx_v_s
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("move (wrapper)", 0);
   assert(__pyx_arg_others); {
-    __pyx_v_others = __Pyx_PyObject_to_MemoryviewSlice_ds_object(__pyx_arg_others, PyBUF_WRITABLE); if (unlikely(!__pyx_v_others.memview)) __PYX_ERR(0, 49, __pyx_L3_error)
+    __pyx_v_others = __Pyx_PyObject_to_MemoryviewSlice_ds_object(__pyx_arg_others, PyBUF_WRITABLE); if (unlikely(!__pyx_v_others.memview)) __PYX_ERR(0, 48, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3498,9 +3455,9 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_2move(struct __pyx_obj_4c
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("move", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_others.memview)) { __Pyx_RaiseUnboundLocalError("others"); __PYX_ERR(0, 49, __pyx_L1_error) }
-  __pyx_f_4code_10classes_cy_8particle_move(__pyx_v_self, __pyx_v_others, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 49, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
+  if (unlikely(!__pyx_v_others.memview)) { __Pyx_RaiseUnboundLocalError("others"); __PYX_ERR(0, 48, __pyx_L1_error) }
+  __pyx_f_4code_10classes_cy_8particle_move(__pyx_v_self, __pyx_v_others, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3518,7 +3475,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_2move(struct __pyx_obj_4c
   return __pyx_r;
 }
 
-/* "code/classes_cy.pyx":97
+/* "code/classes_cy.pyx":96
  * 
  * 
  *     cpdef public void goto(self) except *:             # <<<<<<<<<<<<<<
@@ -3552,7 +3509,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_goto); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_goto); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_4code_10classes_cy_8particle_5goto)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -3568,7 +3525,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 96, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3588,7 +3545,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
     #endif
   }
 
-  /* "code/classes_cy.pyx":102
+  /* "code/classes_cy.pyx":101
  *         cdef double move_x
  *         cdef double move_y
  *         far = self.direction*constants.RADIAN_DIV             # <<<<<<<<<<<<<<
@@ -3597,7 +3554,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
  */
   __pyx_v_far = (__pyx_v_self->direction * __pyx_v_4code_12constants_cy_RADIAN_DIV);
 
-  /* "code/classes_cy.pyx":103
+  /* "code/classes_cy.pyx":102
  *         cdef double move_y
  *         far = self.direction*constants.RADIAN_DIV
  *         if constants.DISSIPATE:self.force = self.force-((self.force*0.001 if not(self.force==np.nan or self.force==0) else 0))  # attempted reality :(             # <<<<<<<<<<<<<<
@@ -3606,17 +3563,17 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
  */
   __pyx_t_5 = (__pyx_v_4code_12constants_cy_DISSIPATE != 0);
   if (__pyx_t_5) {
-    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->force); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->force); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_nan); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_nan); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 102, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 102, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (!__pyx_t_7) {
     } else {
@@ -3634,7 +3591,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
     __pyx_v_self->force = (__pyx_v_self->force - __pyx_t_6);
   }
 
-  /* "code/classes_cy.pyx":104
+  /* "code/classes_cy.pyx":103
  *         far = self.direction*constants.RADIAN_DIV
  *         if constants.DISSIPATE:self.force = self.force-((self.force*0.001 if not(self.force==np.nan or self.force==0) else 0))  # attempted reality :(
  *         move_x = (cos(far,))             # <<<<<<<<<<<<<<
@@ -3643,7 +3600,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
  */
   __pyx_v_move_x = cos(__pyx_v_far);
 
-  /* "code/classes_cy.pyx":105
+  /* "code/classes_cy.pyx":104
  *         if constants.DISSIPATE:self.force = self.force-((self.force*0.001 if not(self.force==np.nan or self.force==0) else 0))  # attempted reality :(
  *         move_x = (cos(far,))
  *         move_y = (sin(far,))             # <<<<<<<<<<<<<<
@@ -3652,7 +3609,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
  */
   __pyx_v_move_y = sin(__pyx_v_far);
 
-  /* "code/classes_cy.pyx":106
+  /* "code/classes_cy.pyx":105
  *         move_x = (cos(far,))
  *         move_y = (sin(far,))
  *         self.x += move_x             # <<<<<<<<<<<<<<
@@ -3661,7 +3618,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
  */
   __pyx_v_self->x = (__pyx_v_self->x + __pyx_v_move_x);
 
-  /* "code/classes_cy.pyx":107
+  /* "code/classes_cy.pyx":106
  *         move_y = (sin(far,))
  *         self.x += move_x
  *         self.y += move_y             # <<<<<<<<<<<<<<
@@ -3670,7 +3627,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
  */
   __pyx_v_self->y = (__pyx_v_self->y + __pyx_v_move_y);
 
-  /* "code/classes_cy.pyx":108
+  /* "code/classes_cy.pyx":107
  *         self.x += move_x
  *         self.y += move_y
  *         if self.x >= constants.X_SUB:             # <<<<<<<<<<<<<<
@@ -3680,7 +3637,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
   __pyx_t_5 = ((__pyx_v_self->x >= __pyx_v_4code_12constants_cy_X_SUB) != 0);
   if (__pyx_t_5) {
 
-    /* "code/classes_cy.pyx":109
+    /* "code/classes_cy.pyx":108
  *         self.y += move_y
  *         if self.x >= constants.X_SUB:
  *             self.x = -constants.X_SUB             # <<<<<<<<<<<<<<
@@ -3689,7 +3646,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
  */
     __pyx_v_self->x = (-__pyx_v_4code_12constants_cy_X_SUB);
 
-    /* "code/classes_cy.pyx":108
+    /* "code/classes_cy.pyx":107
  *         self.x += move_x
  *         self.y += move_y
  *         if self.x >= constants.X_SUB:             # <<<<<<<<<<<<<<
@@ -3699,7 +3656,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
     goto __pyx_L6;
   }
 
-  /* "code/classes_cy.pyx":110
+  /* "code/classes_cy.pyx":109
  *         if self.x >= constants.X_SUB:
  *             self.x = -constants.X_SUB
  *         elif self.x <= -constants.X_SUB:             # <<<<<<<<<<<<<<
@@ -3709,7 +3666,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
   __pyx_t_5 = ((__pyx_v_self->x <= (-__pyx_v_4code_12constants_cy_X_SUB)) != 0);
   if (__pyx_t_5) {
 
-    /* "code/classes_cy.pyx":111
+    /* "code/classes_cy.pyx":110
  *             self.x = -constants.X_SUB
  *         elif self.x <= -constants.X_SUB:
  *             self.x = constants.X_SUB             # <<<<<<<<<<<<<<
@@ -3718,7 +3675,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
  */
     __pyx_v_self->x = __pyx_v_4code_12constants_cy_X_SUB;
 
-    /* "code/classes_cy.pyx":110
+    /* "code/classes_cy.pyx":109
  *         if self.x >= constants.X_SUB:
  *             self.x = -constants.X_SUB
  *         elif self.x <= -constants.X_SUB:             # <<<<<<<<<<<<<<
@@ -3728,7 +3685,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
   }
   __pyx_L6:;
 
-  /* "code/classes_cy.pyx":112
+  /* "code/classes_cy.pyx":111
  *         elif self.x <= -constants.X_SUB:
  *             self.x = constants.X_SUB
  *         if self.y >= constants.Y_SUB:             # <<<<<<<<<<<<<<
@@ -3738,7 +3695,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
   __pyx_t_5 = ((__pyx_v_self->y >= __pyx_v_4code_12constants_cy_Y_SUB) != 0);
   if (__pyx_t_5) {
 
-    /* "code/classes_cy.pyx":113
+    /* "code/classes_cy.pyx":112
  *             self.x = constants.X_SUB
  *         if self.y >= constants.Y_SUB:
  *             self.y = -constants.Y_SUB             # <<<<<<<<<<<<<<
@@ -3747,7 +3704,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
  */
     __pyx_v_self->y = (-__pyx_v_4code_12constants_cy_Y_SUB);
 
-    /* "code/classes_cy.pyx":112
+    /* "code/classes_cy.pyx":111
  *         elif self.x <= -constants.X_SUB:
  *             self.x = constants.X_SUB
  *         if self.y >= constants.Y_SUB:             # <<<<<<<<<<<<<<
@@ -3757,7 +3714,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
     goto __pyx_L7;
   }
 
-  /* "code/classes_cy.pyx":114
+  /* "code/classes_cy.pyx":113
  *         if self.y >= constants.Y_SUB:
  *             self.y = -constants.Y_SUB
  *         elif self.y <= -constants.Y_SUB:             # <<<<<<<<<<<<<<
@@ -3767,7 +3724,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
   __pyx_t_5 = ((__pyx_v_self->y <= (-__pyx_v_4code_12constants_cy_Y_SUB)) != 0);
   if (__pyx_t_5) {
 
-    /* "code/classes_cy.pyx":115
+    /* "code/classes_cy.pyx":114
  *             self.y = -constants.Y_SUB
  *         elif self.y <= -constants.Y_SUB:
  *             self.y = constants.Y_SUB             # <<<<<<<<<<<<<<
@@ -3776,7 +3733,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
  */
     __pyx_v_self->y = __pyx_v_4code_12constants_cy_Y_SUB;
 
-    /* "code/classes_cy.pyx":114
+    /* "code/classes_cy.pyx":113
  *         if self.y >= constants.Y_SUB:
  *             self.y = -constants.Y_SUB
  *         elif self.y <= -constants.Y_SUB:             # <<<<<<<<<<<<<<
@@ -3786,7 +3743,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
   }
   __pyx_L7:;
 
-  /* "code/classes_cy.pyx":116
+  /* "code/classes_cy.pyx":115
  *         elif self.y <= -constants.Y_SUB:
  *             self.y = constants.Y_SUB
  *         return             # <<<<<<<<<<<<<<
@@ -3795,7 +3752,7 @@ void __pyx_f_4code_10classes_cy_8particle_goto(struct __pyx_obj_4code_10classes_
  */
   goto __pyx_L0;
 
-  /* "code/classes_cy.pyx":97
+  /* "code/classes_cy.pyx":96
  * 
  * 
  *     cpdef public void goto(self) except *:             # <<<<<<<<<<<<<<
@@ -3837,8 +3794,8 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_4goto(struct __pyx_obj_4c
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("goto", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_4code_10classes_cy_8particle_goto(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_f_4code_10classes_cy_8particle_goto(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3855,7 +3812,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_4goto(struct __pyx_obj_4c
   return __pyx_r;
 }
 
-/* "code/classes_cy.pyx":119
+/* "code/classes_cy.pyx":118
  * 
  * 
  *     def __eq__(self, object __value ):             # <<<<<<<<<<<<<<
@@ -3891,7 +3848,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_6__eq__(struct __pyx_obj_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__eq__", 0);
 
-  /* "code/classes_cy.pyx":120
+  /* "code/classes_cy.pyx":119
  * 
  *     def __eq__(self, object __value ):
  *         return (self.force, self.x, self.y, self.mass, self.direction) == (__value.force, __value.x, __value.y, __value.mass, __value.direction)             # <<<<<<<<<<<<<<
@@ -3899,17 +3856,17 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_6__eq__(struct __pyx_obj_
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->force); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->force); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->x); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->x); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_self->y); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_self->y); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->mass); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->mass); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_self->direction); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_self->direction); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyTuple_New(5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
@@ -3926,17 +3883,17 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_6__eq__(struct __pyx_obj_
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
   __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v___value, __pyx_n_s_force); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v___value, __pyx_n_s_force); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v___value, __pyx_n_s_x); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v___value, __pyx_n_s_x); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v___value, __pyx_n_s_y); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v___value, __pyx_n_s_y); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v___value, __pyx_n_s_mass); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v___value, __pyx_n_s_mass); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v___value, __pyx_n_s_direction); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v___value, __pyx_n_s_direction); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = PyTuple_New(5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_5);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5);
@@ -3953,14 +3910,14 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_6__eq__(struct __pyx_obj_
   __pyx_t_3 = 0;
   __pyx_t_2 = 0;
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_RichCompare(__pyx_t_6, __pyx_t_7, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_t_6, __pyx_t_7, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "code/classes_cy.pyx":119
+  /* "code/classes_cy.pyx":118
  * 
  * 
  *     def __eq__(self, object __value ):             # <<<<<<<<<<<<<<
@@ -3985,7 +3942,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_6__eq__(struct __pyx_obj_
   return __pyx_r;
 }
 
-/* "code/classes_cy.pyx":123
+/* "code/classes_cy.pyx":122
  * 
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -4021,24 +3978,24 @@ static Py_hash_t __pyx_pf_4code_10classes_cy_8particle_8__hash__(struct __pyx_ob
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__hash__", 0);
 
-  /* "code/classes_cy.pyx":124
+  /* "code/classes_cy.pyx":123
  * 
  *     def __hash__(self):
  *         return hash((self.force, self.x, self.y, self.mass, self.direction))             # <<<<<<<<<<<<<<
  * 
  *     def __reduce__(self):
  */
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->force); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->force); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->x); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->x); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_self->y); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_self->y); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->mass); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->mass); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_self->direction); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_self->direction); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyTuple_New(5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
@@ -4055,12 +4012,12 @@ static Py_hash_t __pyx_pf_4code_10classes_cy_8particle_8__hash__(struct __pyx_ob
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
   __pyx_t_5 = 0;
-  __pyx_t_7 = PyObject_Hash(__pyx_t_6); if (unlikely(__pyx_t_7 == ((Py_hash_t)-1))) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_7 = PyObject_Hash(__pyx_t_6); if (unlikely(__pyx_t_7 == ((Py_hash_t)-1))) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_r = __pyx_t_7;
   goto __pyx_L0;
 
-  /* "code/classes_cy.pyx":123
+  /* "code/classes_cy.pyx":122
  * 
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -4084,7 +4041,7 @@ static Py_hash_t __pyx_pf_4code_10classes_cy_8particle_8__hash__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "code/classes_cy.pyx":126
+/* "code/classes_cy.pyx":125
  *         return hash((self.force, self.x, self.y, self.mass, self.direction))
  * 
  *     def __reduce__(self):             # <<<<<<<<<<<<<<
@@ -4118,26 +4075,26 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_10__reduce__(struct __pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__reduce__", 0);
 
-  /* "code/classes_cy.pyx":127
+  /* "code/classes_cy.pyx":126
  * 
  *     def __reduce__(self):
  *         return (self.__class__.__new__, (self.mass, self.x, self.y, self.force))             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->mass); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->mass); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_self->x); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_self->x); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_self->y); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_self->y); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_self->force); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_5 = PyFloat_FromDouble(__pyx_v_self->force); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyTuple_New(4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
@@ -4151,7 +4108,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_10__reduce__(struct __pyx
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
   __pyx_t_5 = 0;
-  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_2);
@@ -4163,7 +4120,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_10__reduce__(struct __pyx
   __pyx_t_5 = 0;
   goto __pyx_L0;
 
-  /* "code/classes_cy.pyx":126
+  /* "code/classes_cy.pyx":125
  *         return hash((self.force, self.x, self.y, self.mass, self.direction))
  * 
  *     def __reduce__(self):             # <<<<<<<<<<<<<<
@@ -4186,7 +4143,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_10__reduce__(struct __pyx
   return __pyx_r;
 }
 
-/* "code/classes_cy.pyx":24
+/* "code/classes_cy.pyx":23
  * cdef class particle:
  *     '''Represents a single particle, can be moved through higher dimensions.'''
  *     cdef public double x, direction, y, force             # <<<<<<<<<<<<<<
@@ -4216,7 +4173,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_1x___get__(struct __pyx_o
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->x); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->x); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4254,7 +4211,7 @@ static int __pyx_pf_4code_10classes_cy_8particle_1x_2__set__(struct __pyx_obj_4c
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __pyx_PyFloat_AsDouble(__pyx_v_value); if (unlikely((__pyx_t_1 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_1 = __pyx_PyFloat_AsDouble(__pyx_v_value); if (unlikely((__pyx_t_1 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L1_error)
   __pyx_v_self->x = __pyx_t_1;
 
   /* function exit code */
@@ -4290,7 +4247,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_9direction___get__(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->direction); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->direction); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4328,7 +4285,7 @@ static int __pyx_pf_4code_10classes_cy_8particle_9direction_2__set__(struct __py
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __pyx_PyFloat_AsDouble(__pyx_v_value); if (unlikely((__pyx_t_1 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_1 = __pyx_PyFloat_AsDouble(__pyx_v_value); if (unlikely((__pyx_t_1 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L1_error)
   __pyx_v_self->direction = __pyx_t_1;
 
   /* function exit code */
@@ -4364,7 +4321,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_1y___get__(struct __pyx_o
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->y); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->y); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4402,7 +4359,7 @@ static int __pyx_pf_4code_10classes_cy_8particle_1y_2__set__(struct __pyx_obj_4c
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __pyx_PyFloat_AsDouble(__pyx_v_value); if (unlikely((__pyx_t_1 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_1 = __pyx_PyFloat_AsDouble(__pyx_v_value); if (unlikely((__pyx_t_1 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L1_error)
   __pyx_v_self->y = __pyx_t_1;
 
   /* function exit code */
@@ -4438,7 +4395,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_5force___get__(struct __p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->force); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->force); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4476,7 +4433,7 @@ static int __pyx_pf_4code_10classes_cy_8particle_5force_2__set__(struct __pyx_ob
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __pyx_PyFloat_AsDouble(__pyx_v_value); if (unlikely((__pyx_t_1 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_1 = __pyx_PyFloat_AsDouble(__pyx_v_value); if (unlikely((__pyx_t_1 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L1_error)
   __pyx_v_self->force = __pyx_t_1;
 
   /* function exit code */
@@ -4490,7 +4447,7 @@ static int __pyx_pf_4code_10classes_cy_8particle_5force_2__set__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "code/classes_cy.pyx":25
+/* "code/classes_cy.pyx":24
  *     '''Represents a single particle, can be moved through higher dimensions.'''
  *     cdef public double x, direction, y, force
  *     cdef public unsigned int mass             # <<<<<<<<<<<<<<
@@ -4520,7 +4477,7 @@ static PyObject *__pyx_pf_4code_10classes_cy_8particle_4mass___get__(struct __py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->mass); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->mass); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4558,7 +4515,7 @@ static int __pyx_pf_4code_10classes_cy_8particle_4mass_2__set__(struct __pyx_obj
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __Pyx_PyInt_As_unsigned_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_unsigned_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L1_error)
   __pyx_v_self->mass = __pyx_t_1;
 
   /* function exit code */
@@ -19717,7 +19674,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 57, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 944, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(2, 134, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(2, 149, __pyx_L1_error)
@@ -20083,18 +20040,17 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtabptr_4code_10classes_cy_particle = &__pyx_vtable_4code_10classes_cy_particle;
   __pyx_vtable_4code_10classes_cy_particle.calculate_force = (double (*)(struct __pyx_obj_4code_10classes_cy_particle *, __pyx_ctuple_double__and_double, unsigned int, double))__pyx_f_4code_10classes_cy_8particle_calculate_force;
   __pyx_vtable_4code_10classes_cy_particle.calculate_direction = (double (*)(struct __pyx_obj_4code_10classes_cy_particle *, __pyx_ctuple_double__and_double, double))__pyx_f_4code_10classes_cy_8particle_calculate_direction;
-  __pyx_vtable_4code_10classes_cy_particle.trig_put = (__pyx_ctuple_double__and_double (*)(struct __pyx_obj_4code_10classes_cy_particle *, double))__pyx_f_4code_10classes_cy_8particle_trig_put;
   __pyx_vtable_4code_10classes_cy_particle.move = (void (*)(struct __pyx_obj_4code_10classes_cy_particle *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_4code_10classes_cy_8particle_move;
   __pyx_vtable_4code_10classes_cy_particle.__pyx_goto = (void (*)(struct __pyx_obj_4code_10classes_cy_particle *, int __pyx_skip_dispatch))__pyx_f_4code_10classes_cy_8particle_goto;
-  if (PyType_Ready(&__pyx_type_4code_10classes_cy_particle) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_4code_10classes_cy_particle) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_4code_10classes_cy_particle.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_4code_10classes_cy_particle.tp_dictoffset && __pyx_type_4code_10classes_cy_particle.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_4code_10classes_cy_particle.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_4code_10classes_cy_particle.tp_dict, __pyx_vtabptr_4code_10classes_cy_particle) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_particle, (PyObject *)&__pyx_type_4code_10classes_cy_particle) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_4code_10classes_cy_particle.tp_dict, __pyx_vtabptr_4code_10classes_cy_particle) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_particle, (PyObject *)&__pyx_type_4code_10classes_cy_particle) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
   __pyx_ptype_4code_10classes_cy_particle = &__pyx_type_4code_10classes_cy_particle;
   __pyx_vtabptr_array = &__pyx_vtable_array;
   __pyx_vtable_array.get_memview = (PyObject *(*)(struct __pyx_array_obj *))__pyx_array_get_memview;
@@ -20521,7 +20477,7 @@ if (!__Pyx_RefNanny) {
  * from libc.math cimport sin, cos, atan2, fabs
  * np.ALLOW_THREADS = True             # <<<<<<<<<<<<<<
  * 
- * @cython.auto_pickle(True)
+ * cdef class particle:
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);

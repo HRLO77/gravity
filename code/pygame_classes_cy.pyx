@@ -18,7 +18,6 @@ cimport numpy as npc
 cimport cython
 np.ALLOW_THREADS = True
 
-@cython.auto_pickle(True)
 @cython.freelist(8192)
 cdef class handler:
     '''A class wrapper to handle multiple pygame classes.particles, wrapping particles.'''
@@ -35,7 +34,7 @@ cdef class handler:
         #cdef object[:,] array
         for index in range(length):
             #array = np.delete(self.particles, index)
-            self.particles[index].move(np.append(self.particles[:index], self.particles[index+1:]))  # perform calculations and move accordingly
+            self.particles[index].move(np.delete(self.particles, index))  # perform calculations and move accordingly
         
     def __eq__(self, __value):
         return __value.particles == self.particles
