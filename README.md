@@ -39,3 +39,7 @@ Same with cython, cython files are in ./code/cython_code/ . If you need to compi
 run `py test.py` to start the computing. When ctrl+c is pressed, computing is stopped and the particles collected are dumped in-order in `data.pickle`
 
 Again, your job to figure out how to render them.
+
+the cython code is very efficient, producing 1 frame every ~0.102860545 seconds, which is about 3 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles)
+
+Enjoy!
