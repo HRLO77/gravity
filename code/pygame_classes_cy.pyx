@@ -3,13 +3,12 @@
 # cython: infer_types=True
 # cython: wrap_around=False
 # cython: bounds_check=False
-# cython: c_division=True
+# cython: cdivision=True
 # cython: overflow_check=False
 # cython: none_check=False
 # cython: initialized_check=False
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
-# cython: profile=True
-# cython: linetrace=True
+
 import math
 import numpy as np
 from numpy import array

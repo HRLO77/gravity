@@ -3,7 +3,7 @@
 # cython: infer_types=True
 # cython: wrap_around=False
 # cython: bounds_check=False
-# cython: c_division=True
+# cython: cdivision=True
 # cython: overflow_check=False
 # cython: none_check=False
 # cython: initialized_check=False
