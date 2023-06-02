@@ -28,7 +28,8 @@ cdef unsigned int run():
     cdef int[:,:,] np_data = array([(randint(1_000, 10_000), randint(-700, 700), randint(-700, 700), 1) for i in range(constants.BODIES)])
     cdef object handler = pygame_classes.handler.__new__(pygame_classes.handler, np_data)
     cdef object[::1,:,] particles = np.zeros((2000000, 1), dtype=object)  # if movement does not occur, thats because this is a single memory view, copy instead
-    particles = array([handler.particles])
+    cdef npc.ndarray[object, ndim=2] push
+    particles = array([handler.particles.copy()])
     cdef unsigned long long int c = 0
     with open('data.pickle', 'wb') as file:
         pickle.dump(None, file)
@@ -38,21 +39,21 @@ cdef unsigned int run():
             while 1:
                 c+=1
                 handler.move_timestep()
-                particles = append(particles, [handler.particles], axis=1)
+                particles = append(particles, [handler.particles.copy()], axis=1)
                 with nogil:
                     printf("%I64u\r", c)
         else:
             while 1:
                 handler.move_timestep()
-                particles = append(particles, [handler.particles], axis=1)
-        
+                particles = append(particles, [handler.particles.copy()], axis=1)
     except BaseException as e:
-        print(f'Error: {e}')
+        print(f'\n\nError: {e}')
     end = <double>(time.perf_counter())
-    print(f'Time: {end-begin}')
-    printf('Dumping data...')
+    print(f'\nTime: {end-begin}\n')
+    printf('\nDumping data...')
     with open('data.pickle', 'wb') as file:
-        pickle.dump(list(particles), file)
-    printf('Done!')
-    return <unsigned int>len(particles)
+        push = np.copy(particles).reshape((particles.shape[1]/constants.BODIES, constants.BODIES))
+        pickle.dump(push, file)
+    printf('\nDone!\n')
+    return <unsigned int>len(push)
 globals()['particles'] = run()

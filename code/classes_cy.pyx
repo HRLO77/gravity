@@ -123,4 +123,4 @@ cdef class particle:
         return hash((self.force, self.x, self.y, self.mass, self.direction))
 
     def __reduce__(self):
-        return (self.__class__.__new__, (self.mass, self.x, self.y, self.force))
+        return (self.__class__.__new__, (self.__class__, self.mass, self.x, self.y, self.force))
