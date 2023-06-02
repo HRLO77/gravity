@@ -34,7 +34,7 @@ I have an unzipped pypy folder because i could not figure out how to install it.
 
 # cython
 
-Same with cython, cython files are in ./code/cython_code/ . If you need to compile them again, run `py cyth.py build_ext --inplace` 
+Same with cython, cython files are in ./code/ . If you need to compile them again, run `py cyth.py build_ext --inplace` in `/`
 
 run `py test.py` to start the computing. When ctrl+c is pressed, computing is stopped and the particles collected are dumped in-order in `data.pickle`
 
