@@ -4,7 +4,6 @@
 import math, pygame
 import cython
 import numpy as np
-from . cimport classes_cy as classes
 cimport numpy as np
 np.ALLOW_THREADS = True
 

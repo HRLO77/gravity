@@ -2,8 +2,14 @@ from setuptools import setup, Extension
 import setuptools
 from Cython.Build import cythonize
 import numpy
-include = [numpy.get_include(), 'code',]
+include = [numpy.get_include(), 'code']
 pk=[*setuptools.find_packages('code'), 'code']
+
+setup(
+    ext_modules=cythonize([Extension("code.__init__", sources=["code/__init__.py"], include_dirs=include)], nthreads=12, compiler_directives={'language_level' : "3"}),
+    zip_safe=False, include_dirs=include, packages=pk
+)
+
 setup(
     ext_modules=cythonize([Extension("code.constants_cy", sources=["code/constants_cy.pyx"], include_dirs=include)], nthreads=12, compiler_directives={'language_level' : "3"}),
     zip_safe=False, include_dirs=include, packages=pk
@@ -20,6 +26,6 @@ setup(
 )
 
 setup(
-    ext_modules=cythonize([Extension("code.run", sources=["code/run.pyx"], include_dirs=include)], nthreads=12, compiler_directives={'language_level' : "3"}, annotate=True),
+    ext_modules=cythonize([Extension("code.run", sources=["code/run.pyx"], include_dirs=include)], nthreads=12, compiler_directives={'language_level' : "3"}),
     zip_safe=False, include_dirs=include, packages=pk
 )
