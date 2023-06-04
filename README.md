@@ -3,10 +3,12 @@ this was a project i made for fun
 this simulate interactions between N bodies through gravity
 
 I really dont have the energy to explain all this extremely badly written code and math systems
+
+
 # requirements
 install by `py -m pip install -r requirements.txt` and `py -m pip install setuptools -U`
 
-What you need to know is on line #59 in `./code/python_code/test.py` (which is what you should probably run)
+What you need to know is on line #53 in `./code/python_code/test.py` (which is what you should probably run)
 
 contains everything you want
 
@@ -34,12 +36,18 @@ I have an unzipped pypy folder because i could not figure out how to install it.
 
 # cython
 
-Same with cython, cython files are in ./code/ . If you need to compile them again, run `py cyth.py build_ext --inplace` in `/`
+This is the most recommended way to calculate particle before rendering, pypy is fast, but not nearly as fast as this.
+
+Cython files are in `./code/` . If you need to compile them again, run `py cyth.py build_ext --inplace` in `/`
 
 run `py test.py` to start the computing. When ctrl+c is pressed, computing is stopped and the particles collected are dumped in-order in `data.pickle`
 
 Again, your job to figure out how to render them.
 
-the cython code is very efficient, producing 1 frame every ~0.102860545 seconds, which is about 3 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles) and computing with direct-sum (highest accuracy)
+the cython code is very efficient, producing 1 frame every ~0.0446153846 seconds, which is about 1.3 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles) and computing with direct-sum (highest accuracy)
+
+Another thing to note is that for some reason, regularly compiling `run.pyx` might not return the header file, and run.c will return errors on vtables. So keep `run.h`, `run.c` and `constants_cy.h` in `./code/` so you can compile them yourself!
+
+`load.py` Loads the serialized data from `data.pickle`
 
 Enjoy!

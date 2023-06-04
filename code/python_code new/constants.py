@@ -21,10 +21,10 @@ ORIGIN = (X-X_SUB, Y-Y_SUB)
 G = 6.67430*10e-11  # gravitational constant
 SOFTEN = 10e-20  # the softening factor
 # with open('pi.txt') as f:
-RADIAN_DIV = 180/math.pi
+RADIAN_DIV = np.pi/180
 SIZE = 5
 FACTOR=float(input("Enter factor: "))
 TOTAL_SYSTEM_ENERGY = 1000
 BODIES = int(input("Enter bodies: "))
 DISSIPATE = bool(int(input('Enter dissipation: ')))
-DIRECT = bool(int(ínput("Direct-sum?: ")))
+DIRECT = bool(int(input("Direct-sum?: ")))

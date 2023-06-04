@@ -33,11 +33,11 @@ class unit:
         if isinstance(other, self.__class__):
             t = np.arctan2(self.y-other.y, self.x-other.x)
             # slope = math.tan(t)
-            return t/constants.RADIAN_DIV
+            return t*constants.RADIAN_DIV
         else:
             t = np.arctan2((position[1])-self.y, (position[0])-self.x)
             # slope = math.tan(t)
-            return t/constants.RADIAN_DIV
+            return t*constants.RADIAN_DIV
     
 class particle:
     '''Represents a single particle, can be moved through higher dimensions.'''
@@ -52,6 +52,8 @@ class particle:
       
     def calculate_force(self, other=None, weight: float | None=None, position=None):
         '''Calculates the force of attraction (in newtons) between this particle and another body (particle, unit of space, or position and weight) in a higher dimension.'''
+        f = position[0]**2+position[1]**2
+        return (constants.G*self.mass*weight)/(f if f > 0 else 1+(constants.SOFTEN))  # if (self.f) > 0 else (constants.G*self.mass*weight)/1+(constants.SOFTEN)
         assert isinstance(other, self.__class__) or isinstance(other, unit) or other==None, "Must be comparing to another particle of a unit in space."
         if isinstance(other, self.__class__):
             f = (math.dist((other.x, self.y), (other.x, self.y)))
@@ -65,27 +67,27 @@ class particle:
             return (constants.G*self.mass*weight)/1+(1*constants.SOFTEN)
         
       
-    def calculate_direction(self, other=None, position=None, angle=None):
+    def calculate_direction(self, position=None, angle=None):
         '''Calculates the direction (slope and radians) to another particle, unit of space or position in space.'''
-        return (1/)
-        assert isinstance(other, self.__class__) or isinstance(other, unit) or other==None, "Must be comparing to another particle of a unit in space."
-        assert isinstance(position, tuple) or position==None
-        if isinstance(other, self.__class__):
-            t = np.arctan2(self.y-other.y, self.x-other.x)
+        #return abs((1/np.sin(angle))*position[0]-self.x)
+        #assert isinstance(other, self.__class__) or isinstance(other, unit) or other==None, "Must be comparing to another particle of a unit in space."
+        #assert isinstance(position, tuple) or position==None
+        #if isinstance(other, self.__class__):
+        #    t = np.arctan2(self.y-other.y, self.x-other.x)
+        #    # slope = math.tan(t)
+        #    return t/constants.RADIAN_DIV
+        #else:
+        t = np.arctan2((position[1])-self.y, (position[0])-self.x)
             # slope = math.tan(t)
-            return t/constants.RADIAN_DIV
-        else:
-            t = np.arctan2((position[1])-self.y, (position[0])-self.x)
-            # slope = math.tan(t)
-            return t/constants.RADIAN_DIV
+        return t*constants.RADIAN_DIV
         
       
     def move(self, others:  list | tuple, factor_to_move: float | int | np.dtype=1):
         '''Based on a dict (key is x and y, value is rate of bending in 3d dimension.), calculate direction to move to and speed at which to move. Returns direction (radians), force (newtons)'''
-        if type(others)==dict:
-            calculations = sorted(((self.calculate_direction(position=p), self.calculate_force(position=p, weight=w))) for p, w in others.items())  # calculate directions to face to, and the force of attraction
-        else:
-            calculations = sorted(((self.calculate_direction(position=(p.x, p.y))), self.calculate_force(position=(p.x, p.y), weight=p.mass)) for p in others)
+        #if type(others)==dict:
+        #    calculations = sorted(((self.calculate_direction(position=p), self.calculate_force(position=p, weight=w))) for p, w in others.items())  # calculate directions to face to, and the force of attraction
+        #else:
+        #    calculations = sorted(((self.calculate_direction(position=(p.x, p.y))), self.calculate_force(position=(p.x, p.y), weight=p.mass)) for p in others)
         # if type(others)==dict:
         #     calculations = sorted([(self.calculate_direction(position=p), self.calculate_force(position=p, weight=w))] for p, w in others.items())  # calculate directions to face to, and the force of attraction
         # else:
@@ -93,29 +95,36 @@ class particle:
         #     Fx, Fy = zip(*[(part.force*np.cos(part.direction, dtype=float), part.force*np.sin(part.direction, dtype=float)) for part in others])
         # print(Fx, Fy, [(part.force*np.cos(part.direction), part.force*np.sin(part.direction)) for part in others])
         # exit()
-        a = []
+        net_f_x, net_f_y = (0, 0)
         # max_d, max_f = calculations[0]
         
         f = self.force
-        for index in range(len(others)):
-            to_atan = np.arctan2(others[index].y-self.y, others[index].x-self.x)
-            temp_dir = self.calculate_direction((others[index].x, others[index].y), to_atan)
-            temp_force = self.calculate_force((others[index].x, others[index].y), others[index].mass, to_atan)
-            net_f_x += np.cos(temp_dir)*temp_force
-            net_f_x += np.sin(temp_dir)*temp_force
-        Fx, Fy = zip(*((f*np.cos(p),f*np.sin(p)) for p, f in calculations))
-        net_f_x = ((np.sum(Fx)))
-        net_f_y = ((np.sum(Fy,)))
-        net_force = (((net_f_x**2) + (net_f_y**2))**0.5)
+        top = type(others[0]) == self.__class__
+        if top:
+            for index in range(len(others)):
+                temp_dir = self.calculate_direction(position=(others[index].x, others[index].y))
+                temp_force = self.calculate_force(position=(others[index].x, others[index].y), weight=others[index].mass)
+                net_f_x += np.cos(temp_dir)*temp_force
+                net_f_y += np.sin(temp_dir)*temp_force
+        else:
+            for index in range(len(others)):
+                temp_dir = self.calculate_direction(position=(others[index].particle.x, others[index].particle.y))
+                temp_force = self.calculate_force(position=(others[index].particle.x, others[index].particle.y), weight=others[index].particle.mass)
+                net_f_x += np.cos(temp_dir)*temp_force
+                net_f_y += np.sin(temp_dir)*temp_force
+        #Fx, Fy = zip(*((f*np.cos(p),f*np.sin(p)) for p, f in calculations))
+        #net_f_x = ((np.sum(Fx)))
+        #net_f_y = ((np.sum(Fy,)))
+        net_force = (((net_f_x**2) + (net_f_y**2))*0.5)
         # print(net_force, 'net')
-        vx_current = self.force * np.cos(self.direction,)
-        vy_current = self.force * np.sin(self.direction,)
-        vx_net = -vx_current + (net_f_x / self.mass)
-        vy_net = -vy_current + (net_f_y / self.mass)
+        #vx_current = self.force * np.cos(self.direction,)
+        #vy_current = self.force * np.sin(self.direction,)
+        #vx_net = -vx_current + (net_f_x / self.mass)
+        #vy_net = -vy_current + (net_f_y / self.mass)
         # vx_required = ((vx_current**2)+(vy_current**2))**0.5
-        f_required_x = self.mass*vx_net
-        f_required_y = self.mass*vy_net
-        force_required = ((f_required_x**2)+(f_required_y**2))**0.5
+        #f_required_x = self.mass*vx_net
+        #f_required_y = self.mass*vy_net
+        #force_required = ((f_required_x**2)+(f_required_y**2))**0.5
         direction = np.arctan2(net_f_y, net_f_x)
         
         # print(f ** 2, net_force, force_required)
@@ -126,8 +135,8 @@ class particle:
         # exit()
         p = f
         # print(p)
-        if f>0:f = (((net_force / (p)))-force_required)*factor_to_move
-        else:f = (net_force-force_required)*factor_to_move
+        if f>0:f = (((net_force / (p))))
+        else:f = (net_force)
 
         # print(f, force_required, direction)
         # exit()
@@ -144,7 +153,7 @@ class particle:
     
     def goto(self):
         '''Moves X and Y position based on a timestep, current direction and force.'''
-        far = self.direction*constants.RADIAN_DIV
+        far = self.direction/constants.RADIAN_DIV
         if constants.DISSIPATE:self.force = self.force-((self.force*0.001 if not(self.force==np.nan or self.force==0) else 0))  # attempted reality :(
         move_x = (np.cos(far,))
         move_y = (np.sin(far,))

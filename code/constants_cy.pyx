@@ -24,7 +24,7 @@ cdef public (int, int) ORIGIN = (X-X_SUB, Y-Y_SUB)
 cdef public double G = 6.67430*10e-11  # gravitational constant
 cdef public double SOFTEN = 10e-20  # the softening factor
 # with open('pi.txt') as f:
-cdef public double RADIAN_DIV = 180/np.pi
+cdef public double RADIAN_DIV = np.pi/180
 cdef public int SIZE = 5
 cdef public double FACTOR=float(input("Enter factor: "))
 cdef public int BODIES = int(input("Enter bodies: "))

@@ -20,6 +20,6 @@ setup(
 )
 
 setup(
-    ext_modules=cythonize([Extension("code.run", sources=["code/run.pyx"], include_dirs=include)], nthreads=12, compiler_directives={'language_level' : "3"}),
+    ext_modules=cythonize([Extension("code.run", sources=["code/run.pyx"], include_dirs=include)], nthreads=12, compiler_directives={'language_level' : "3"}, annotate=True),
     zip_safe=False, include_dirs=include, packages=pk
 )
