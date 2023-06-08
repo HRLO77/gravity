@@ -14,7 +14,6 @@ cdef public float SOFTEN# the softening factor
 # with open('pi.txt') as f:
 cdef public float RADIAN_DIV
 cdef public int SIZE
-cdef public float FACTOR
 cdef public int BODIES
-cdef public bint DISSIPATE
 cdef public bint OUTPUT
+cdef public double TIMESTEP

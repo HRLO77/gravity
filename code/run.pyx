@@ -23,31 +23,21 @@ np.ALLOW_THREADS = True
 
 cdef class particle:
     '''Represents a single particle, can be moved through higher dimensions.'''
-    cdef public double x, y, force
-    cdef double direction
-    cdef unsigned int mass
+    cdef public double x, y
+    cdef double vx, vy
+    cdef unsigned long long int mass
 
-    def __cinit__(self, int mass, double x, double y , double force = 0):
+    def __cinit__(self, int mass, double x, double y, double vx = 0.0, double vy = 0.0):
         self.mass = mass
         self.x = x
         self.y = y
-        self.direction = 1.0
-        self.force = force
+        self.vx = vx
+        self.vy = vy
         
       
-    cdef inline double calculate_force(self, double dist, unsigned int weight) except -1.0:
+    cdef inline double calculate_force(self, double dist, unsigned long long int weight) except -1.0:
         '''Calculates the force of attraction (in newtons) between this particle and another body (particle, unit of space, or position and weight) in a higher dimension.'''
-        return (constants.G*self.mass*weight)/((dist if dist > 0 else 1)+(constants.SOFTEN))  # if (self.f) > 0 else (constants.G*self.mass*weight)/1+(constants.SOFTEN)
-        
-      
-    #cdef inline double calculate_direction(self, (double, double) position) except -1.0:
-    #    '''Calculates the direction (slope and radians) to another particle, unit of space or position in space.'''
-    #    return (atan2(position[1]-self.y, position[0]-self.x)*constants.RADIAN_DIV)
-    # return fabs((1/sin(angle))*position[0]-self.x)
-    
-    #cdef inline (double, double) trig_put(self, double direction):
-    #    '''Applies cosine and sine to the direction and returns a vector in that order.'''
-    #    return (cos(direction), sin(direction))
+        return (constants.G*self.mass*weight)/((dist))  # if (self.f) > 0 else (constants.G*self.mass*weight)/1+(constants.SOFTEN)
       
     cdef void move(self, particle[:,] others) except *:
         '''Based on a dict (key is x and y, value is rate of bending in 3d dimension.), calculate direction to move to and speed at which to move. Returns direction (radians), force (newtons)'''
@@ -56,7 +46,8 @@ cdef class particle:
         cdef unsigned long long int index
         #cdef double[:,] Fx, Fy
         #cdef double net_f_x, net_f_y, net_force, vx_current, vy_current, vx_net, vy_net, f_required_x, f_required_y, force_required, direction, f, temp_dir, temp_force
-        cdef double net_f_x, net_f_y, net_force, temp_dir, temp_force, to_atan, temp, x, y
+        cdef double net_f_x, net_f_y, temp_dir, temp_force, to_atan, temp, x, y
+        cdef unsigned long long int mass
         net_f_x = 0
         net_f_y = 0
         cdef particle part
@@ -66,21 +57,26 @@ cdef class particle:
             part = others[index]
             x = part.x
             y = part.y
+            mass = part.mass
             #temp_dir = self.calculate_direction((x, y))
             temp_dir = (atan2(y-self.y, x-self.x)*constants.RADIAN_DIV)
-            temp = x**2+y**2  # pythagorean theorem
-            temp_force = self.calculate_force(temp, part.mass)
+            temp = (x-self.x)**2+(y-self.y)**2  # pythagorean theorem
+            if temp < constants.SIZE:
+                temp += constants.SIZE
+            temp_force = self.calculate_force(temp, mass)
+            #temp_force = (constants.G*self.mass*mass)/((temp))
             #temp_force = (constants.G*self.mass*others[index].mass)/((temp if temp > 0 else 1)+(constants.SOFTEN))
-            net_f_x += cos(temp_dir)*temp_force
-            net_f_y += sin(temp_dir)*temp_force
+            net_f_x += (x-self.x)*temp_force
+            net_f_y += (y-self.y)*temp_force
         #zipped = zip(*[(calculations[index][1]*cos(calculations[index][0]),calculations[index][1]*sin(calculations[index][0])) for index in arange_others])
         
         #Fx, Fy = array(zipped[0]), array(zipped[1])
         
         #net_f_x = ((sum(zipped[0])))
         #net_f_y = ((sum(zipped[1])))
+        self.vx += net_f_x*constants.TIMESTEP
+        self.vy += net_f_y*constants.TIMESTEP
 
-        net_force = (((net_f_x**2) + (net_f_y**2))*0.1)  # may have to perform **0.5 maybe?
 
         #vx_current = self.force * cos(self.direction,)
         #vy_current = self.force * sin(self.direction,)
@@ -94,26 +90,13 @@ cdef class particle:
         
         # README: The commented out lines above are for determining velocity required to bypass pulls, if the energy of the system does not obey the laws of thermodynamics, fix HERE!
 
-        self.direction = atan2(net_f_y, net_f_x)
+        #self.direction = atan2(net_f_y, net_f_x)
     
 
-        if self.force>0:self.force = (((net_force)))
-        else:self.force = (net_force) # subtract required force here
-        self.goto()
-        return
-
-    
-    cdef inline void goto(self) except *:
-        '''Moves X and Y position based on a timestep, current direction and force.'''
-        cdef double far
-        cdef double move_x
-        cdef double move_y
-        far = self.direction/constants.RADIAN_DIV
-        #if constants.DISSIPATE:self.force = self.force-((self.force*0.001 if not(self.force==np.nan or self.force==0) else 0))  # attempted reality :(
-        move_x = (cos(far,))
-        move_y = (sin(far,))
-        self.x += move_x
-        self.y += move_y
+        #if self.force>0:self.force = (((net_force) / self.force))
+        #else:self.force = (net_force) # subtract required force here
+        self.x += self.vx
+        self.y += self.vy
         if self.x >= constants.X_SUB:
             self.x = -constants.X_SUB
         elif self.x <= -constants.X_SUB:
@@ -124,6 +107,28 @@ cdef class particle:
             self.y = constants.Y_SUB
         return
 
+    
+    # cdef inline void goto(self) except *:
+    #     '''Moves X and Y position based on a timestep, current direction and force.'''
+    #     cdef double far
+    #     cdef double move_x
+    #     cdef double move_y
+    #     far = self.direction/constants.RADIAN_DIV
+    #     #if constants.DISSIPATE:self.force = self.force-((self.force*0.001 if not(self.force==np.nan or self.force==0) else 0))  # attempted reality :(
+    #     move_x = (cos(far,))
+    #     move_y = (sin(far,))
+    #     self.x += move_x
+    #     self.y += move_y
+    #     if self.x >= constants.X_SUB:
+    #         self.x = -constants.X_SUB
+    #     elif self.x <= -constants.X_SUB:
+    #         self.x = constants.X_SUB
+    #     if self.y >= constants.Y_SUB:
+    #         self.y = -constants.Y_SUB
+    #     elif self.y <= -constants.Y_SUB:
+    #         self.y = constants.Y_SUB
+    #     return
+
 
 
 @cython.freelist(8192)
@@ -133,12 +138,12 @@ cdef class hand:
 
     def __cinit__(self, const int[:,:,] weights):
         '''Accepts a tuple of tuples, each tuple having the mass, starting x, and starting y positions for each particle.'''
-        self.particles = array([particle( np.round(mass), x, y, force) for mass, x, y, force in weights])
+        self.particles = array([particle( np.round(mass), x, y, vx, vy) for mass, x, y, vx, vy in weights])
     
     cdef inline void move_timestep(self) except *:
         '''Moves all the particles one time step.'''
         cdef unsigned long long int length = len(self.particles)
-        cdef unsigned int index
+        cdef unsigned long long int index
         #cdef object[:,] array
         for index in range(length):
             #array = np.delete(self.particles, index)
@@ -149,7 +154,7 @@ cdef npc.ndarray[double, ndim=3] run() except *:
     cdef double begin, end
     begin = (time.perf_counter())
     #aranged = range(constants.BODIES)
-    cdef const int[:,:,] np_data = array([(randint(1_000, 10_000), randint(-700, 700), randint(-700, 700), 1) for i in range(constants.BODIES)])
+    cdef const int[:,:,] np_data = array([(randint(10_000, 100_000), randint(-700, 700), randint(-700, 700), randint(-1, 1), randint(-1, 1)) for i in range(constants.BODIES)])
     cdef hand handler = hand(np_data)
     cdef particle[:,:,] particles # if movement does not occur, thats because this is a single memory view, copy instead
     cdef npc.ndarray[double, ndim=3] push
@@ -175,7 +180,7 @@ cdef npc.ndarray[double, ndim=3] run() except *:
     end = (time.perf_counter())
     print(f'\nTime: {end-begin}\n')
     printf('\nConverting to objects...\n')
-    push = np.copy([[(part.x, part.y, part.force) for part in particles[0]]]).reshape((len(particles[0])/constants.BODIES, constants.BODIES, 3))
+    push = np.copy([[(part.x, part.y) for part in particles[0]]]).reshape((len(particles[0])/constants.BODIES, constants.BODIES, 2))
     printf('\nDone!\n')
     return push
 globals()['particles'] = run()

@@ -8,7 +8,7 @@ screen = pygame.display.set_mode((constants.X, constants.Y), pygame.DOUBLEBUF | 
 pygame.display.set_caption("Gravity simulation")
 
 all_sprites_list = pygame.sprite.Group()
-handler = pygame_classes.handler([(10e200, 0, 0, 0), *[[np.random.randint(100_000, 10_000_000), np.random.randint(-500, 500), np.random.randint(-500, 500), np.random.randint(1000, 100_000)] for p in range(constants.BODIES)]])
+handler = pygame_classes.handler([*[[np.random.randint(100_000, 10_000_000), np.random.randint(-500, 500), np.random.randint(-500, 500), np.random.randint(1000, 100_000)] for p in range(constants.BODIES)]])
 clock = pygame.time.Clock()
 
 np.ALLOW_THREADS = True

@@ -1,7 +1,7 @@
 # from math import atan2
 # print(atan2(4.5, 4.5)) # note to self: 
-import constant, pygame_classes, pickle, queue, threading, time, random
-handler = pygame_classes.handler([*[[random.randint(100, 10_000), random.randint(-500, 500), random.randint(-500, 500), random.randint(1000, 100_000)] for p in range(constant.BODIES)]])
+import constants, pygame_classes, pickle, queue, threading, time, random
+handler = pygame_classes.handler([*[[random.randint(10_000, 1_000_000), random.randint(-500, 500), random.randint(-500, 500)] for p in range(constants.BODIES)]])
 
 # p1 = classes.particle(50, 0, 0)
 
@@ -48,10 +48,15 @@ thread = threading.Thread(target=forever)
 thread.start()
 running  = True
 t = time.perf_counter()
+c=0
+y = bool(int(input('Print?: ')))
 try:
     while True:# all_sprites_list.update()
     # while Q.qsize() < 1:
     #     pass
+        if y:
+            c+=1
+            print(c)
         qu.put_nowait((qu.qsize(), handler.move_timestep(first=2, last=-1, take_part=9998, limit=7, skip=1)))
 except BaseException as e:
     print(str(e))

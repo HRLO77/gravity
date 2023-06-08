@@ -14,8 +14,8 @@ import numpy as np
 cimport numpy as np
 
 np.ALLOW_THREADS = True
-cdef public int X = 1800
-cdef public int Y = 1200
+cdef public int X = 1920
+cdef public int Y = 1080
 cdef public int X_SUB = np.ceil(X/2)
 cdef public int Y_SUB = np.ceil(Y/2)
 cdef public (int, int) ORIGIN = (X-X_SUB, Y-Y_SUB)
@@ -26,8 +26,8 @@ cdef public double SOFTEN = 10e-20  # the softening factor
 # with open('pi.txt') as f:
 cdef public double RADIAN_DIV = np.pi/180
 cdef public int SIZE = 5
-cdef public double FACTOR=float(input("Enter factor: "))
 cdef public int BODIES = int(input("Enter bodies: "))
-cdef public bint DISSIPATE = bool(int(input('Enter dissipation: ')))
 cdef public bint OUTPUT = bool(int(input('Print progress?: ')))
+cdef public double TIMESTEP = 0.01
+
 __all__ = globals()

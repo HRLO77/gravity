@@ -44,9 +44,7 @@ run `py test.py` to start the computing. When ctrl+c is pressed, computing is st
 
 Again, your job to figure out how to render them.
 
-the cython code is very efficient, producing 1 frame every ~0.0446153846 seconds, which is about 1.3 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles) and computing with direct-sum (highest accuracy)
-
-Another thing to note is that for some reason, regularly compiling `run.pyx` might not return the header file, and run.c will return errors on vtables. So keep `run.h`, `run.c` and `constants_cy.h` in `./code/` so you can compile them yourself!
+the cython code is very efficient, producing 1 frame every ~0.0493714 seconds, which is about 1.3 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles) and computing with direct-sum (highest accuracy)
 
 `load.py` Loads the serialized data from `data.pickle`
 

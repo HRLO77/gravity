@@ -37,10 +37,9 @@ __PYX_EXTERN_C float G;
 __PYX_EXTERN_C float SOFTEN;
 __PYX_EXTERN_C float RADIAN_DIV;
 __PYX_EXTERN_C int SIZE;
-__PYX_EXTERN_C float FACTOR;
 __PYX_EXTERN_C int BODIES;
-__PYX_EXTERN_C int DISSIPATE;
 __PYX_EXTERN_C int OUTPUT;
+__PYX_EXTERN_C double TIMESTEP;
 
 #endif /* !__PYX_HAVE_API__code__constants_cy */
 
