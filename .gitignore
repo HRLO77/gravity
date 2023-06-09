@@ -3,4 +3,5 @@ __pycache__/
 *.c
 *.pyd
 *.pyc
+*.so
 *.h
