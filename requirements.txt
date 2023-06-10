@@ -5,3 +5,4 @@ cython
 pythran
 pythran-openblas
 line_profiler
+matplotlib

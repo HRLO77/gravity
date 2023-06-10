@@ -8,12 +8,12 @@ I really dont have the energy to explain all this extremely badly written code a
 # requirements
 install by `py -m pip install -r requirements.txt` and `py -m pip install setuptools -U`
 
-What you need to know is on line #53 in `./code/python_code/test.py` (which is what you should probably run)
+What you need to know is on line #53 in `./gravity/python_code/test.py` (which is what you should probably run)
 
 contains everything you want
 
 ```py
-# ./code/test.py:53:
+# ./gravity/test.py:53:
     handler.move_timestep(first=5, last=-3, take_part=100, limit=25, skip=10, direction_func=np.median)
 ```
 
@@ -32,19 +32,19 @@ Or you can just run test.cmd or test.exe to run the nuitka compiled code (i cant
 
 I have an unzipped pypy folder because i could not figure out how to install it.
 
-./code/code/ has scripts related to computing all the data with pypy, WITHOUT rendering it. After running test.py with pypy, ctrl+c will stop the computing and dump all the data into data.pickle, formatted like `[[int (the number of the frame, lower is closer to first) tuple[particle]]]` the particle class has the data you want (mainly the x and y positions), rendering it is YOUR JOB, not mine.
+./gravity/code/ has scripts related to computing all the data with pypy, WITHOUT rendering it. After running test.py with pypy, ctrl+c will stop the computing and dump all the data into data.pickle, formatted like `[[int (the number of the frame, lower is closer to first) tuple[particle]]]` the particle class has the data you want (mainly the x and y positions), rendering it is YOUR JOB, not mine.
 
 # cython
 
 This is the most recommended way to calculate particle before rendering, pypy is fast, but not nearly as fast as this.
 
-Cython files are in `./code/` . If you need to compile them again, run `py cyth.py build_ext --inplace` in `/`
+Cython files are in `./gravity/` . If you need to compile them again, run `py cyth.py build_ext --inplace` in `/`
 
 run `py test.py` to start the computing. When ctrl+c is pressed, computing is stopped and the particles collected are dumped in-order in `data.pickle`
 
 Again, your job to figure out how to render them.
 
-the cython code is very efficient, producing 1 frame every ~0.0493714 seconds, which is about 1.3 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles) and computing with direct-sum (highest accuracy)
+the cython code is very efficient, producing 1 frame every ~0.0770926188 seconds, which is about 2.31 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles) and computing with direct-sum (highest accuracy)
 
 `load.py` Loads the serialized data from `data.pickle`
 

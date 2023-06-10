@@ -2,25 +2,25 @@ from setuptools import setup, Extension
 import setuptools
 from Cython.Build import cythonize
 import numpy
-include = [numpy.get_include(), 'code']
-pk=[*setuptools.find_packages('code'), 'code']
-
+include = [numpy.get_include(), 'gravity']
+pk=[*setuptools.find_packages('gravity'), 'gravity']
+cd = {'language_level' : "3"}
 setup(
-    ext_modules=cythonize([Extension("code.constants_cy", sources=["code/constants_cy.pyx"], include_dirs=include)], nthreads=12, compiler_directives={'language_level' : "3"}),
+    ext_modules=cythonize([Extension("gravity.constants_cy", sources=["gravity/constants_cy.pyx"], include_dirs=include)], nthreads=12, compiler_directives=cd),
     zip_safe=False, include_dirs=include, packages=pk
 )
 
-setup(
-    ext_modules=cythonize([Extension("code.pygame_classes_cy", sources=["code/pygame_classes_cy.pyx"], include_dirs=include)], nthreads=12, compiler_directives={'language_level' : "3"}),
-    zip_safe=False, include_dirs=include, packages=pk
-)
+# setup(
+#     ext_modules=cythonize([Extension("gravity.pygame_classes_cy", sources=["gravity/pygame_classes_cy.pyx"], include_dirs=include)], nthreads=12, compiler_directives=cd),
+#     zip_safe=False, include_dirs=include, packages=pk
+# )
+
+# setup(
+#     ext_modules=cythonize([Extension("gravity.classes_cy", sources=["gravity/classes_cy.pyx"], include_dirs=include)], nthreads=12, compiler_directives=cd),
+#     zip_safe=False, include_dirs=include, packages=pk
+# )
 
 setup(
-    ext_modules=cythonize([Extension("code.classes_cy", sources=["code/classes_cy.pyx"], include_dirs=include)], nthreads=12, compiler_directives={'language_level' : "3"}),
-    zip_safe=False, include_dirs=include, packages=pk
-)
-
-setup(
-    ext_modules=cythonize([Extension("code.run", sources=["code/run.pyx"], include_dirs=include)], nthreads=12, compiler_directives={'language_level' : "3"}, annotate=True),
+    ext_modules=cythonize([Extension("gravity.run", sources=["gravity/run.pyx"], include_dirs=include)], nthreads=12, compiler_directives=cd, annotate=True),
     zip_safe=False, include_dirs=include, packages=pk
 )
