@@ -1,5 +1,7 @@
 # cython: language_level=3
 # distutils: language=c
+# cython: cpp_locals=True
+# cythhon: binding=False
 # cython: infer_types=False
 # cython: wraparound=False
 # cython: boundscheck=False
@@ -7,6 +9,8 @@
 # cython: overflowcheck=False
 # cython: nonecheck=False
 # cython: initializedcheck=False
+# cython: always_allow_keywords=False
+# cython: c_api_binop_methods=True
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
 
@@ -18,7 +22,6 @@ from libc.stdio cimport printf
 
 from . cimport constants_cy as constants
 
-import pickle
 import time
 
 import numpy as np
@@ -135,10 +138,6 @@ cdef class Handler:
         for index in range(length):
             (<Particle>self.particles[index]).move(self.particles)
 
-
-
-
-
 cdef npc.ndarray[float, ndim=3] run():
     cdef float begin, end
     
@@ -153,8 +152,6 @@ cdef npc.ndarray[float, ndim=3] run():
     cdef Handler handler = Handler(np_data)
     cdef list particles = list(handler.particles)
     cdef int c = 0
-    with open('data.pickle', 'wb') as file:
-        pickle.dump(None, file)
     begin = (time.perf_counter())
     try:
         if constants.OUTPUT:
