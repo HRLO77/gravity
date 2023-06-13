@@ -16,4 +16,4 @@ cdef public float RADIAN_DIV
 cdef public int SIZE
 cdef public int BODIES
 cdef public bint OUTPUT
-cdef public double TIMESTEP
+cdef public float TIMESTEP
