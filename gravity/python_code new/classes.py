@@ -9,8 +9,8 @@ class unit:
         self.mass = mass
         self.x = x
         self.y = y
-        self.velocity_x = np.random.randint(-500, 500)
-        self.velocity_y = np.random.randint(-500, 500)
+        self.velocity_x = np.random.randint(-1, 1)
+        self.velocity_y = np.random.randint(-1, 1)
         
 
     def calculate_force(self, other=None, weight: float | None=None, position=None):
@@ -131,8 +131,8 @@ class particle:
         #f_required_x = self.mass*vx_net
         #f_required_y = self.mass*vy_net
         #force_required = ((f_required_x**2)+(f_required_y**2))**0.5
-        self.velocity_x += net_f_x*constants.TIMESTEP
-        self.velocity_y += net_f_y*constants.TIMESTEP
+        self.velocity_x += (net_f_x )*constants.TIMESTEP
+        self.velocity_y += (net_f_y )*constants.TIMESTEP
         
         # if abs(self.velocity_x) > constants.SIZE**2:
         #     self.velocity_x /= constants.SIZE*2

@@ -23,9 +23,9 @@ SOFTEN = 1  # the softening factor
 # with open('pi.txt') as f:
 RADIAN_DIV = np.pi/180
 SIZE = 5
-TIMESTEP = 10e-98
+TIMESTEP = 0.001
 MOVESTEP = 1
-NEWT_MAX = (30570322.995110463)/SIZE
+NEWT_MAX = (30570322.995110463)/SIZE**2
 BODIES = int(input("Enter bodies: "))
 # DISSIPATE = bool(int(input('Enter dissipation: ')))
 DIRECT = bool(int(input("Direct-sum?: ")))

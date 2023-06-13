@@ -8,9 +8,10 @@ class sprite(pygame.sprite.Sprite):
     def __init__(self, color, x: float=0, y: float=0, mass: float=10_00):
         super().__init__()
         self.image = pygame.Surface([constants.SIZE, constants.SIZE])
-        self.image.fill((255, 0, 0) if mass > 10e20 else color)  # blue
+        m = mass//75_000 if not (mass//75_000 > 255) else 255
+        self.image.fill([m, 0, 0] if mass > 3_500_000 else color)  # blue
         pygame.draw.rect(self.image,
-                        (255, 0, 0) if mass > 10e20 else color,
+                        [m, 0, 0] if mass > 3_500_000 else color,
                         pygame.Rect(0, 0, constants.SIZE, constants.SIZE))
         self.rect = self.image.get_rect()
         # self.image.unlock()
@@ -18,7 +19,7 @@ class sprite(pygame.sprite.Sprite):
         self.rect.y = y+constants.Y_SUB
         self.x = x+constants.X_SUB
         self.y = y+constants.Y_SUB
-        self.color = (255, 0, 0) if mass > 10e20 else color
+        self.color = [m, 0, 0] if mass > 2_500_000 else color
         self.particle = classes.particle(mass, x, y)
     
     def update_physics(self, particles: list):
