@@ -44,7 +44,7 @@ run `py test.py` to start the computing. When ctrl+c is pressed, computing is st
 
 Again, your job to figure out how to render them.
 
-the cython code is very efficient, producing 1 frame every ~0.0555747428 seconds, which is about 2.31 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles) and computing with direct-sum (highest accuracy)
+the cython code is very efficient, producing 1 frame every ~0.0555747428 seconds, which is about ~1.66724228 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles) and computing with direct-sum (highest accuracy)
 
 `load.py` Loads the serialized data from `data.pickle`
 
