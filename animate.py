@@ -40,5 +40,5 @@ def animate(i):
     c += 1
 	
     
-ani = animation.FuncAnimation(fig, animate, interval=1000/30, save_count=30)
+ani = animation.FuncAnimation(fig, animate, interval=1000/60, save_count=30)
 plt.show()
