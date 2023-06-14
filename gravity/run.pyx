@@ -19,7 +19,7 @@ cimport cython
 cimport numpy as npc
 
 from libc.stdio cimport printf
-
+import pickle
 from . cimport constants_cy as constants
 
 import time
@@ -48,7 +48,6 @@ cdef class Particle:
     cdef inline float calculate_force(self, float dist, int weight) except -1.0:
         '''Calculates the force of attraction (in newtons) between this particle and another body (particle, unit of space, or position and weight) in a higher dimension.'''
         return (constants.G*self.mass*weight)/((dist))  # if (self.f) > 0 else (constants.G*self.mass*weight)/1+(constants.SOFTEN)
-
     
     
     cdef void move(self, Particle[:,] others) except *:
@@ -137,22 +136,30 @@ cdef class Handler:
         for index in range(length):
             (<Particle>self.particles[index]).move(self.particles)
     
-    cdef inline npc.ndarray[float, ndim=2] get(self):
+    cdef inline list get(self):
         '''Returns desired data'''
         cdef int index
-        return np.array([(((<Particle>self.particles[index]).x), ((<Particle>self.particles[index]).y)) for index in range(self.particles.shape[0])], dtype=np.float16)
+        cdef list l = []
+        for index in range(self.particles.shape[0]):
+            l.extend(((self.particles[index].x, self.particles[index].y), ))
+        return l
 
 cdef npc.ndarray[float, ndim=3] run():
     cdef float begin, end
     
     #aranged = range(constants.BODIES)
-    cdef const int[:,:,] np_data = array(
-        [
-            (randint(10_000, 100_000), randint(-700, 700), randint(-700, 700), randint(-1, 1), randint(-1, 1))
-            for i in range(constants.BODIES)
-        ],
-        dtype = np.int32,
-    )
+    cdef const int[:,:,] np_data
+    if not constants.LOAD_DATA:
+        np_data = array(
+            [
+                (randint(500_000, 2_000_000), randint(-700, 700), randint(-700, 700), randint(-1, 1), randint(-1, 1))
+                for i in range(constants.BODIES)
+            ],
+            dtype = np.int32,
+        )
+    else:
+        with open('data.pickle', 'rb') as f:
+            np_data = pickle.load(f)[1]
     cdef Handler handler = Handler(np_data)
     cdef list particles = list(handler.get())
     cdef int c = 0
@@ -164,7 +171,7 @@ cdef npc.ndarray[float, ndim=3] run():
                 handler.move_timestep()
                 particles.extend(handler.get())
                 c+=1
-                printf("%I64u\r", c)
+                printf("%d\r", c)
                 PyErr_CheckSignals()
         else:
             while 1:
@@ -178,6 +185,8 @@ cdef npc.ndarray[float, ndim=3] run():
     print(f'\nTime: {end-begin}\n')
     printf('\nConverting to objects...\n')
     push = np.array(particles, dtype=np.float16).reshape((len(particles)/constants.BODIES, constants.BODIES, 2))
+
     printf('\nDone!\n')
+    globals()['session'] = np.array([(handler.particles[c].x, handler.particles[c].y, handler.particles[c].mass, handler.particles[c].vx, handler.particles[c].vy) for c in range(handler.particles.shape[0])], dtype=np.int32)
     return push
 globals()['particles'] = run()

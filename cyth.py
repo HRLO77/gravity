@@ -5,7 +5,7 @@ import numpy
 import os
 from numpy import distutils
 (distutils.__file__)
-os.environ['CC'] = 'd'  # following is for compilation with clang
+os.environ['CC'] = 'clang-cl'  # following is for compilation with clang
 os.environ['LDSHARED'] = 'clang -shared'
 os.environ['CXX'] = 'clang++'
 include = [numpy.get_include(), 'gravity']
