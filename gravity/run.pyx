@@ -28,6 +28,7 @@ import numpy as np
 from numpy import array
 from numpy.random import randint
 
+
 np.ALLOW_THREADS = True
 
 
@@ -137,6 +138,11 @@ cdef class Handler:
         cdef int index
         for index in range(length):
             (<Particle>self.particles[index]).move(self.particles)
+    
+    cdef inline double[:,:,] get(self) except *:
+        '''Returns desired data'''
+        cdef int index
+        return np.array([((<Particle>self.particles[index]).x, (<Particle>self.particles[index]).y) for index in range(self.particles.shape[0])])
 
 cdef npc.ndarray[float, ndim=3] run():
     cdef float begin, end
@@ -150,21 +156,22 @@ cdef npc.ndarray[float, ndim=3] run():
         dtype = np.int32,
     )
     cdef Handler handler = Handler(np_data)
-    cdef list particles = list(handler.particles)
+    cdef list particles = list(handler.get())
     cdef int c = 0
+    cdef int index = 0
     begin = (time.perf_counter())
     try:
         if constants.OUTPUT:
             while 1:
                 handler.move_timestep()
-                particles.extend(handler.particles)
+                particles.extend(handler.get())
                 c+=1
                 printf("%I64u\r", c)
                 PyErr_CheckSignals()
         else:
             while 1:
                 handler.move_timestep()
-                particles.extend(handler.particles)
+                particles.extend(handler.get())
                 PyErr_CheckSignals()
     except BaseException as e:
         end = (time.perf_counter())
@@ -172,8 +179,7 @@ cdef npc.ndarray[float, ndim=3] run():
     
     print(f'\nTime: {end-begin}\n')
     printf('\nConverting to objects...\n')
-    push = np.array([(<float>part.x, <float>part.y) for part in np.array(particles).flatten()]
-    ).reshape((len(particles)/constants.BODIES, constants.BODIES, 2))
+    push = np.array(particles).reshape((len(particles)/constants.BODIES, constants.BODIES, 2))
     printf('\nDone!\n')
     return push
 globals()['particles'] = run()

@@ -3,6 +3,7 @@ import matplotlib.animation as animation
 import numpy as np
 
 fig = plt.figure()
+
 #creating a subplot 
 ax1 = fig.add_subplot(1,1,1)
 import pickle
@@ -23,7 +24,7 @@ def animate(i):
    
     
     ax1.clear()
-    ax1.scatter(xs, ys)
+    ax1.scatter(xs, ys, [10 for i in range(len(xs))])
 
     plt.xlabel('X')
     plt.ylabel('Y')

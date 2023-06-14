@@ -28,6 +28,6 @@ cdef public float RADIAN_DIV = np.pi/180
 cdef public int SIZE = 5
 cdef public int BODIES = int(input("Enter bodies: "))
 cdef public bint OUTPUT = bool(int(input('Print progress?: ')))
-cdef public float TIMESTEP = 0.01
+cdef public float TIMESTEP = 1
 #cdef public int FRAMES_F = int(input("Frames: "))
 __all__ = globals()
