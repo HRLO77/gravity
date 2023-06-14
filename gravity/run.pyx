@@ -129,8 +129,6 @@ cdef class Handler:
     def __cinit__(self, const int[:,:,] weights):
         '''Accepts a tuple of tuples, each tuple having the mass, starting x, and starting y positions for each particle.'''
         self.particles = array([Particle(np.round(mass), x, y, vx, vy) for mass, x, y, vx, vy in weights])
-
-    
     
     cdef inline void move_timestep(self) except *:
         '''Moves all the particles one time step.'''
@@ -139,10 +137,10 @@ cdef class Handler:
         for index in range(length):
             (<Particle>self.particles[index]).move(self.particles)
     
-    cdef inline double[:,:,] get(self) except *:
+    cdef inline npc.ndarray[float, ndim=2] get(self):
         '''Returns desired data'''
         cdef int index
-        return np.array([((<Particle>self.particles[index]).x, (<Particle>self.particles[index]).y) for index in range(self.particles.shape[0])])
+        return np.array([(((<Particle>self.particles[index]).x), ((<Particle>self.particles[index]).y)) for index in range(self.particles.shape[0])], dtype=np.float16)
 
 cdef npc.ndarray[float, ndim=3] run():
     cdef float begin, end
@@ -179,7 +177,7 @@ cdef npc.ndarray[float, ndim=3] run():
     
     print(f'\nTime: {end-begin}\n')
     printf('\nConverting to objects...\n')
-    push = np.array(particles).reshape((len(particles)/constants.BODIES, constants.BODIES, 2))
+    push = np.array(particles, dtype=np.float16).reshape((len(particles)/constants.BODIES, constants.BODIES, 2))
     printf('\nDone!\n')
     return push
 globals()['particles'] = run()
