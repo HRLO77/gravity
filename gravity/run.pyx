@@ -33,94 +33,63 @@ np.ALLOW_THREADS = True
 
 
 cdef class Particle:
-    '''Represents a single particle, can be moved through higher dimensions.'''
+    '''Represents a single particle, can be moved according to its current state.'''
     cdef public float x, y
     cdef float vx, vy
-    cdef int mass
+    cdef unsigned int mass
 
-    def __cinit__(self, int mass, float x, float y, float vx = 0.0, float vy = 0.0):
+    def __cinit__(self, unsigned int mass, float x, float y, float vx = 0.0, float vy = 0.0):
         self.mass = mass
         self.x = x
         self.y = y
         self.vx = vx
         self.vy = vy
 
-    cdef inline float calculate_force(self, float dist, int weight) except -1.0:
+    cdef inline float calculate_force(self, float dist, unsigned int weight) except -1.0:
         '''Calculates the force of attraction (in newtons) between this particle and another body (particle, unit of space, or position and weight) in a higher dimension.'''
         return (constants.G*self.mass*weight)/((dist))  # if (self.f) > 0 else (constants.G*self.mass*weight)/1+(constants.SOFTEN)
     
     
     cdef void move(self, Particle[:,] others) except *:
-        '''Based on a dict (key is x and y, value is rate of bending in 3d dimension.), calculate direction to move to and speed at which to move. Returns direction (radians), force (newtons)'''
+        '''Moves this particle through space based on the positions of others particles
+        Parameters
+        :others: An iterable of Particle objects.
+        Returns void'''
         '''Dist func: |(1/sin(θ))*base|'''
-        #cdef float[:,:,] zipped, calculations
-        cdef int index
-        #cdef float[:,] Fx, Fy
-        #cdef float net_f_x, net_f_y, net_force, vx_current, vy_current, vx_net, vy_net, f_required_x, f_required_y, force_required, direction, f, temp_dir, temp_force
+        cdef unsigned int index
         cdef float net_f_x, net_f_y, temp_dir, temp_force, to_atan, temp, x, y
-        cdef int mass
+        cdef unsigned int mass
+
         net_f_x = 0
         net_f_y = 0
         for index in range((others.shape[0])):
-            if self is others[index]:
+
+            if self is others[index]:  # ensure that we are not calculuting a particles own force
                 continue
 
             x = others[index].x
             y = others[index].y
             mass = others[index].mass
-            #temp_dir = self.calculate_direction((x, y))
-            #temp_dir = (atan2(y-self.y, x-self.x)*constants.RADIAN_DIV)
+
             temp = (x-self.x)**2+(y-self.y)**2  # pythagorean theorem
             if temp < constants.SIZE:
                 temp += constants.SIZE
-            temp_force = self.calculate_force(temp, mass)
-            #temp_force = (constants.G*self.mass*mass)/((temp))
-            #temp_force = (constants.G*self.mass*others[index].mass)/((temp if temp > 0 else 1)+(constants.SOFTEN))
-            net_f_x += (x-self.x)*temp_force
+            temp_force = self.calculate_force(temp, mass)  # calculate the attraction
+            net_f_x += (x-self.x)*temp_force  # spread it accross the two dimensions
             net_f_y += (y-self.y)*temp_force
-        #zipped = zip(*[(calculations[index][1]*cos(calculations[index][0]),calculations[index][1]*sin(calculations[index][0])) for index in arange_others])
-        
-        #Fx, Fy = array(zipped[0]), array(zipped[1])
-        
-        #net_f_x = ((sum(zipped[0])))
-        #net_f_y = ((sum(zipped[1])))
-        self.vx += net_f_x*constants.TIMESTEP
+
+        self.vx += net_f_x*constants.TIMESTEP  ## increase velocity according to gravity
         self.vy += net_f_y*constants.TIMESTEP
 
 
-        #vx_current = self.force * cos(self.direction,)
-        #vy_current = self.force * sin(self.direction,)
-
-        #vx_net = -(self.force * cos(self.direction,)) + (net_f_x / self.mass)
-        #vy_net = -(self.force * cos(self.direction,)) + (net_f_y / self.mass)
-
-        #f_required_x = self.mass*(-(self.force * cos(self.direction,)) + (net_f_x / self.mass))
-        #f_required_y = self.mass*(-(self.force * cos(self.direction,)) + (net_f_y / self.mass))
-        #force_required = (((self.mass*(-(self.force * cos(self.direction,)) + (net_f_x / self.mass)))**2)+((self.mass*(-(self.force * cos(self.direction,)) + (net_f_y / self.mass)))**2))**0.5
-        
-        # README: The commented out lines above are for determining velocity required to bypass pulls, if the energy of the system does not obey the laws of thermodynamics, fix HERE!
-
-        #self.direction = atan2(net_f_y, net_f_x)
-    
-
-        #if self.force>0:self.force = (((net_force) / self.force))
-        #else:self.force = (net_force) # subtract required force here
-        self.x += self.vx
+        self.x += self.vx  # move according to velocity
         self.y += self.vy
-        #if self.x >= constants.X_SUB:
-        #    self.x = -constants.X_SUB
-        #elif self.x <= -constants.X_SUB:
-        #    self.x = constants.X_SUB
-        #if self.y >= constants.Y_SUB:
-        #    self.y = -constants.Y_SUB
-        #elif self.y <= -constants.Y_SUB:
-        #    self.y = constants.Y_SUB
 
 
 
 @cython.freelist(8192)
 cdef class Handler:
-    '''A class wrapper to handle multiple pygame classes.particles, wrapping particles.'''
+    '''A class wrapper to handle multiple Particle objects easily.'''
     cdef Particle[:,] particles
 
     def __cinit__(self, const int[:,:,] weights):
@@ -128,16 +97,16 @@ cdef class Handler:
         self.particles = array([Particle(*weights[i]) for i in range((weights.shape[0]))])
     
     cdef inline void move_timestep(self) except *:
-        '''Moves all the particles one time step.'''
-        cdef int index
+        '''Moves all the particles one frame.'''
+        cdef unsigned int index
         cdef Particle part
         for index in range(constants.BODIES):
             part = self.particles[index]
             (part).move(self.particles)
     
     cdef inline list get(self):
-        '''Returns desired data'''
-        cdef int index
+        '''Returns the position of all particles in the current frame.'''
+        cdef unsigned int index
         cdef list l = []
         cdef Particle part
         for index in range(constants.BODIES):
@@ -148,9 +117,9 @@ cdef class Handler:
 cdef npc.ndarray[float, ndim=3] run():
     cdef float begin, end
     
-    #aranged = range(constants.BODIES)
     cdef const int[:,:,] np_data
     if not constants.LOAD_DATA:
+        # this line creates the particles, you can change the range of where they start, their mass, and beginning velocity to whatever you wish.
         np_data = array(
             [
                 (randint(1_000_000, 2_000_000), randint(-700, 700), randint(-700, 700), randint(-1, 1), randint(-1, 1))
@@ -159,6 +128,7 @@ cdef npc.ndarray[float, ndim=3] run():
             dtype = np.int32,
         )
     else:
+        # this line loads up the last frame from data.pickle if you want to continue a simulation (very useful if you are running low on memory)
         with open('data.pickle', 'rb') as f:
             np_data = pickle.load(f)[1]
     cdef Handler handler = Handler(np_data)
@@ -175,6 +145,7 @@ cdef npc.ndarray[float, ndim=3] run():
                 PyErr_CheckSignals()
         else:
             while 1:
+                # running without printing timestep is faster than doing so
                 handler.move_timestep()
                 particles.extend(handler.get())
                 PyErr_CheckSignals()

@@ -8,7 +8,7 @@ screen = pygame.display.set_mode((constants.X, constants.Y), pygame.DOUBLEBUF | 
 pygame.display.set_caption("Gravity simulation")
 
 all_sprites_list = pygame.sprite.Group()
-handler = pygame_classes.handler([*[[np.random.randint(100_000, 10_000_000), np.random.randint(-500, 500), np.random.randint(-500, 500), np.random.randint(1000, 100_000)] for p in range(constants.BODIES)]])
+handler = pygame_classes.handler([*[[np.random.randint(100_000, 10_000_000) if np.random.random() > 0.9 else np.random.randint(100_000, 1_000_000) , np.random.randint(-500, 500), np.random.randint(-500, 500)] for p in range(constants.BODIES)]])
 clock = pygame.time.Clock()
 
 np.ALLOW_THREADS = True
@@ -42,7 +42,7 @@ all_sprites_list.add(handler.particles)
 # if ('y' in input("Render realtime [Y] or fast? [N]: ").lower()):
     # print('Going')
 running  = True
-while running:  
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  
             exit()
@@ -50,7 +50,7 @@ while running:
         # while Q.qsize() < 1:
         #     pass
     all_sprites_list.update()
-    handler.move_timestep(first=10, last=-3, take_part=60, limit=13, skip=2, direction_func=np.median)
+    handler.move_timestep(first=10, last=-3, take_part=10, limit=13, skip=2, direction_func=np.median)
     screen.fill((0, 0, 0))
     all_sprites_list.draw(screen)
     pygame.display.update()

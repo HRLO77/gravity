@@ -6,3 +6,6 @@ pythran
 pythran-openblas
 line_profiler
 matplotlib
+cython-lint
+black
+flake8
