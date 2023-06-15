@@ -153,7 +153,7 @@ cdef npc.ndarray[float, ndim=3] run():
     if not constants.LOAD_DATA:
         np_data = array(
             [
-                (randint(100_000, 1_000_000), randint(-700, 700), randint(-700, 700), randint(-1, 1), randint(-1, 1))
+                (randint(1_000_000, 2_000_000), randint(-700, 700), randint(-700, 700), randint(-1, 1), randint(-1, 1))
                 for i in range(constants.BODIES)
             ],
             dtype = np.int32,
