@@ -61,7 +61,7 @@ cdef class Particle:
         cdef int mass
         net_f_x = 0
         net_f_y = 0
-        for index in range(len(others)):
+        for index in range((others.shape[0])):
             if self is others[index]:
                 continue
 
@@ -125,21 +125,24 @@ cdef class Handler:
 
     def __cinit__(self, const int[:,:,] weights):
         '''Accepts a tuple of tuples, each tuple having the mass, starting x, and starting y positions for each particle.'''
-        self.particles = array([Particle(np.round(mass), x, y, vx, vy) for mass, x, y, vx, vy in weights])
+        self.particles = array([Particle(*weights[i]) for i in range((weights.shape[0]))])
     
     cdef inline void move_timestep(self) except *:
         '''Moves all the particles one time step.'''
-        cdef int length = len(self.particles)
         cdef int index
-        for index in range(length):
-            (<Particle>self.particles[index]).move(self.particles)
+        cdef Particle part
+        for index in range(constants.BODIES):
+            part = self.particles[index]
+            (part).move(self.particles)
     
     cdef inline list get(self):
         '''Returns desired data'''
         cdef int index
         cdef list l = []
-        for index in range(self.particles.shape[0]):
-            l.extend(((self.particles[index].x, self.particles[index].y), ))
+        cdef Particle part
+        for index in range(constants.BODIES):
+            part = self.particles[index]
+            l.extend(((part.x, part.y), ))
         return l
 
 cdef npc.ndarray[float, ndim=3] run():
@@ -150,7 +153,7 @@ cdef npc.ndarray[float, ndim=3] run():
     if not constants.LOAD_DATA:
         np_data = array(
             [
-                (randint(1_000_000, 2_000_000), randint(-700, 700), randint(-700, 700), randint(-1, 1), randint(-1, 1))
+                (randint(100_000, 1_000_000), randint(-700, 700), randint(-700, 700), randint(-1, 1), randint(-1, 1))
                 for i in range(constants.BODIES)
             ],
             dtype = np.int32,
@@ -160,8 +163,7 @@ cdef npc.ndarray[float, ndim=3] run():
             np_data = pickle.load(f)[1]
     cdef Handler handler = Handler(np_data)
     cdef list particles = list(handler.get())
-    cdef int c = 0
-    cdef int index = 0
+    cdef unsigned int c = 0
     begin = (time.perf_counter())
     try:
         if constants.OUTPUT:
@@ -169,7 +171,7 @@ cdef npc.ndarray[float, ndim=3] run():
                 handler.move_timestep()
                 particles.extend(handler.get())
                 c+=1
-                printf("%d\r", c)
+                printf("%i\r", c)
                 PyErr_CheckSignals()
         else:
             while 1:
@@ -185,6 +187,7 @@ cdef npc.ndarray[float, ndim=3] run():
     push = np.array(particles, dtype=np.float16).reshape((len(particles)/constants.BODIES, constants.BODIES, 2))
 
     printf('\nDone!\n')
-    globals()['session'] = np.array([(handler.particles[c].x, handler.particles[c].y, handler.particles[c].mass, handler.particles[c].vx, handler.particles[c].vy) for c in range(handler.particles.shape[0])], dtype=np.int32)
+    c=0
+    globals()['session'] = np.array([(handler.particles[c].x, handler.particles[c].y, handler.particles[c].mass, handler.particles[c].vx, handler.particles[c].vy) for c in range((handler.particles.shape[0]))], dtype=np.int32)
     return push
 globals()['particles'] = run()
