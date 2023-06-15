@@ -14,10 +14,10 @@ import numpy as np
 cimport numpy as np
 
 np.ALLOW_THREADS = True
-cdef public int X = 1920
-cdef public int Y = 1080
-cdef public int X_SUB = np.ceil(X/2)
-cdef public int Y_SUB = np.ceil(Y/2)
+#cdef public int X = 1920
+#cdef public int Y = 1080
+#cdef public int X_SUB = np.ceil(X/2)
+#cdef public int Y_SUB = np.ceil(Y/2)
 #cdef public (int, int) ORIGIN = (X-X_SUB, Y-Y_SUB)
 # K = 50  # n particles
 # grid: list[list[list]] = [[[] for y in '~'*Y] for x in '~'*X]  # grid

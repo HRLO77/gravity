@@ -61,15 +61,13 @@ cdef class Particle:
         cdef int mass
         net_f_x = 0
         net_f_y = 0
-        cdef Particle part
         for index in range(len(others)):
-            part = <Particle>others[index]
-            if self is part:
+            if self is others[index]:
                 continue
 
-            x = part.x
-            y = part.y
-            mass = part.mass
+            x = others[index].x
+            y = others[index].y
+            mass = others[index].mass
             #temp_dir = self.calculate_direction((x, y))
             #temp_dir = (atan2(y-self.y, x-self.x)*constants.RADIAN_DIV)
             temp = (x-self.x)**2+(y-self.y)**2  # pythagorean theorem
@@ -109,14 +107,14 @@ cdef class Particle:
         #else:self.force = (net_force) # subtract required force here
         self.x += self.vx
         self.y += self.vy
-        if self.x >= constants.X_SUB:
-            self.x = -constants.X_SUB
-        elif self.x <= -constants.X_SUB:
-            self.x = constants.X_SUB
-        if self.y >= constants.Y_SUB:
-            self.y = -constants.Y_SUB
-        elif self.y <= -constants.Y_SUB:
-            self.y = constants.Y_SUB
+        #if self.x >= constants.X_SUB:
+        #    self.x = -constants.X_SUB
+        #elif self.x <= -constants.X_SUB:
+        #    self.x = constants.X_SUB
+        #if self.y >= constants.Y_SUB:
+        #    self.y = -constants.Y_SUB
+        #elif self.y <= -constants.Y_SUB:
+        #    self.y = constants.Y_SUB
 
 
 
