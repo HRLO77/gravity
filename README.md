@@ -16,7 +16,7 @@ Cython files are in `./gravity/` . If you need to compile them again, run `py cy
 
 run `py test.py` to start the computing. When ctrl+c is pressed, computing is stopped and the particles collected are dumped in-order in `data.pickle`, along with a detailed last frame in-case you want to pick-up where you left off.
 
-`/animate.py` will create a mat0lorlib animation of the data.
+Running `py animate.py` will start a matplotlib animation of the computed data in `data.pickle`.
 
 the cython code is very efficient, producing 1 frame every ~0.00386308702 seconds, which is about ~0.115892611 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles) and computing with direct-sum (highest accuracy)
 
