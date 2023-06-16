@@ -9,3 +9,5 @@ matplotlib
 cython-lint
 black
 flake8
+pillow
+ffmpeg
