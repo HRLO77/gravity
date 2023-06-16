@@ -1,5 +1,7 @@
 # cython: language_level=3
 # distutils: language=c
+# cython: cpp_locals=True
+# cythhon: binding=False
 # cython: infer_types=False
 # cython: wraparound=False
 # cython: boundscheck=False
@@ -7,6 +9,8 @@
 # cython: overflowcheck=False
 # cython: nonecheck=False
 # cython: initializedcheck=False
+# cython: always_allow_keywords=False
+# cython: c_api_binop_methods=True
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
 import math
@@ -28,7 +32,7 @@ cdef public float G = 6.67430*10e-11  # gravitational constant
 cdef public int SIZE = 5
 cdef public int BODIES = int(input("Enter bodies: "))
 cdef public bint OUTPUT = bool(int(input('Print progress?: ')))
-cdef public float TIMESTEP = 0.00025
+cdef public float TIMESTEP = 0.00001
 cdef public bint LOAD_DATA = bool(int(input('Load data from previous session?: ')))
 #cdef public int FRAMES_F = int(input("Frames: "))
 __all__ = globals()
