@@ -59,17 +59,17 @@ cdef class Particle:
         cdef unsigned int index
         cdef float net_f_x, net_f_y, temp_dir, temp_force, to_atan, temp, x, y
         cdef unsigned int mass
-
+        cdef Particle part
         net_f_x = 0
         net_f_y = 0
         for index in range((others.shape[0])):
-
-            if self is others[index]:  # ensure that we are not calculuting a particles own force
+            part = others[index]
+            if self is part:  # ensure that we are not calculuting a particles own force
                 continue
 
-            x = others[index].x
-            y = others[index].y
-            mass = others[index].mass
+            x = part.x
+            y = part.y
+            mass = part.mass
 
             temp = (x-self.x)**2+(y-self.y)**2  # pythagorean theorem
             if temp < constants.SIZE:

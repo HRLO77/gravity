@@ -7,4 +7,8 @@ gravity/*.h
 gravity/*.c
 gravity/*.pyd
 gravity/*.pyc
+gravity/*.html
+gravity/__pycache__/
+.vscode/
 *.h
+*.html
