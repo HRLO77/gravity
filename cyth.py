@@ -28,7 +28,7 @@ setup(
 # )
 
 setup(
-    ext_modules=cythonize([Extension("gravity.run", sources=["gravity/run.pyx"], include_dirs=include, extra_compile_args=args)], nthreads=12, compiler_directives=cd, annotate=True),
+    ext_modules=cythonize([Extension("gravity.run", sources=["gravity/run.pyx"], include_dirs=include, extra_compile_args=args)], nthreads=12, compiler_directives=cd),
     zip_safe=False, include_dirs=include, packages=pk
 )
 

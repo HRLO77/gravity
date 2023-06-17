@@ -25,3 +25,14 @@ the cython code is very efficient, producing 1 frame every ~0.00386308702 second
 `test_animation.pickle` Has a pre-loaded simulation, just run `py animate.py` to see it! (requires no installing of compilers, buildtools, compiling or changing paths.)
 
 Enjoy!
+
+
+## Issues
+
+* When computing with cython, all data is dumped as 16 bit (half precision) floats to save space, but needs to be loaded as 32 bit (full precision) floats to be stored in a memoryview for index. This will take up *twice* as much memory than needed with no benefit when rendering.
+
+* Since positions are stored as single precision floats when computing in cython, any values above 0xFFFF and less than -0xFFFF will simply just not show the positions when rendering, this problem can be delayed by using `double` instead of `float`, but will take up twice as much memory
+
+* Cython cannot be compiled with clang on platform NT, this should be fixed in 3.12. But until then MSVC should work fine.
+
+* Due to the cython code being direct sum (O(n^2) complexity), it relies on simply being fast. If you want it to work fast even with very large numbers of bodies, implementing other algorithms such as barnes-hut (O(log n) complexity) will fix this.
