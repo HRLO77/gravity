@@ -1,10 +1,12 @@
+# gravity
+
 This project simulates gravitional interactions between N-bodies
 
 
 # requirements
 install by `py -m pip install -r requirements.txt` and `py -m pip install setuptools -U`
 
-What you need to know is in `./gravity/python_code/test.py`
+What you need to know is in `./gravity/python_code/main.py`
 
 Simply changing the masses of particles and creating as many bodies as you want, starts a real-time simulation in pygame.
 
@@ -14,7 +16,7 @@ This is the most recommended way to calculate particle before rendering, pypy is
 
 Cython files are in `./gravity/` . If you need to compile them again, run `py cyth.py build_ext --inplace` in `/`
 
-run `py test.py` to start the computing. When ctrl+c is pressed, computing is stopped and the particles collected are dumped in-order in `data.pickle`, along with a detailed last frame in-case you want to pick-up where you left off.
+run `py main.py` to start the computing. When ctrl+c is pressed, computing is stopped and the particles collected are dumped in-order in `data.pickle`, along with a detailed last frame in-case you want to pick-up where you left off.
 
 Running `py start_animate.py` will start a matplotlib animation or create a gif of the computed data in `data.pickle`.
 
@@ -28,10 +30,6 @@ Enjoy!
 
 
 ## Issues
-
-* When computing with cython, all data is dumped as 16 bit (half precision) floats to save space, but needs to be loaded as 32 bit (full precision) floats to be stored in a memoryview for index. This will take up *twice* as much memory than needed with no benefit when rendering.
-
-* Since positions are stored as single precision floats when computing in cython, any values above 0xFFFF and less than -0xFFFF will simply just not show the positions when rendering, this problem can be delayed by using `double` instead of `float`, but will take up twice as much memory
 
 * Cython cannot be compiled with clang on platform NT, this should be fixed in 3.12. But until then MSVC should work fine.
 

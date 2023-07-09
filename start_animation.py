@@ -1,3 +1,4 @@
+
 if bool(int(input('Execute in cython: '))):
     import animate
 else:
@@ -6,6 +7,8 @@ else:
     import matplotlib.animation as animation
     from matplotlib.animation import FFMpegWriter
     import numpy as np
+    import os
+
     fig = plt.figure()
 
     #creating a subplot 
@@ -21,7 +24,6 @@ else:
     def animate(i):
         
         global c, con
-    
         try:
             ax1.clear()
             ax1.scatter(*zip(*data[i]), con)
@@ -31,14 +33,13 @@ else:
             c += 1
         except BaseException:
             if save:
-                ani.save(f'./{np.random.randint(0, 2_000_000)}.gif', writer=FFMpegWriter(fps=20))
+                ani.save(f'./{np.random.randint(0, 2147483647)}.gif', writer=FFMpegWriter(fps=30))
             else:
                 plt.show()
-
     plt.ioff()
     ani = animation.FuncAnimation(fig, animate, interval=1 if save else 1000/30, cache_frame_data=data.shape[1] < 5_000, frames=data.shape[0])
 
     if save:
-        ani.save(f'./{np.random.randint(0, 2_000_000)}.gif', writer=FFMpegWriter(fps=20))
+        ani.save(f'./{np.random.randint(0, 2147483647)}.gif', writer=FFMpegWriter(fps=30))
     else:
         plt.show()

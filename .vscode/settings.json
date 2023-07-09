@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "xstring": "c",
-        "xutility": "c"
-    },
-    "cmake.configureOnOpen": true
-}

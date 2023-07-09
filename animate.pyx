@@ -42,14 +42,14 @@ cdef inline void animate(unsigned int i):
         plt.title('Gravitational simulation')
     except BaseException:
         if save:
-            ani.save(f'./{np.random.randint(0, 2_000_000)}.mp4', writer=FFMpegWriter(fps=20))
+            ani.save(f'./{np.random.randint(0, 2_000_000)}.mp4', writer=FFMpegWriter(fps=30))
         else:
             plt.show()
 plt.ioff()
 ani = animation.FuncAnimation(fig, animate, interval=1 if save else 1000/30, cache_frame_data=data.shape[1] < 3_000, frames=data.shape[0], repeat=False)
 try:
     if save:
-        ani.save(f'./{np.random.randint(0, 2_000_000)}.mp4', writer=FFMpegWriter(fps=20))
+        ani.save(f'./{np.random.randint(0, 2_000_000)}.mp4', writer=FFMpegWriter(fps=30))
     else:
         plt.show()
 except BaseException:
