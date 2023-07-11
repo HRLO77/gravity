@@ -3,13 +3,6 @@ import setuptools
 from Cython.Build import cythonize
 import numpy
 import os
-<<<<<<< HEAD
-import distutils
-distutils
-=======
-from numpy import distutils
-(distutils.__file__)
->>>>>>> 541eb1e03c16e7c8a337b2ad0a256db42bcaebf2
 os.environ['CC'] = 'clang-cl'  # following is for compilation with clang
 os.environ['LDSHARED'] = 'clang -shared'
 os.environ['CXX'] = 'clang++'
