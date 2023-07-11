@@ -29,7 +29,7 @@ cdef extern from *:
     #define GRAVITY_CONST (float)(6.67430 * 10e-11)
     """
     const float GRAVITY_CONST "GRAVITY_CONST"
-
+    
 import numpy as np
 from numpy import array
 from numpy.random import randint
@@ -79,8 +79,11 @@ cdef class Particle:
             tx = (x-self.x)
             ty = (y-self.y)
             temp = (tx*tx)+(ty*ty)  # pythagorean theorem
+<<<<<<< HEAD
             if temp <= 10:
                 temp += 10
+=======
+>>>>>>> 541eb1e03c16e7c8a337b2ad0a256db42bcaebf2
             temp_force = self.calculate_force(temp, mass)  # calculate the attraction
             net_f_x += tx*temp_force  # spread it accross the two dimensions
             net_f_y += ty*temp_force
@@ -130,6 +133,10 @@ cdef class Handler:
 
 cdef npc.ndarray[float, ndim=3] run():
     cdef float begin, end
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 541eb1e03c16e7c8a337b2ad0a256db42bcaebf2
     cdef const float[:,:,] np_data
     if not constants.LOAD_DATA:
         # this line creates the particles, you can change the range of where they start, their mass, and beginning velocity to whatever you wish.
@@ -144,6 +151,10 @@ cdef npc.ndarray[float, ndim=3] run():
         # this line loads up the last frame from data.pickle if you want to continue a simulation (very useful if you are running low on memory)
         with open('data.pickle', 'rb') as f:
             np_data = pickle.load(f)[1]
+<<<<<<< HEAD
+=======
+
+>>>>>>> 541eb1e03c16e7c8a337b2ad0a256db42bcaebf2
     cdef Handler handler = Handler(np_data)
     cdef list[ls_float] particles = [handler.get()]
     cdef float c = 0
@@ -170,6 +181,10 @@ cdef npc.ndarray[float, ndim=3] run():
     push = np.array(particles, dtype=np.float32)#.reshape((len(particles)/constants.BODIES, constants.BODIES, 2))
 
     printf('\nDone!\n')
+<<<<<<< HEAD
     globals()['session'] = np.array([(*pos, handler.particles[index].mass, handler.particles[index].vx, handler.particles[index].vy) for index, pos in enumerate(handler.get())], dtype=np.float32)
+=======
+    globals()['session'] = np.array(handler.get(), dtype=np.float32)
+>>>>>>> 541eb1e03c16e7c8a337b2ad0a256db42bcaebf2
     return push
 globals()['particles'] = run()

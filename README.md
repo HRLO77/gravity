@@ -6,11 +6,17 @@ This project simulates gravitional interactions between N-bodies
 # requirements
 install by `py -m pip install -r requirements.txt` and `py -m pip install setuptools -U`
 
+<<<<<<< HEAD
 # realtime rendering
 
 What you need to know is in `./gravity/python_code/main.py`
 
 Simply change the masses of particles and creating as many bodies as you want, starts a real-time simulation in pygame.
+=======
+What you need to know is in `./gravity/python_code/main.py`
+
+Simply changing the masses of particles and creating as many bodies as you want, starts a real-time simulation in pygame.
+>>>>>>> 541eb1e03c16e7c8a337b2ad0a256db42bcaebf2
 
 # cython
 
@@ -24,7 +30,11 @@ Running `py start_animate.py` will start a matplotlib animation or create a gif 
 
 Actual animation cythonized code is in `animate.pyx`.
 
+<<<<<<< HEAD
 the cython code is very efficient, producing 1 frame every ~0.0027647453 seconds, which is about ~0.082942359 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles) and computing with direct-sum (highest accuracy)
+=======
+the cython code is very efficient, producing 1 frame every ~0.00386308702 seconds, which is about ~0.115892611 seconds of calculating to produce one second of rendering (at 30/frames a second, 1000 particles) and computing with direct-sum (highest accuracy)
+>>>>>>> 541eb1e03c16e7c8a337b2ad0a256db42bcaebf2
 
 `test_animation.pickle` Has a pre-loaded simulation, just run `py animate.py` to see it! (requires no installing of compilers, buildtools, compiling or changing paths.)
 

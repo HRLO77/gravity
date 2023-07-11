@@ -25,6 +25,7 @@ np.ALLOW_THREADS = True
 #cdef public (int, int) ORIGIN = (X-X_SUB, Y-Y_SUB)
 # K = 50  # n particles
 # grid: list[list[list]] = [[[] for y in '~'*Y] for x in '~'*X]  # grid
+<<<<<<< HEAD
 #cdef public float SOFTEN = 10e-20  # the softening factor
 # with open('pi.txt') as f:
 #cdef public float RADIAN_DIV = np.pi/180
@@ -32,6 +33,16 @@ np.ALLOW_THREADS = True
 cdef public int BODIES = int(input("Enter bodies: "))
 cdef public bint OUTPUT = bool(int(input('Print progress?: ')))
 cdef public float TIMESTEP = float(input('Timestep (0.001/1000 reference): '))
+=======
+cdef public float G = 6.67430*10e-11  # gravitational constant
+#cdef public float SOFTEN = 10e-20  # the softening factor
+# with open('pi.txt') as f:
+#cdef public float RADIAN_DIV = np.pi/180
+cdef public int SIZE = 5
+cdef public int BODIES = int(input("Enter bodies: "))
+cdef public bint OUTPUT = bool(int(input('Print progress?: ')))
+cdef public float TIMESTEP = 0.0005
+>>>>>>> 541eb1e03c16e7c8a337b2ad0a256db42bcaebf2
 cdef public bint LOAD_DATA = bool(int(input('Load data from previous session?: ')))
 #cdef public int FRAMES_F = int(input("Frames: "))
 __all__ = globals()
