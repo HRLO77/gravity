@@ -19,7 +19,6 @@ from matplotlib.animation import FFMpegWriter
 import numpy as np
 cimport numpy as npc
 import pickle
-<<<<<<< HEAD
 
 #creating a subplot 
 
@@ -39,19 +38,13 @@ if bounds:
     ylim[0] = ylim[0]*-1
 fig = plt.figure()
 ax1 = fig.add_subplot(1,1,1)
+plt.set_rasterized(True)
 #creating a subplot
 if bounds:
     plt.autoscale(False)
     plt.xlim(xlim)
     plt.ylim(ylim)
-=======
-fig = plt.figure()
 
-#creating a subplot 
-ax1 = fig.add_subplot(1,1,1)
-
-import pickle
->>>>>>> 541eb1e03c16e7c8a337b2ad0a256db42bcaebf2
 cdef bint save = bool(int(input('Save animation as video or render realtime? [1/0]: ')))
 cdef float[:,:,:,] data
 with open('data.pickle', 'rb') as f:
@@ -64,18 +57,14 @@ cdef inline void animate(unsigned int i):
         ax1.clear()
         dat = data[i]
         ax1.scatter(*zip(*dat), con)
-<<<<<<< HEAD
         if bounds:
             ax1.set_xlim(xlim)
             ax1.set_ylim(*ylim)
-=======
->>>>>>> 541eb1e03c16e7c8a337b2ad0a256db42bcaebf2
         plt.xlabel('X')
         plt.ylabel('Y')
         plt.title('Gravitational simulation')
     except BaseException:
         if save:
-<<<<<<< HEAD
             ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=25))
         else:
             plt.show()
@@ -84,16 +73,6 @@ ani = animation.FuncAnimation(fig, animate, interval=1 if save else 1000/25, cac
 try:
     if save:
         ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=25))
-=======
-            ani.save(f'./{np.random.randint(0, 2_000_000)}.mp4', writer=FFMpegWriter(fps=30))
-        else:
-            plt.show()
-plt.ioff()
-ani = animation.FuncAnimation(fig, animate, interval=1 if save else 1000/30, cache_frame_data=data.shape[1] < 3_000, frames=data.shape[0], repeat=False)
-try:
-    if save:
-        ani.save(f'./{np.random.randint(0, 2_000_000)}.mp4', writer=FFMpegWriter(fps=30))
->>>>>>> 541eb1e03c16e7c8a337b2ad0a256db42bcaebf2
     else:
         plt.show()
 except BaseException:
