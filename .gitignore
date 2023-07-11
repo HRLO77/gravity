@@ -1,0 +1,14 @@
+build/
+__pycache__/
+*.c
+*.pyd
+*.pyc
+gravity/*.h
+gravity/*.c
+gravity/*.pyd
+gravity/*.pyc
+gravity/*.html
+gravity/__pycache__/
+.vscode/
+*.h
+*.html
