@@ -31,7 +31,6 @@ the cython code is very efficient, producing 1 frame every ~0.0027647453 seconds
 
 Enjoy!
 
-
 ## Issues
 
 * Cython cannot be compiled with clang on platform NT, this should be fixed in 3.12. But until then MSVC should work fine.

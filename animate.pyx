@@ -38,7 +38,6 @@ if bounds:
     ylim[0] = ylim[0]*-1
 fig = plt.figure()
 ax1 = fig.add_subplot(1,1,1)
-plt.set_rasterized(True)
 #creating a subplot
 if bounds:
     plt.autoscale(False)

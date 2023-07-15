@@ -95,7 +95,7 @@ cdef class Particle:
 
 ctypedef (float, float) cfloat
 
-ctypedef list[clfoat] ls_float
+ctypedef list[cfloat] ls_float
 
 @cython.freelist(8192)
 cdef class Handler:
