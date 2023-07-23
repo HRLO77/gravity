@@ -27,6 +27,8 @@ clang -Ofast -ffast-math -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -mtune=nati
 
 * *Note*: clang doesn't like some cython generated complex math code, you can simply comment that out to continue with compiliation.
 
+After this, copy `.\build\lib.win-amd64-cpython-311\gravity\run.cp311-win_amd64.pyd` to `./gravity` and you're finished!
+
 run `py main.py` to start the computing. When ctrl+c is pressed, computing is stopped and the particles collected are dumped in-order in `data.pickle`, along with a detailed last frame in-case you want to pick-up where you left off.
 
 Running `py start_animate.py` will start a matplotlib animation or create a gif of the computed data in `data.pickle`.
