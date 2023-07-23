@@ -54,7 +54,7 @@ cdef class Particle:
 
     cdef inline float calculate_force(self, const float dist, const float weight):
         '''Calculates the force of attraction (in newtons) between this particle and another body (particle, unit of space, or position and weight) in a higher dimension.'''
-        return (6.67430*10e-11*self.mass*weight)/((dist))  # if (self.f) > 0 else (constants.G*self.mass*weight)/1+(constants.SOFTEN)
+        return (GRAVITY_CONST*self.mass*weight)/((dist))  # if (self.f) > 0 else (constants.G*self.mass*weight)/1+(constants.SOFTEN)
     
     cdef void move(self, Particle[:,] others):
         '''Moves this particle through space based on the positions of others particles
@@ -76,16 +76,18 @@ cdef class Particle:
             x = part.x
             y = part.y
             mass = part.mass
+            vx = part.vx
+            vy = part.vy
             tx = (x-self.x)
             ty = (y-self.y)
             temp = (tx*tx)+(ty*ty)  # pythagorean theorem
             if temp <= 10:
                 temp += 10
             temp_force = self.calculate_force(temp, mass)  # calculate the attraction
-            net_f_x += tx*temp_force  # spread it accross the two dimensions
-            net_f_y += ty*temp_force
+            net_f_x += tx*temp_force+vx  # spread it accross the two dimensions
+            net_f_y += ty*temp_force+vy
 
-        self.vx += net_f_x*constants.TIMESTEP  ## increase velocity according to gravity
+        self.vx += net_f_x*constants.TIMESTEP  # increase velocity according to gravity
         self.vy += net_f_y*constants.TIMESTEP
 
 
@@ -152,7 +154,7 @@ cdef npc.ndarray[float, ndim=3] run():
         if constants.OUTPUT:
             while 1:
                 handler.move_timestep()
-                particles.append(handler.get())
+                particles.appendf(handler.get())
                 c += 1.0
                 printf("%1.f\r", c)
                 PyErr_CheckSignals()

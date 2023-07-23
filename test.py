@@ -5,3 +5,5 @@ with open('data.pickle', 'rb') as f:
     data = np.array(pickle.load(f)[0])
     
 print(data.shape)
+
+
