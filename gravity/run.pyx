@@ -63,7 +63,7 @@ cdef class Particle:
         Returns void'''
         '''Dist func: |(1/sin(θ))*base|'''
         cdef int index
-        cdef float net_f_x, net_f_y, temp_force, temp, x, y, tx, ty
+        cdef float net_f_x, net_f_y, temp_force, temp, x, y
         cdef float mass
         cdef Particle part
         net_f_x = 0
@@ -78,14 +78,12 @@ cdef class Particle:
             mass = part.mass
             vx = part.vx
             vy = part.vy
-            tx = (x-self.x)
-            ty = (y-self.y)
-            temp = (tx*tx)+(ty*ty)  # pythagorean theorem
+            temp = ((x-self.x)*(x-self.x))+((y-self.y)*(y-self.y))  # pythagorean theorem
             if temp <= 10:
                 temp += 10
             temp_force = self.calculate_force(temp, mass)  # calculate the attraction
-            net_f_x += tx*temp_force+vx  # spread it accross the two dimensions
-            net_f_y += ty*temp_force+vy
+            net_f_x += (x-self.x)*temp_force  # spread it accross the two dimensions
+            net_f_y += (y-self.y)*temp_force
 
         self.vx += net_f_x*constants.TIMESTEP  # increase velocity according to gravity
         self.vy += net_f_y*constants.TIMESTEP
@@ -154,7 +152,7 @@ cdef npc.ndarray[float, ndim=3] run():
         if constants.OUTPUT:
             while 1:
                 handler.move_timestep()
-                particles.appendf(handler.get())
+                particles.append(handler.get())
                 c += 1.0
                 printf("%1.f\r", c)
                 PyErr_CheckSignals()
