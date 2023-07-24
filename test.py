@@ -6,4 +6,3 @@ with open('data.pickle', 'rb') as f:
     
 print(data.shape)
 
-
