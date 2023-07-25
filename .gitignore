@@ -13,5 +13,5 @@ gravity/python_code.__pycache__
 .vscode/
 ./*.h
 ./*.html
-animation.cp311-win_amd64.pyd
+animate.cp311-win_amd64.pyd
 animate.c
