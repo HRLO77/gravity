@@ -49,3 +49,7 @@ Enjoy!
 * Cython is not natively supported for compilition with python on platform NT, this should be fixed in 3.12. But until then MSVC should work fine.
 
 * Due to the cython code being direct sum (O(n^2) complexity), it relies on simply being fast. If you want it to work fast even with very large numbers of bodies, implementing other algorithms such as barnes-hut (O(log n) complexity) will fix this.
+
+## pre-compiled binaries
+
+pre-compiled binaries for x64 windows and linux platforms can be found in `./binaries`, simply copy the DLLs to their locations and run `python main.py`.

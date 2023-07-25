@@ -9,6 +9,7 @@ gravity/*.pyd
 gravity/*.pyc
 gravity/*.html
 gravity/__pycache__/
+gravity/python_code.__pycache__
 .vscode/
 *.h
 *.html
