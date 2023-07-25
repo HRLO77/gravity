@@ -54,11 +54,10 @@ class particle:
       
     def calculate_force(self, other=None, weight: float | None=None, position=None, dist=None):
         '''Calculates the force of attraction (in newtons) between this particle and another body (particle, unit of space, or position and weight) in a higher dimension.'''
-        f = (position[0]-self.x)**2+(position[1]-self.y)**2
         # f = f**np.log2(f)
         # if f < constants.SIZE:
         #     f = constants.SIZE**2
-        return ((constants.G*self.mass*weight)/(f if f > 0 else constants.SIZE))  # if (self.f) > 0 else (constants.G*self.mass*weight)/1+(constants.SOFTEN)
+        return ((constants.G*self.mass*weight)/(dist if dist > 0 else constants.SIZE))  # if (self.f) > 0 else (constants.G*self.mass*weight)/1+(constants.SOFTEN)
         # assert isinstance(other, self.__class__) or isinstance(other, unit) or other==None, "Must be comparing to another particle of a unit in space."
         # if isinstance(other, self.__class__):
         #     f = (math.dist((other.x, self.y), (other.x, self.y)))
@@ -72,44 +71,27 @@ class particle:
         #     return (constants.G*self.mass*weight)/1
         
       
-    def calculate_direction(self, position=None, angle=None):
-        '''Calculates the direction (slope and radians) to another particle, unit of space or position in space.'''
-        t = np.arctan2((position[1])-self.y, (position[0])-self.x)
-            # slope = math.tan(t)
-        return t*constants.RADIAN_DIV
-        
+       
       
     def move(self, others:  list | tuple):
         '''Based on a dict (key is x and y, value is rate of bending in 3d dimension.), calculate direction to move to and speed at which to move. Returns direction (radians), force (newtons)'''
         net_f_x, net_f_y = (0, 0)
        
-        top = type(others[0]) == self.__class__
-        if top:
-            for index in range(len(others)):
-                temp_dir = self.calculate_direction(position=(others[index].x, others[index].y))
-                temp_force = self.calculate_force(position=(others[index].x, others[index].y), weight=others[index].mass)
-                if temp_force > constants.NEWT_MAX:
-                    temp_force = constants.NEWT_MAX
-                net_f_x += np.cos(temp_dir)*temp_force
-                net_f_y += np.sin(temp_dir)*temp_force
-                mass, x, y, = others[index].mass, others[index].x, others[index].y
-                s = np.sin(temp_dir)
-                f += mass*abs((x-y)*temp_force) / abs(self.mass*((1/(1 if s==0 else s))*x-self.x)**2)
-        else:
-            for index in range(len(others)):
-                mass, x, y = others[index].particle.mass, others[index].particle.x, others[index].particle.y
+        
+        for index in range(len(others)):
+            mass, x, y = others[index].particle.mass, others[index].particle.x, others[index].particle.y
 
-                temp_dir = self.calculate_direction(position=(x, y))
 
-                s = np.sin(temp_dir)
-                dist = abs((1/s if s !=0 else 1)*x-self.x)
-                temp_force = self.calculate_force(position=(x, y), weight=mass, dist=dist)
-                # print(temp_force)
-                # if temp_force > constants.NEWT_MAX:
-                #     temp_force = constants.NEWT_MAX
+            dist = (x-self.x)*(x-self.x)+(y-self.y)+(y-self.y)
+            if dist <= 10:
+                dist += 10
+            temp_force = self.calculate_force(position=(x, y), weight=mass, dist=dist)
+            # print(temp_force)
+            # if temp_force > constants.NEWT_MAX:
+            #     temp_force = constants.NEWT_MAX
 
-                net_f_x += ((x-self.x)*temp_force)
-                net_f_y += ((y-self.y)*temp_force)
+            net_f_x += ((x-self.x)*temp_force)
+            net_f_y += ((y-self.y)*temp_force)
 
                 
 
