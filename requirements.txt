@@ -3,3 +3,4 @@ setuptools
 numpy
 pandas
 matplotlib
+pygame
