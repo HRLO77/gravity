@@ -1,8 +1,8 @@
 build/
 __pycache__/
-*.c
-*.pyd
-*.pyc
+./*.c
+./*.pyd
+./*.pyc
 gravity/*.h
 gravity/*.c
 gravity/*.pyd
@@ -11,5 +11,5 @@ gravity/*.html
 gravity/__pycache__/
 gravity/python_code.__pycache__
 .vscode/
-*.h
-*.html
+./*.h
+./*.html
