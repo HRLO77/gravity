@@ -7,7 +7,6 @@ import warnings
 __overloads__ = {}
 
 
-
 @functools.cache
 def overload(function: abc.Callable):
     
@@ -19,17 +18,16 @@ def overload(function: abc.Callable):
     """
     # check if overloads exist currectly
     try:
-        __overloads__
+        global overloads
     except NameError:
         globals()['__overloads__'] = {}
-
     class ext_type:
         
         def __init__(self, extended_type: typing.Any) -> None:
             self.extended  = type(extended_type)
             self.base = typing.get_origin(extended_type)
             self.args = typing.get_args(extended_type)
-            if self.args == type:
+            if isinstance(self.args, type):
                 self.args = None
                 
         def __repr__(self) -> str:
@@ -69,17 +67,18 @@ def overload(function: abc.Callable):
                 i = 0
                 binded_args = bargs.arguments
                 for param_name, annotate in binded_args.items():
-                    data = (param_name, type(annotate))
+                    anon_t = type(annotate)
+                    data = (param_name, anon_t)
                     if isinstance(data[1], types.UnionType):
                         data = (data[0], ext_type(data[1]))
                     elif isinstance(data[1], types.GenericAlias):
                         data = (data[0], ext_type(data[1]))
-                    elif hasattr(formatted[i][1], 'extended'):
+                    elif hasattr(formatted[i][1], 'extended') :
                         if data[1] in (list, tuple, memoryview):
                             if type(annotate[0]) in formatted[i][1].args:
                                 data = (data[0], formatted[i][1])
                         else:
-                            if formatted[i][1].base == type(annotate):
+                            if isinstance(formatted[i][1].base, anon_t):
                                 data = (data[0], formatted[i][1])
                                 warnings.warn(f"Could not verify arguments for {formatted[i][1].extended}, infered to {formatted[i][1].base} (expected {formatted[i][1].args})")
                     format_params += [data]
@@ -90,6 +89,7 @@ def overload(function: abc.Callable):
                     return func(*args, **kwargs)
             except (TypeError, KeyError, IndexError) as e:
                 continue
+        
         assert False, f"No overloads found for function {function} with args {binded_args}"
 
         
@@ -104,8 +104,9 @@ def overload(function: abc.Callable):
         format_params = []
         for param_name, param in params:
             data = (param_name, param.annotation)
-            if data[1] == inspect._empty and (param.default if type(param.default)==type else type(param.default))!=inspect._empty:
-                format_params += [(data[0], type(param.default))]  # be smart!
+            typedef = type(param.default)
+            if isinstance(data[1], inspect._empty) and isinstance((param.default if isinstance(typedef, type) else typedef), inspect._empty):
+                format_params += [(data[0], typedef)]  # be smart!
                 continue
             if isinstance(data[1], types.UnionType):
                 data = (data[0], ext_type(data[1]))
@@ -113,7 +114,7 @@ def overload(function: abc.Callable):
                 data = (data[0], ext_type(data[1]))
             format_params += [data]
         format_params = tuple(format_params)
-        if not format_params in __overloads__[function.__name__]:      
+        if not format_params in __overloads__[function.__name__]:        
             __overloads__[function.__name__][format_params] = function
 
     @functools.wraps(function)
