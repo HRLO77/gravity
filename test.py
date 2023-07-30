@@ -102,7 +102,7 @@ def overload(function: abc.Callable):
                         else:
                             if formatted[i][1].base is anon_t:  # otherwise infer the arguments by whether or not their basetypes align
                                 data = (data[0], formatted[i][1])
-                                warnings.warn(f"Could not verify arguments for {formatted[i][1].extended}, inferred to {formatted[i][1].base} (expected {formatted[i][1].args})")
+                                warnings.warn(f"Could not verify arguments for arg {data[0]} with type {anon_t}, inferred to annotation {formatted[i][1].base} (expected type {formatted[i][1].args})")
                     format_params += [data]
                     i += 1
                 format_params = tuple(format_params)
