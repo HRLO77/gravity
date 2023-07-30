@@ -93,7 +93,7 @@ def overload(function: abc.Callable):
                     elif data[1]==typing.Optional or data[1]==typing.Union:
                         data = (data[0], ext_type(data[1]))
                     elif hasattr(formatted[i][1], 'extended'):  # check if the overloaded annotation is ext_type (used for special annotations)
-                        if data[1] in (list, tuple, memoryview, frozenset, set):  # if we can easily determine the arguments of the annotation
+                        if data[1] in (list, tuple, memoryview, frozenset, set) or hasattr(data[1], '__iter__'):  # if we can easily determine the arguments of the annotation
                             for fx in annotate:
                                 tanon = type(fx)
                                 break
