@@ -17,10 +17,7 @@ def overload(function: abc.Callable):
         
     """
     # check if overloads exist currectly
-    try:
-        __overloads__
-    except NameError:
-        globals()['__overloads__'] = {}
+    
     class ext_type:
         
         def __init__(self, extended_type: typing.Any) -> None:
