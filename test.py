@@ -71,7 +71,7 @@ def overload(function: abc.Callable):
             Args:
                 function (str): Name of the function to search overloads for.
                 '''
-        
+        possible = 0
         for formatted, func in __overloads__[function].items():
             format_params = []
             try: 
@@ -102,16 +102,26 @@ def overload(function: abc.Callable):
                         else:
                             if formatted[i][1].base is anon_t:  # otherwise infer the arguments by whether or not their basetypes align
                                 data = (data[0], formatted[i][1])
+                                possible = (0, func)
                                 warnings.warn(f"Could not verify arguments for arg {data[0]} with type {anon_t}, inferred to annotation {formatted[i][1].base} (expected type {formatted[i][1].args})")
                     format_params += [data]
                     i += 1
                 format_params = tuple(format_params)
                 del fsig, bargs
-                if match(format_params, formatted):  # check if the overload for this function matches the arguments
-                    return func(*args, **kwargs)
+                if match(format_params, formatted):
+                    if possible==0:  # check if the overload for this function matches the arguments
+                        return func(*args, **kwargs)
+                    else:
+                        possible = (1, func)
+                
             except (TypeError, KeyError, IndexError) as e:
+                if possible!=0:
+                    if possible[1]==func:
+                        possible = 0
                 continue
-        
+        if possible!=0:
+            if possible[0]==1:
+                return func(*args, **kwargs)
         assert False, f"No overloads found for function {function} with args {binded_args}"  # no suitable overload for the arguments and types was found
       
     if function.__name__ not in __overloads__:  # if overloads for this function do not exist,
