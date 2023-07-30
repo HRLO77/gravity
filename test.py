@@ -9,7 +9,7 @@ __overloads__ = {}
 
 @functools.cache
 def overload(function: abc.Callable):
-    
+    global __overloads__
     """A decorator which provides overloading capabilities of languages such as C++ functions.
 
     Args:
@@ -18,7 +18,7 @@ def overload(function: abc.Callable):
     """
     # check if overloads exist currectly
     try:
-        global overloads
+        __overloads__
     except NameError:
         globals()['__overloads__'] = {}
     class ext_type:
@@ -27,8 +27,17 @@ def overload(function: abc.Callable):
             self.extended  = type(extended_type)
             self.base = typing.get_origin(extended_type)
             self.args = typing.get_args(extended_type)
-            if isinstance(self.args, type):
-                self.args = None
+
+            
+            for i in self.args:
+                if isinstance(i, (types.UnionType, types.GenericAlias, typing.ByteString)):
+                    self.args = ext_type(self.args)
+                elif i==typing.AnyStr:
+                    self.args = ext_type(typing.Union[str, bytes])
+                elif i==typing.Any:
+                    self.args = (inspect._empty, )
+                elif self.args==typing.Optional or self.args==typing.Union:
+                    self.args = ext_type(self.args)
                 
         def __repr__(self) -> str:
             return f'{self.extended} object, base {self.base} args {self.args}'
@@ -69,9 +78,13 @@ def overload(function: abc.Callable):
                 for param_name, annotate in binded_args.items():
                     anon_t = type(annotate)
                     data = (param_name, anon_t)
-                    if isinstance(data[1], types.UnionType):
+                    if isinstance(data[1], (types.UnionType, types.GenericAlias, typing.ByteString)):
                         data = (data[0], ext_type(data[1]))
-                    elif isinstance(data[1], types.GenericAlias):
+                    elif data[1]==typing.Any:
+                        data = (data[0], inspect._empty)
+                    elif data[1]==typing.AnyStr:
+                        data = (data[0], ext_type(typing.Union[str, bytes]))
+                    elif data[1]==typing.Optional or data[1]==typing.Union:
                         data = (data[0], ext_type(data[1]))
                     elif hasattr(formatted[i][1], 'extended') :
                         if data[1] in (list, tuple, memoryview):
@@ -81,6 +94,7 @@ def overload(function: abc.Callable):
                             if isinstance(formatted[i][1].base, anon_t):
                                 data = (data[0], formatted[i][1])
                                 warnings.warn(f"Could not verify arguments for {formatted[i][1].extended}, infered to {formatted[i][1].base} (expected {formatted[i][1].args})")
+
                     format_params += [data]
                     i += 1
                 format_params = tuple(format_params)
@@ -96,7 +110,7 @@ def overload(function: abc.Callable):
     if function.__name__ not in __overloads__:
         __overloads__[function.__name__] = {}
         f = function.__name__
-        globals()[function.__name__] = lambda *args, **kwargs:  lookup(f, *args, **kwargs)
+        globals()[function.__name__] = functools.cache((lambda *args, **kwargs:  lookup(f, *args, **kwargs)))
     
     if not function in __overloads__[function.__name__].values():
         sig = inspect.signature(function)
@@ -108,9 +122,13 @@ def overload(function: abc.Callable):
             if isinstance(data[1], inspect._empty) and isinstance((param.default if isinstance(typedef, type) else typedef), inspect._empty):
                 format_params += [(data[0], typedef)]  # be smart!
                 continue
-            if isinstance(data[1], types.UnionType):
+            if isinstance(data[1], (types.UnionType, types.GenericAlias, typing.ByteString)):
                 data = (data[0], ext_type(data[1]))
-            elif isinstance(data[1], types.GenericAlias):
+            elif data[1]==typing.Any:
+                data = (data[0], inspect._empty)
+            elif data[1]==typing.AnyStr:
+                data = (data[0], ext_type(typing.Union[str, bytes]))
+            elif data[1]==typing.Optional or data[1]==typing.Union:
                 data = (data[0], ext_type(data[1]))
             format_params += [data]
         format_params = tuple(format_params)
@@ -136,8 +154,12 @@ def b(first, second: float=4.0):
 def b(l: tuple[str], p: int):
     print('test3')
     
+@overload
+def b(test: tuple, p: typing.Any):
+    print('test4')
 
 b(7, 0)
 b(9, p=0)
 print(b(9.0))
 b(('t', '2'), 9)
+b((1, 2), 1)
