@@ -5,6 +5,7 @@ import typing
 import types
 from typing import Any
 import warnings
+import itertools
 __overloads__ = {}
 
 
@@ -22,11 +23,10 @@ def overload(function: abc.Callable):
         '''This class is used to provide greater resolution of special type annotations so less inferring is required.
         Args:
             extended_type (typing.Any): The special type to store.'''
-        def __init__(self, extended_type: typing.Any) -> None:
+        def __init__(self, extended_type: typing.Any):
             self.extended  = type(extended_type)
             self.base = typing.get_origin(extended_type)  # get the original type that was generalized
             self.args = typing.get_args(extended_type)  # get the args of the type
-
             args = []
             for i in self.args:
                 if isinstance(i, (types.UnionType, types.GenericAlias, typing.ByteString)):
@@ -39,26 +39,50 @@ def overload(function: abc.Callable):
                     # args += [ext_type(i)]
                 else:
                     args += [i]
+            def recurse(typed: ext_type, level = 0):
+                i = 0
+                for arg in typed.args:
+                    if arg.__call__() == '~':
+                        level += 1
+                        level += recurse(arg, level)
+                    i += 1
+                    
+                return level
             self.args = (*args, )
-                
+            self.level = recurse(self)
+            
+        
         def __repr__(self) -> str:
             return f'{self.extended} object, base {self.base} args {self.args}'
         
         @functools.cache
-        def __eq__(self, other) -> bool:
+        def __eq__(self, other, sc: bool=False) -> bool|tuple[bool, int]:
             '''Fancy logic, all this does is approximate if the other extension class fits this one.'''
             is_match = []  # start off assuming the other class does not match
+            score = 0
             if other.__call__() == '~':  # just make sure the other object is ext_type
                 is_match += [other.base==self.base]  # ensure base types align
-                for oarg, sarg in zip(other.args, self.args):  # iterate over arguments and make sure types align
-                    x = sarg == oarg or isinstance(oarg, sarg)
-                    is_match += [x]  
+                for oarg, sarg in itertools.zip_longest(other.args, self.args, fillvalue=0):  # iterate over arguments and make sure types align
+                    
+                    x = sarg == oarg
                     if not x:
-                        x = oarg == sarg or isinstance(sarg, oarg)
-                        if x:
-                            is_match = is_match[:-1]+[True]
-            if all(is_match):return True
-            else: return (hash(self) == hash(other))
+                        any1 = isinstance(oarg, sarg)
+                        score += 1 if any1 else 0
+                        x = any1
+                        if not x:
+                            x = oarg == sarg
+                            if not x:
+                                any1 = isinstance(sarg, oarg)
+                                score += 1 if any1 else 0
+                                x = any1
+                    is_match += [x]
+                length = len(self.args)-len(other.args)
+                score += abs(length)
+                
+                is_match += [(self.level==other.level), length==0]
+            if all(is_match):
+                return True if not sc else (True, score)
+            else: return (hash(self) == hash(other)) if not sc else ((hash(self) == hash(other)), score)
                  
         
         
@@ -106,10 +130,17 @@ def overload(function: abc.Callable):
                 bargs.apply_defaults()
                 i = 0
                 binded_args = bargs.arguments
+                args_match = True
                 for param_name, annotate in binded_args.items():
                     anon_t = type(annotate)
+                    format_anon = formatted[i][1]
                     data = (param_name, anon_t)  # get the parameter name and type
-                    if formatted[i][1].__call__() == '~':  # check if the overloaded annotation is ext_type (used for special annotations)
+                    if format_anon is inspect._empty:
+                        if not func in possible:  # if this function is not a backup, make it one!
+                            possible[func] = 0
+                        possible[func] += 3  # increase this functions demerit score (higher means less likely to match arguments)
+                        data = formatted[i]
+                    elif format_anon.__call__() == '~':  # check if the overloaded annotation is ext_type (used for special annotations)
                         if hasattr(annotate, '__iter__'):  # see if we can easily determine the arguments of the annotation
 
                             def loop(to_type):
@@ -133,20 +164,34 @@ def overload(function: abc.Callable):
                                 break
                             tanon = data[1][tanon]
                             extended_tanon = ext_type(tanon)
-                            if extended_tanon == formatted[i][1]:
-                                data = (data[0], formatted[i][1])
-                        else:  # we cannot determine the type of the argument precisely
-                            if formatted[i][1].base is anon_t:  # otherwise infer the arguments by whether or not their basetypes align
-                                data = (data[0], formatted[i][1])
+                            res = extended_tanon.__eq__(format_anon, True)
+                            if res[0] and res[1]==0:
+                                data = (data[0], format_anon)
+                            elif res[0] and res[1] > 0:
                                 if not func in possible:  # if this function is not a backup, make it one!
                                     possible[func] = 0
-                                possible += 1  # increase this functions demerit score (higher means less likely to match arguments)
-                                warnings.warn(f"Could not verify arguments for arg {data[0]} with type {anon_t}, inferred to annotation {formatted[i][1].base} (expected type {formatted[i][1].args})")
-                    format_params += [data]
+                                possible[func] += res[1]  # increase this functions demerit score (higher means less likely to match arguments)
+                            else:
+                                args_match = False
+                        else:  # we cannot determine the type of the argument precisely
+                            if format_anon.base is anon_t:  # otherwise infer the arguments by whether or not their basetypes align
+                                data = (data[0], format_anon)
+                                if not func in possible:  # if this function is not a backup, make it one!
+                                    possible[func] = 0
+                                possible[func] += 1  # increase this functions demerit score (higher means less likely to match arguments)
+                                warnings.warn(f"Could not verify arguments for arg {data[0]} with type {anon_t}, inferred to annotation {format_anon.base} (expected type {format_anon.args})")
+                    # format_params += [data]
+                    if not args_match:
+                        i+=1;continue
+                    args_match = data==formatted[i]
+                    if not args_match:
+                        args_match = isinstance(data[1], format_anon)
+                    if not args_match:
+                        break
                     i += 1
-                format_params = tuple(format_params)
+                # format_params = tuple(format_params)
                 del fsig, bargs
-                if match(format_params, formatted):
+                if args_match:
                     if not func in possible:  # check if the overload for this function matches the arguments
                         return func(*args, **kwargs)
                 done = 1
@@ -157,7 +202,6 @@ def overload(function: abc.Callable):
                 continue
         if possible != {}:  # check if we have any inferred overloaded functions as backups
             func = sorted(possible.items(), key=lambda x: x[1])[0][0]
-            warnings.warn(f"Could find suitable overloads for args {args} kwargs {kwargs}, using function {func} (scored {possible[func]})")
             return func(*args,**kwargs)  # pick the best one!
         assert False, f"No overloads found for function {function} with args {args} kwargs {kwargs}"  # no suitable overload for the arguments and types was found
       
@@ -232,7 +276,7 @@ j('')
 k.j(0)
 
 @overload
-def t(l: tuple[tuple]):
+def t(l):
     print('t0')
 
 @overload

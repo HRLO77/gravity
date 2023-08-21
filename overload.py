@@ -109,7 +109,10 @@ def overload(function: abc.Callable):
                 for param_name, annotate in binded_args.items():
                     anon_t = type(annotate)
                     data = (param_name, anon_t)  # get the parameter name and type
-                    if formatted[i][1].__call__() == '~':  # check if the overloaded annotation is ext_type (used for special annotations)
+                    if formatted[i][1] == inspect._empty:
+                        data = formatted[i][0]
+                        continue
+                    elif formatted[i][1].__call__() == '~':  # check if the overloaded annotation is ext_type (used for special annotations)
                         if hasattr(annotate, '__iter__'):  # see if we can easily determine the arguments of the annotation
 
                             def loop(to_type):
@@ -146,7 +149,13 @@ def overload(function: abc.Callable):
                     i += 1
                 format_params = tuple(format_params)
                 del fsig, bargs
-                if match(format_params, formatted):
+                full = []
+                for j in range(len(format_params)):
+                    if not format_params[j][0]==formatted[j][0]:
+                        pass
+                    else:
+                        if isinstance(format_params[j][0], formatted[j][0]):
+                            pass
                     if not func in possible:  # check if the overload for this function matches the arguments
                         return func(*args, **kwargs)
                 done = 1
