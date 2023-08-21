@@ -276,7 +276,7 @@ j('')
 k.j(0)
 
 @overload
-def t(l):
+def t(l: tuple[tuple]):
     print('t0')
 
 @overload
