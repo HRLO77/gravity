@@ -24,7 +24,7 @@ def overload(function: abc.Callable):
         
         @staticmethod
         def get_type_level(typed, level = 0)->int:
-            '''This static method returns the level of an ext_type object'''
+            '''This static method returns the level of an ext_type object. i.e'''
             i = 0
             level += 1
             for arg in typed if isinstance(typed, frozenset) else typed.args:
