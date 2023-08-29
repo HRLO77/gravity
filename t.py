@@ -23,12 +23,20 @@ def overload(function: abc.Callable):
         '''Provides helper functions for overloading.'''
         
         @staticmethod
-        def get_level(extension: Any, level: int=0) -> int:
-            '''This static method returns how deep a complex type goes. i.e tuple[tuple[int]|list[set[str]]] would be 3'''
+        def get_type_level(typed, level = 0)->int:
+            '''This static method returns the level of an ext_type object'''
+            i = 0
             level += 1
-            for arg in extension if isinstance(extension, frozenset) else extension.args:
-                if isinstance(arg, frozenset) or arg.__call__()=='~':
-                    level += helper.get_level(arg, level)
+            for arg in typed if isinstance(typed, frozenset) else typed.args:
+
+                if isinstance(arg, frozenset):
+                    
+                    level += helper.get_type_level(arg, 0)//2
+                elif arg.__call__() == '~':
+                    level += helper.get_type_level(arg, 0)
+                i += 1
+                
+            return level
         
         @staticmethod
         def get_args(extension) -> tuple:
@@ -102,21 +110,9 @@ def overload(function: abc.Callable):
         def __init__(self, extended_type: typing.Any):
             self.extended  = type(extended_type)
             self.base = typing.get_origin(extended_type)  # get the original type that was generalized
-            def recurse(typed: ext_type|frozenset, level = 0)->int:
-                i = 0
-                level += 1
-                for arg in typed if isinstance(typed, frozenset) else typed.args:
 
-                    if isinstance(arg, frozenset):
-                        
-                        level += recurse(arg, 0)//2
-                    elif arg.__call__() == '~':
-                        level += recurse(arg, 0)
-                    i += 1
-                    
-                return level
             self.args = helper.get_args(extended_type)
-            self.level = recurse(self)
+            self.level = helper.get_type_level(self)
             
         def __repr__(self) -> str:
             return f'{self.extended} object, base {self.base} args {self.args}'
@@ -367,14 +363,14 @@ t(((1,2), (3,4)))
 
 
 @overload
-def complicate(a: tuple[list[int]]|frozenset):
+def complicate(a: tuple[list[int|float]]|frozenset):
     print('first complicate')
     
 @overload
-def complicate(a: tuple[tuple[int|str]]):
+def complicate(a: tuple[tuple[int|str|float]]):
     print('second complicate')
     
-complicate(([1], [2]))
+complicate(([1.], [2.]))
 
 complicate((('', ''), ('', '')))  # 2
 
