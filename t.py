@@ -10,7 +10,6 @@ import itertools
 __overloads__ = {}
 
 
-@functools.cache
 def overload(function: abc.Callable):
     global __overloads__
     """A decorator which provides overloading capabilities of languages such as C++ functions.
@@ -117,7 +116,6 @@ def overload(function: abc.Callable):
         def __repr__(self) -> str:
             return f'{self.extended} object, base {self.base} args {self.args}'
         
-        @functools.cache
         def __eq__(self, other, sc: bool=False) -> bool|tuple[bool, int]:
             '''Fancy logic, all this does is approximate if the other extension class fits this one.'''
             is_match = [] 
@@ -206,7 +204,6 @@ def overload(function: abc.Callable):
                     #         possible[func] = 0
                     #     possible[func] += 3  # increase this functions demerit score (higher means less likely to match arguments)
                     #     data = formatted[i]
-                    @functools.cache
                     def recurse(new_type: Any) -> bool:
                         nonlocal data, args_match, possible
                         '''A function that resolves complicated types.'''
