@@ -185,11 +185,12 @@ def overload(function: abc.Callable):
                 function (str): Name of the function to search overloads for.
                 '''
         possible = {}
-        for formatted, func in __overloads__[function].items():
+        for format_tuple, func in __overloads__[function].items():
             format_params = []
             try:
                 done = 0
-                fsig = inspect.signature(func)
+                fsig = format_tuple[1]
+                formatted = format_tuple[0]
                 bargs = fsig.bind(*args, **kwargs)
                 bargs.apply_defaults()
                 i = 0
@@ -298,7 +299,7 @@ def overload(function: abc.Callable):
             format_params += (data, )
         format_params = (*format_params, )
         if not format_params in __overloads__[function.__name__]:        
-            __overloads__[function.__name__][format_params] = function  # create an overload for this function name
+            __overloads__[function.__name__][(format_params, sig)] = function  # create an overload for this function name
 
     @functools.wraps(function)
     def inner(*args, **kwargs):
