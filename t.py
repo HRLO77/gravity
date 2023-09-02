@@ -130,12 +130,14 @@ def overload(function: abc.Callable):
                     
                     if isinstance(oarg, frozenset):
                         x = sarg in oarg
+                        if x:
+                            score += len(oarg)
                     else:
                         x = sarg == oarg
-                    # if not x:
-                    #     any1 = isinstance(oarg, sarg)
-                    #     score += 1 if any1 else 0
-                    #     x = any1
+                        if not x:
+                            any1 = isinstance(sarg, oarg)
+                            score += 1 if any1 else 0
+                            x = any1
                         # if not x:
                         #     x = oarg == sarg
                         #     if not x:
@@ -348,7 +350,7 @@ def t(l: tuple[tuple]):
     print('t0')
 
 @overload
-def t(l: tuple[tuple[int]]):
+def t(l: tuple[tuple[int|str]]):
     print('t1')
 
     
