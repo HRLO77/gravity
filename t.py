@@ -283,11 +283,11 @@ def overload(function: abc.Callable):
             typedef = type(param.default)
             # below if-elif statements process the annotations and make an overload for them
             if data[1] is inspect._empty and not(param.default is inspect._empty):
-                if not isinstance(typedef, types.GenericAlias):
-                    format_params += [(data[0], typedef)]  # be smart! if a default argument is found but no annotation, take the type of the default!
+                if hasattr(typedef, '__iter__') and not (typedef in {str, bytes, bytearray}):
+                    format_params += [(data[0], helper.complex_arg_type(param.default, typedef))]  # if the type is complex, then use a helper function.
                     continue
                 else:
-                    format_params += [(data[0], helper.complex_arg_type(param.default, typedef))]  # if the type is complex, then use a helper function.
+                    format_params += [(data[0], typedef)]  # be smart! if a default argument is found but no annotation, take the type of the default!
                     continue
             elif isinstance(data[1], (types.GenericAlias)):
                 data = (data[0], ext_type(data[1]))
@@ -365,11 +365,12 @@ def complicate(a: tuple[list[int|float]]|frozenset):
     print('first complicate')
     
 @overload
-def complicate(a: tuple[tuple[int|str|float]]):
+def complicate(a=(('', ),('', ))):
     print('second complicate')
-    
-complicate(([1.], [2.]))
 
-complicate((('', ''), ('', '')))  # 2
+complicate(([1.], [2.]))  # 1
+
+complicate((('1', '2'), ('3', '4')))  # 2
 
 complicate(frozenset((1, 2)))  # 1
+
