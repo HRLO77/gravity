@@ -58,13 +58,13 @@ else:
             plt.title('Gravitational simulation')
         except BaseException:
             if save:
-                ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=25))
+                ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=30))
             else:
                 plt.show()
     plt.ioff()
-    ani = animation.FuncAnimation(fig, animate, interval=1 if save else 1000/25, cache_frame_data=data.shape[1] < 5_000, frames=data.shape[0])
+    ani = animation.FuncAnimation(fig, animate, interval=1 if save else 1000/30, cache_frame_data=data.shape[1] < 5_000, frames=data.shape[0])
 
     if save:
-        ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=25))
+        ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=30))
     else:
         plt.show()
