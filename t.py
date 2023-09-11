@@ -23,7 +23,7 @@ def overload(function: abc.Callable):
         
         @staticmethod
         def get_type_level(typed, level = 0)->int:
-            '''This static method returns the level of an ext_type object. i.e'''
+            '''This static method returns the level of an ext_type object. i.e list[tuple[int]] would return 2'''
             i = 0
             level += 1
             for arg in typed if isinstance(typed, frozenset) else typed.args:
