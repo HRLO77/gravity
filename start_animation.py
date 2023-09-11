@@ -12,12 +12,19 @@ else:
 
     import numpy as np
     bounds = not bool(int(input('Dynamic bounds [1] or static bounds [0]?: ')))
+    padding = False
     if bounds:
         
         xlim = [int(input('X bounds (integer)?: '))]*2
         xlim[0] = xlim[0]*-1
         ylim = [int(input('Y bounds (integer)?: '))]*2
         ylim[0] = ylim[0]*-1
+    if not bounds:
+        if bool(int(input('Extra padding on dynamic bounds [1/0]?: '))):
+            padding = True
+            pad_x = float(input('X padding (float 0-1)?: '))
+            pad_y = float(input('Y padding (float 0-1)?: '))
+
     fig = plt.figure()
 
     #creating a subplot
@@ -38,10 +45,14 @@ else:
         global c, con
         try:
             ax1.clear()
-            ax1.scatter(*zip(*data[i]), con)
             if bounds:
                 ax1.set_xlim(xlim)
                 ax1.set_ylim(*ylim)
+            elif padding:
+                ax1.set_xmargin(pad_x)
+                ax1.set_ymargin(pad_y)
+            ax1.scatter(*zip(*data[i]), con)
+
             plt.xlabel('X')
             plt.ylabel('Y')
             plt.title('Gravitational simulation')

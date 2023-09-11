@@ -28,14 +28,22 @@ import matplotlib.style as mplstyle
 mplstyle.use('fast')
 mplstyle.use(['dark_background', 'ggplot', 'fast'])
 
-cdef bint bounds
+cdef bint bounds, padding
+bounds = False
+padding = False
 cdef (int, int) xlim, ylim
+cdef float pad_x, pad_y
 bounds = not bool(int(input('Dynamic bounds [1] or static bounds [0]?: ')))
 if bounds:
     xlim = tuple([int(input('X bounds (integer)?: '))]*2)
     xlim[0] = xlim[0]*-1
     ylim = tuple([int(input('Y bounds (integer)?: '))]*2)
     ylim[0] = ylim[0]*-1
+if not bounds:
+    if bool(int(input('Extra padding on dynamic bounds [1/0]?: '))):
+        padding = True
+        pad_x = float(input('X padding (float 0-1)?: '))
+        pad_y = float(input('Y padding (float 0-1)?: '))
 fig = plt.figure()
 ax1 = fig.add_subplot(1,1,1)
 #creating a subplot
@@ -55,10 +63,15 @@ cdef inline void animate(unsigned int i):
         global c, con
         ax1.clear()
         dat = data[i]
-        ax1.scatter(*zip(*dat), con)
         if bounds:
             ax1.set_xlim(xlim)
             ax1.set_ylim(*ylim)
+        elif padding:
+            ax1.set_xmargin(pad_x)
+            ax1.set_ymargin(pad_y)
+            
+        ax1.scatter(*zip(*dat), con)
+
         plt.xlabel('X')
         plt.ylabel('Y')
         plt.title('Gravitational simulation')
