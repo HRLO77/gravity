@@ -32,7 +32,7 @@ cdef extern from *:
         return m;
     }
     static float inline __fastcall rad(float n, unsigned int e){
-        return cbrt((n)*0.00006820925f, e); // basically convert mass to volume & finds radius
+        return cbrt((n)*0.06820926132509800104380732715964901230048270531733847803471457602524148470038280075290591547125132255260264688289626773009696221976339085123341460459929993109824570011603246181703331988439656043802174f, e); // basically convert mass to volume & finds radius
         // 0.23873241463f, 0.00040816326f
     }
 
