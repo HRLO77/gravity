@@ -1,5 +1,5 @@
-
 from gravity import run
+run.run()
 from numpy import array
 end = bool(int(input('Append session data?: ')))
 import pickle

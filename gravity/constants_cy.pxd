@@ -1,21 +1,8 @@
-import math
-import numpy as np
-cimport numpy as npx
-
-#cdef public int X
-#cdef public int Y 
-#cdef public int X_SUB
-#cdef public int Y_SUB
-#cdef public (int, int) ORIGIN
-# K = 50  # n particles
-# grid: list[list[list]] = [[[] for y in '~'*Y] for x in '~'*X]  # grid
-#cdef public float SOFTEN# the softening factor
-# with open('pi.txt') as f:
-#cdef public float RADIAN_DIV
-#cdef public int SIZE
+#cython: language_level=3, binding=False, infer_types=False, wraparound=False, boundscheck=False, cdivision=True, overflowcheck=False, overflowcheck.fold=False, nonecheck=False, initializedcheck=False, always_allow_keywords=False, c_api_binop_methods=False, warn.undeclared=True
+# distutils: language=c
 
 cdef public int BODIES
 cdef public bint OUTPUT
 cdef public float TIMESTEP
 cdef public bint LOAD_DATA
-#cdef public int FRAMES_F
+cdef public unsigned int N_FRAMES

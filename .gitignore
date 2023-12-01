@@ -1,9 +1,11 @@
 build/
 __pycache__/
 ./*.c
+./*.cpp
 ./*.pyd
 ./*.pyc
 gravity/*.h
+gravity/*.cpp
 gravity/*.c
 gravity/*.pyd
 gravity/*.pyc
