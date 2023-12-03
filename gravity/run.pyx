@@ -7,16 +7,12 @@
 from libc.stdlib cimport realloc, malloc, free
 from libcpp.unordered_set cimport unordered_set as cset
 from libcpp.vector cimport vector
-from libcpp.cmath cimport cbrt as cbrt2
 from cpython.exc cimport PyErr_CheckSignals
 cimport cython
-cimport numpy as npc
 from libc.stdio cimport printf, puts
-import pickle
 from . cimport constants_cy as constants
 from numpy.random import randint
 import time
-npc.import_array()
 cdef extern from *:
     """
     #define GRAVITY_CONST (double)(6.6743f * 10e-11)
