@@ -34,6 +34,11 @@ if bounds:
 ax1 = fig.add_subplot(1, 1, 1, projection='3d')
 import pickle
 move = bool(int(input('Spin? [1/0]: ')))
+vertical = False
+if move:
+    vertical = bool(int(input('Vertical spin? [1/0]: ')))
+    side = bool(int(input('Horizontal spin? [1/0]: ')))
+
 save = bool(int(input('Save animation as video or render realtime? [1/0]: ')))
 with open('data.pickle', 'rb') as f:
     data = pickle.load(f)[0]
@@ -51,10 +56,14 @@ def animate(i):
         x = data[i]
         xs, ys, zs, mass = zip(*x)
         # print(xs[55], ys[55], zs[55], end='\r')
-        sizes = [(1 if i < 50_131_540_000*(1000000) else (2 if i < 90_131_540_000*(1000000) else (3 if i < 130_131_540_000*(1000000) else (4 if i < 170_131_540_000*(1000000) else (5 if i < 210_131_540_000*(1000000) else (6 if i < 250_131_540_000*(1000000) else (7 if i < 290_131_540_000*(1000000) else (9 if i < 402_122_547_050*(1000000) else 15)))))))) for i in mass]
+        # 1000000000 for good one
+        
+        sizes = [(1 if i < 50_131_540_000*(1266666667) else (3 if i < 90_131_540_000*(1266666667) else (5 if i < 130_131_540_000*(1266666667) else (7 if i < 170_131_540_000*(1266666667) else (9 if i < 210_131_540_000*(1266666667) else (11 if i < 250_131_540_000*(1266666667) else (13 if i < 290_131_540_000*(1266666667) else (15 if i < 402_122_547_050*(1266666667) else 22)))))))) for i in mass]
         if move:
-            azim += 0.15
-            el += 0.15
+            if side:
+                azim += 0.25
+            if vertical:
+                el += 0.25
             ax1.view_init(el, azim, 0)
         ax1.scatter3D(xs, ys, zs, s=sizes)
 

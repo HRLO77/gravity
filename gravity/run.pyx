@@ -7,6 +7,7 @@
 from libc.stdlib cimport realloc, malloc, free
 from libcpp.unordered_set cimport unordered_set as cset
 from libcpp.vector cimport vector
+from libcpp.cmath cimport cbrt as cbrt2
 from cpython.exc cimport PyErr_CheckSignals
 cimport cython
 cimport numpy as npc
@@ -18,12 +19,20 @@ import time
 npc.import_array()
 cdef extern from *:
     """
-    #define GRAVITY_CONST (float)(6.6743f * 10e-11f)  // modified gravity
-    static float inline __fastcall cbrt(float n, unsigned int e){
-        float l=0, r=n*0.5f, m=(r+l)*0.5f;
+    #define GRAVITY_CONST (double)(6.6743f * 10e-11)
+    static double inline __fastcall icbrt(float n){
+        int i = *(int*)&n;
+        i = 0x548c39cb - i*(0.333333333f);
+        float y = *(float*) &i;
+        y = y*(1.5015480449f - 0.534850249f*n*y*y*y);
+        //y = y*(1.333333985f - 0.33333333f*n*y*y*y); // second iteration not necessary
+        return (double)(1/y);
+    }
+    static double inline __fastcall cbrt(double n, unsigned int e){
+        double l=0, r=n*0.5, m=(r+l)*0.5;
         unsigned int i;
         for (i=0;i<e;++i){ // if difference between m^3 and n is not satisfactory
-            m=(r+l)*0.5f;
+            m=(r+l)*0.5;
             if(m*m*m<n) // if m^3 < n, then the root is definitely greater then m, so we move the left border
                 l=m;
             else // otherwise, move the right border
@@ -31,38 +40,38 @@ cdef extern from *:
         }
         return m;
     }
-    static float inline __fastcall rad(float n, unsigned int e){
-        return cbrt((n)*0.06820926132509800104380732715964901230048270531733847803471457602524148470038280075290591547125132255260264688289626773009696221976339085123341460459929993109824570011603246181703331988439656043802174f, e); // basically convert mass to volume & finds radius
-        // 0.23873241463f, 0.00040816326f
+    static double inline __fastcall rad(double n){
+        return icbrt((n)*0.0011967972013675402813191022412493344320751121521428974556095027018315491071566510470963942191779493592312945091479170691988928931845906979930382321554775166161715368010293099128021179598563615066401455); // basically convert mass to volume & finds radius
+        // 0.23873241463d, 0.00040816326d
     }
 
 
     """
     const bint unlikely(bint T) noexcept nogil
     const bint likely(bint T) noexcept nogil
-    const float GRAVITY_CONST "GRAVITY_CONST"
-    const float rad(float n, unsigned int e) noexcept nogil
-    const float cbrt(float n, unsigned int e) noexcept nogil
+    const double GRAVITY_CONST "GRAVITY_CONST"
+    const double rad(double n) noexcept nogil
+    const double icbrt(float n) noexcept nogil
+    const double cbrt(double n, unsigned int e) noexcept nogil
 
 
 import numpy as np
 from numpy import array
 import random
 cdef struct particle_s:
-    float mass
-    float x
-    float y
-    float z
-    float vx
-    float vy
-    float vz
-    float r
+    double mass
+    double x
+    double y
+    double z
+    double vx
+    double vy
+    double vz
+    double r
     unsigned int hashed
 
-ctypedef vector[(float, float, float, float)] vec3
+ctypedef vector[(double, double, double, double)] vec3
 
 
-cdef bint begin_force = True
 
 cdef int move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore, vec3& mlist, unsigned int& length) noexcept:
     '''Moves a particle through space based on the positions of others particles
@@ -74,10 +83,10 @@ cdef int move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore,
     if ignore.contains(self.hashed):
         return 0
     cdef int index
-    cdef float temp_force=0, temp=0, x=0, y=0, z=0, tx=0, ty=0, tz=0, mass=0, orad=0, limit=0
-    cdef float net_f_x = 0
-    cdef float net_f_y = 0
-    cdef float net_f_z = 0
+    cdef double temp_force=0, temp=0, x=0, y=0, z=0, tx=0, ty=0, tz=0, mass=0, orad=0, limit=0
+    cdef double net_f_x = 0
+    cdef double net_f_y = 0
+    cdef double net_f_z = 0
     cdef particle_s part
     cdef bint merging = False
     for index in range(length):
@@ -93,8 +102,8 @@ cdef int move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore,
         ty = (y-self.y)
         tz = (z-self.z)
         temp = (tx*tx)+(ty*ty)+(tz*tz)# pythagorean theorem
-        if (self.mass > mass):
-            limit = (orad*cbrt(2*(self.mass/mass), 35))
+        if unlikely(self.mass > mass):
+            limit = (orad*icbrt(2*(self.mass/mass)))
             if (temp < (limit*limit)):
                 merging = True
             
@@ -103,13 +112,13 @@ cdef int move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore,
         net_f_x += (tx)*temp_force  # spread it accross the two dimensions
         net_f_y += (ty)*temp_force
         net_f_z += (tz)*temp_force
-        if (merging):
+        if unlikely(merging):
             self.mass += mass
             self.x = (x+self.x)*0.5
             self.y = (y+self.y)*0.5
             self.z = (z+self.z)*0.5
             ignore.insert(part.hashed)
-            self.r = rad(self.mass, 35)
+            self.r = rad(self.mass)
             
     self.vx += net_f_x  # increase velocity according to gravity
     self.vy += net_f_y
@@ -136,15 +145,15 @@ cdef class Handler:
     cdef particle_s* particles 
     cdef unsigned int length
 
-    def __cinit__(Handler self, const float[:,:,] weights):
+    def __cinit__(Handler self, const double[:,:,] weights):
         '''Accepts a tuple of tuples, each tuple having the mass, starting x, and starting y positions for each particle.'''
         cdef int i
         self.length = constants.BODIES
         self.particles = <particle_s*>malloc((sizeof(particle_s)*len(weights)))
-        cdef const float[:,] o
+        cdef const double[:,] o
         for i in range(weights.shape[0]):
             o = weights[i]
-            self.particles[i] = particle_s(mass=o[0], x=o[1], y=o[2], z=o[3], vx=o[4], vy=o[5], vz=o[6], hashed=i, r=rad(o[0], 35))
+            self.particles[i] = particle_s(mass=o[0], x=o[1], y=o[2], z=o[3], vx=o[4], vy=o[5], vz=o[6], hashed=i, r=rad(o[0]))
 
     cdef vec3 move_timestep(Handler self) noexcept:
         '''Moves all the particles one frame.'''
@@ -160,10 +169,10 @@ cdef class Handler:
             i = move_particle(part, self.particles, ignore, merged_list, self.length)
             if (i==1):
                 merging[length] = part
-            length += 1
+            length += i
             
         #merged = array(merged_list)
-        if (length!=self.length):
+        if unlikely(length!=self.length):
             merging = <particle_s*>realloc(merging, (sizeof(particle_s)*length))
         free(self.particles)
         self.particles = merging
@@ -173,7 +182,7 @@ cdef class Handler:
     #cdef vec3 get(Handler self) noexcept:
     #    '''Returns the position of all particles in the current frame.'''
     #    cdef int index
-    #    cdef float x, y, z, mass
+    #    cdef double x, y, z, mass
     #    cdef particle_s part
     #    cdef vec3 l
     #    l.reserve(self.length)
@@ -191,53 +200,51 @@ cdef class Handler:
         self.length = 0
 
 cdef list[object] s():
-    cdef float[:,:,] np_data
-    if not constants.LOAD_DATA:
-        # this line creates the particles, you can change the range of where they start, their mass, and beginning velocity to whatever you wish.
-        np_data = array(
-            [
-                (randint(1_000_000, 2_147_483_647)*150000000, randint(-1_000_000_000, 1_000_000_000), randint(-1_000_000_000, 1_000_000_000), randint(-1_000_000_000, 1_000_000_000), randint(-10, 10), randint(-10, 10), randint(-10, 10))
-                for i in range(constants.BODIES)
-            ],
-            dtype = np.float32,
-        )
-    else:
-        # this line loads up the last frame from data.pickle if you want to continue a simulation (very useful if you are running low on memory)
-        with open('data.pickle', 'rb') as f:
-            np_data = pickle.load(f)[1]
+    cdef double[:,:,] np_data
+    # this line creates the particles, you can change the range of where they start, their mass, and beginning velocity to whatever you wish.
+    np_data = array(
+        [
+            (randint(1_000_000, 2_147_483_647)*19000000000, randint(-1_000_000_000, 1_000_000_000), randint(-1_000_000_000, 1_000_000_000), randint(-1_000_000_000, 1_000_000_000), randint(-10, 10), randint(-10, 10), randint(-10, 10))
+            for i in range(constants.BODIES)
+        ],
+        dtype = np.double,
+    )
     cdef Handler handler = Handler(np_data)
-    np_data = np.array([[1], [1]], dtype=np.float32)
+    np_data = np.array([[1], [1]], dtype=np.double)
     cdef vector[vec3] particles
     particles.reserve(constants.N_FRAMES)
     cdef float c, begin, end
-    cdef unsigned int i, j, k
+    cdef unsigned int i=0
     c = 0.0
-
     begin = (time.perf_counter())
     try:
         if constants.OUTPUT:
             while 1:
                 particles.push_back(handler.move_timestep())
-                begin_force = False
                 c += 1.0
+                i += 1
+                if (i==2000):
+                    PyErr_CheckSignals()
+                    i = 0
+                    
                 printf("%1.f\r", c)
-                
-                PyErr_CheckSignals()
         else:
             while 1:
                 # running without printing timestep is faster than doing so
                 particles.push_back(handler.move_timestep())
-                begin_force = False
-                PyErr_CheckSignals()
+                i += 1
+                if (i==2000):
+                    PyErr_CheckSignals()
+                    i = 0
     except BaseException as e:
         end = (time.perf_counter())
         print(f'\n\nError: {e}')
     printf('\nTime: %f\n\n', <float>(end-begin))
     puts('\nConverting to objects...\n')
-    #push = np.array(particles, dtype=np.float32)#.reshape((len(particles)/constants.BODIES, constants.BODIES, 2))
+    #push = np.array(particles, dtype=np.double32)#.reshape((len(particles)/constants.BODIES, constants.BODIES, 2))
 
     puts('\nDone!\n')
-    globals()['session'] = np.array([(handler.particles[i].mass,  handler.particles[i].x,  handler.particles[i].y, handler.particles[i].z, handler.particles[i].vx, handler.particles[i].vy, handler.particles[i].vz) for i in range(handler.length)], dtype=np.float32)
+    globals()['session'] = np.array([(handler.particles[i].mass,  handler.particles[i].x,  handler.particles[i].y, handler.particles[i].z, handler.particles[i].vx, handler.particles[i].vy, handler.particles[i].vz) for i in range(handler.length)], dtype=np.double)
     
     return ([vector_2_list(particles[i]) for i in range(particles.size())])
 
