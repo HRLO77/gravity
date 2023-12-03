@@ -167,7 +167,7 @@ cdef class Handler:
         for index in range(self.length):
             part = self.particles[index]
             i = move_particle(part, self.particles, ignore, merged_list, self.length)
-            if (i==1):
+            if (i):
                 merging[length] = part
             length += i
             
@@ -223,7 +223,7 @@ cdef list[object] s():
                 particles.push_back(handler.move_timestep())
                 c += 1.0
                 i += 1
-                if (i==2000):
+                if (i==5000):
                     PyErr_CheckSignals()
                     i = 0
                     
@@ -233,7 +233,7 @@ cdef list[object] s():
                 # running without printing timestep is faster than doing so
                 particles.push_back(handler.move_timestep())
                 i += 1
-                if (i==2000):
+                if (i==5000):
                     PyErr_CheckSignals()
                     i = 0
     except BaseException as e:

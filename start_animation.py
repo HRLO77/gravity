@@ -57,8 +57,7 @@ def animate(i):
         xs, ys, zs, mass = zip(*x)
         # print(xs[55], ys[55], zs[55], end='\r')
         # 1000000000 for good one
-        
-        sizes = [(1 if i < 50_131_540_000*(1266666667) else (3 if i < 90_131_540_000*(1266666667) else (5 if i < 130_131_540_000*(1266666667) else (7 if i < 170_131_540_000*(1266666667) else (9 if i < 210_131_540_000*(1266666667) else (11 if i < 250_131_540_000*(1266666667) else (13 if i < 290_131_540_000*(1266666667) else (15 if i < 402_122_547_050*(1266666667) else 22)))))))) for i in mass]
+        sizes = [(1 if i < 50_131_540_000*(126666666) else (2 if i < 90_131_540_000*(126666666) else (3 if i < 130_131_540_000*(126666666) else (4 if i < 170_131_540_000*(126666666) else (5 if i < 210_131_540_000*(126666666) else (6 if i < 250_131_540_000*(126666666) else (11 if i < 500_131_540_000*(126666666) else (14 if i < 802_122_547_050*(126666666) else 18)))))))) for i in mass]
         if move:
             if side:
                 azim += 0.25
@@ -83,7 +82,7 @@ ani = animation.FuncAnimation(fig, animate, interval=1000/30, frames=len(data))
 try:
     
     if save:
-        ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=30, bitrate=720), dpi=720)
+        ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=30, bitrate=-1), dpi=200)
     else:
         plt.show()
 except BaseException as e:

@@ -13,7 +13,7 @@ cd = {'language_level' : "3"}
 
 args = ['/O2', '/fp:fast', '/Qfast_transcendentals', '/std:c++latest']  # args for MSVC
 
-# args = ['-Ofast', '-funsafe-math-optimizations', '-mtune=native', '-march=native', '-ffinite-math-only', '-freciprocal-math', '-shared', '-DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION', '-std=c++20', '-fno-trapping-math', '-fno-math-errno', '-ffast-math'] # args for GCC
+# args = ['-Ofast', '-funsafe-math-optimizations', '-mtune=native', '-march=native', '-ffinite-math-only', '-freciprocal-math', '-shared', '-DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION', '-std=c++20', '-fno-trapping-math', '-fno-math-errno'] # args for GCC
 
 # args = ['-Ofast', '-ffast-math', '-DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION', '-mtune=native', '-march=native', '-fapprox-func', '-fno-honor-infinities', '-fno-honor-nans', '-cl-mad-enable', '-cl-no-signed-zeros', '-ffinite-loops', '-cl-fast-relaxed-math', '-shared', '-std=c++20'] # args for clang
 
@@ -32,6 +32,6 @@ setup(
 # )
 
 setup(
-    ext_modules=cythonize([Extension("gravity.run", sources=["gravity/run.pyx"], include_dirs=include, extra_compile_args=args)], nthreads=12, compiler_directives=cd, annotate=True, show_all_warnings=True, ),
+    ext_modules=cythonize([Extension("gravity.run", sources=["gravity/run.pyx"], include_dirs=include, extra_compile_args=args,)], nthreads=12, compiler_directives=cd, annotate=True, show_all_warnings=True, ),
     zip_safe=False, include_dirs=include, packages=pk
 )
