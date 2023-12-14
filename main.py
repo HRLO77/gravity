@@ -1,6 +1,8 @@
+import os
+if os.path.isdir('/MinGW/bin'):
+    os.add_dll_directory('/MinGW/bin')  # installed path
 from gravity import run
 run.run()
-from numpy import array
 import pickle
 # if end:
 #     with open('data.pickle', 'rb') as f:

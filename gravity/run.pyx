@@ -3,20 +3,43 @@
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
 
-# density = 3.5g/cm^3
+# density = 3.95g/cm^3
 from libc.stdlib cimport realloc, malloc, free
 from libcpp.unordered_set cimport unordered_set as cset
 from libcpp.vector cimport vector
+from libcpp.cmath cimport sqrt as cpsqrt, fabs as cpabs, fma
+from libc.math cimport sqrt as csqrt, fabs as cabs, cbrt
 from cpython.exc cimport PyErr_CheckSignals
-cimport cython
 from libc.stdio cimport printf, puts
 from . cimport constants_cy as constants
-from numpy.random import randint
+from random import randint
 import time
-cdef extern from *:
+
+cdef extern from "<stdbool.h>" nogil:
+    ctypedef bint _Bool
+    ctypedef _Bool bool
+
+cdef extern from * nogil:
     """
-    #define GRAVITY_CONST (double)(6.6743f * 10e-11)
-    static double inline __fastcall icbrt(float n){
+    #define __MSVCRT_VERSION__ 0x1935
+    #define PI 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930382
+    #define VOL_MUL 0.23873241463784300365332564505877154305168946861068467312150101608834519645133980263517070414937962893410926409013693705533936776917186797931695111609754975884385995040611361635961661959538796153307609
+
+    #define GRAVITY_CONST (6.6743 * 10e-11)
+    #define GRAVITY_CONST_D (6.6743 * 10e-11)*2
+    #define C_CONST 23983396.64  // max speed
+    #define C_CONST_D 299792458.0*299792458.0
+    static inline double sqrt2(const float& n){
+        static union {int i; float f;} u;
+        u.i = 0x2035AD0C + (*(int*)&n >> 1);
+        return (double)(n / u.f + u.f * 0.25f);
+    }
+
+    static inline double time_dilation(const double& mass, const double& dist){
+        return sqrt2(1-((GRAVITY_CONST_D*mass)/(dist*C_CONST_D)));
+    }  // 1.0370633164556336e+33
+
+    static double inline __fastcall icbrt(const float& n){
         int i = *(int*)&n;
         i = 0x548c39cb - i*(0.333333333f);
         float y = *(float*) &i;
@@ -24,31 +47,29 @@ cdef extern from *:
         //y = y*(1.333333985f - 0.33333333f*n*y*y*y); // second iteration not necessary
         return (double)(1/y);
     }
-    static double inline __fastcall cbrt(double n, unsigned int e){
-        double l=0, r=n*0.5, m=(r+l)*0.5;
-        unsigned int i;
-        for (i=0;i<e;++i){ // if difference between m^3 and n is not satisfactory
-            m=(r+l)*0.5;
-            if(m*m*m<n) // if m^3 < n, then the root is definitely greater then m, so we move the left border
-                l=m;
-            else // otherwise, move the right border
-                r=m;
-        }
-        return m;
-    }
-    static double inline __fastcall rad(double n){
-        return icbrt((n)*0.0011967972013675402813191022412493344320751121521428974556095027018315491071566510470963942191779493592312945091479170691988928931845906979930382321554775166161715368010293099128021179598563615066401455); // basically convert mass to volume & finds radius
+    
+    static double inline __fastcall rad(const double& n){
+        double x;
+        x = icbrt((n)*0.00006043858598426405155780396077437254254473151104067966408139266230084688517755438041396726687326066555293905420003466760894667538460047290615619015597406323008705315200154775097711813154313619279318382)*1.2599210498948731647672106072782283505702514647015079800819751121552996765139594837293965624362550941543102560356156652593990240406137372284591103042693552469606426166250009774745265654803068671854055;
+        return x*x; // basically convert mass to volume & finds roche limit squared
         // 0.23873241463d, 0.00040816326d
     }
 
 
     """
-    const bint unlikely(bint T) noexcept nogil
-    const bint likely(bint T) noexcept nogil
+    const bool unlikely(bool T) noexcept nogil
+    const bool likely(bool T) noexcept nogil
     const double GRAVITY_CONST "GRAVITY_CONST"
-    const double rad(double n) noexcept nogil
-    const double icbrt(float n) noexcept nogil
-    const double cbrt(double n, unsigned int e) noexcept nogil
+    const double GRAVITY_CONST_D "GRAVITY_CONST_D"
+    const double C_CONST "C_CONST"
+    const double C_CONST_D "C_CONST_D"
+    const double PI "PI"
+    const double VOL_MUL "VOL_MUL"
+    const double time_dilation(const double& mass, const double& dist) noexcept nogil
+    const double rad(const double& n) noexcept nogil
+    const double icbrt(const float& n) noexcept nogil
+    const double sqrt2(const float& n) noexcept nogil
+
 
 
 import numpy as np
@@ -67,8 +88,6 @@ cdef struct particle_s:
 
 ctypedef vector[(double, double, double, double)] vec3
 
-
-
 cdef int move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore, vec3& mlist, unsigned int& length) noexcept:
     '''Moves a particle through space based on the positions of others particles
     Parameters
@@ -76,15 +95,14 @@ cdef int move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore,
     :others: An iterable of Particle objects.
     Returns void'''
     '''Dist func: |(1/sin(θ))*base|'''
-    if ignore.contains(self.hashed):
+    if (ignore.contains(self.hashed)):
         return 0
-    cdef int index
-    cdef double temp_force=0, temp=0, x=0, y=0, z=0, tx=0, ty=0, tz=0, mass=0, orad=0, limit=0
+    cdef int index = 0
+    cdef double temp_force, temp, sqr_mag1, x, y, z, tx, ty, tz, mass, sqr_mag, time_d=1, time_temp=0
     cdef double net_f_x = 0
     cdef double net_f_y = 0
     cdef double net_f_z = 0
     cdef particle_s part
-    cdef bint merging = False
     for index in range(length):
         part = merged[index]
         if unlikely(self.hashed == part.hashed):  # ensure that we are not calculuting a particles own force
@@ -93,35 +111,36 @@ cdef int move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore,
         y = part.y
         z = part.z
         mass = part.mass
-        orad = part.r
         tx = (x-self.x)
         ty = (y-self.y)
         tz = (z-self.z)
-        temp = (tx*tx)+(ty*ty)+(tz*tz)# pythagorean theorem
-        if unlikely(self.mass > mass):
-            limit = (orad*icbrt(2*(self.mass/mass)))
-            if (temp < (limit*limit)):
-                merging = True
-            
-        #temp_force = self.calculate_force(temp, mass)  # calculate the attraction
-        temp_force = (mass*GRAVITY_CONST)/temp
-        net_f_x += (tx)*temp_force  # spread it accross the two dimensions
-        net_f_y += (ty)*temp_force
-        net_f_z += (tz)*temp_force
-        if unlikely(merging):
-            self.mass += mass
-            self.x = (x+self.x)*0.5
-            self.y = (y+self.y)*0.5
-            self.z = (z+self.z)*0.5
-            ignore.insert(part.hashed)
-            self.r = rad(self.mass)
-            
+        temp = fma(tx, tx, fma(ty, ty, tz*tz))
+        #temp = (tx*tx)+(ty*ty)+(tz*tz)# pythagorean theorem
+        if (self.mass > mass):
+            if (temp < (self.r)):
+                
+                self.mass += mass
+                self.r = rad(self.mass)
+                ignore.insert(part.hashed)
+                continue
+        sqr_mag = sqrt2(temp)  # apparently this should be fast enough
+        sqr_mag1 = 1/sqr_mag
+        temp_force = (GRAVITY_CONST*mass/temp)
+        if temp_force > C_CONST:  # cap
+            temp_force = C_CONST
+        time_temp = time_dilation(mass, sqr_mag)  # time dilation
+        if time_temp < time_d:time_d = time_temp
+        net_f_x = fma(temp_force, tx*sqr_mag1, net_f_x)
+        net_f_y = fma(temp_force, ty*sqr_mag1, net_f_y)
+        net_f_z = fma(temp_force, tz*sqr_mag1, net_f_z)
+
+
     self.vx += net_f_x  # increase velocity according to gravity
     self.vy += net_f_y
     self.vz += net_f_z
-    self.x += self.vx  # move according to velocity
-    self.y += self.vy
-    self.z += self.vz
+    self.x += self.vx*time_d  # move according to velocity
+    self.y += self.vy*time_d
+    self.z += self.vz*time_d
 
     mlist.push_back((self.x, self.y, self.z, self.mass))
     return 1
@@ -143,9 +162,9 @@ cdef class Handler:
 
     def __cinit__(Handler self, const double[:,:,] weights):
         '''Accepts a tuple of tuples, each tuple having the mass, starting x, and starting y positions for each particle.'''
-        cdef int i
+        cdef unsigned int i
         self.length = constants.BODIES
-        self.particles = <particle_s*>malloc((sizeof(particle_s)*len(weights)))
+        self.particles = <particle_s*>malloc((sizeof(particle_s)*weights.shape[0]))
         cdef const double[:,] o
         for i in range(weights.shape[0]):
             o = weights[i]
@@ -153,22 +172,22 @@ cdef class Handler:
 
     cdef vec3 move_timestep(Handler self) noexcept:
         '''Moves all the particles one frame.'''
-        cdef int index=0, i=0
+        cdef int index, i
         cdef particle_s part
         cdef particle_s* merging = <particle_s*>malloc((sizeof(particle_s)*self.length))
         cdef vec3 merged_list
         cdef cset[int] ignore
-        cdef int length = 0
+        cdef unsigned int length = 0
         merged_list.reserve(self.length)
         for index in range(self.length):
             part = self.particles[index]
             i = move_particle(part, self.particles, ignore, merged_list, self.length)
-            if (i):
+            if likely(i):
                 merging[length] = part
             length += i
             
         #merged = array(merged_list)
-        if unlikely(length!=self.length):
+        if (length!=self.length):
             merging = <particle_s*>realloc(merging, (sizeof(particle_s)*length))
         free(self.particles)
         self.particles = merging
@@ -195,12 +214,13 @@ cdef class Handler:
         free(self.particles)
         self.length = 0
 
-cdef list[object] s():
+cdef list[object] s() noexcept:
     cdef double[:,:,] np_data
     # this line creates the particles, you can change the range of where they start, their mass, and beginning velocity to whatever you wish.
     np_data = array(
-        [
-            (randint(1_000_000, 2_147_483_647)*19000000000, randint(-1_000_000_000, 1_000_000_000), randint(-1_000_000_000, 1_000_000_000), randint(-1_000_000_000, 1_000_000_000), randint(-10, 10), randint(-10, 10), randint(-10, 10))
+        [#randint(1_000_000, 2_147_483_647)*19000000000000, 10
+                                #9_223_372_036_854_775_807
+            (randint(1_000_000, 9_223_372_036_854_775_807)*10_000, randint(-50_000_000, 50_000_000), randint(-50_000_000, 50_000_000), randint(-50_000_000, 50_000_000), randint(-10, 10), randint(-10, 10), randint(-10, 10))
             for i in range(constants.BODIES)
         ],
         dtype = np.double,
@@ -210,7 +230,7 @@ cdef list[object] s():
     cdef vector[vec3] particles
     particles.reserve(constants.N_FRAMES)
     cdef float c, begin, end
-    cdef unsigned int i=0
+    cdef unsigned int i
     c = 0.0
     begin = (time.perf_counter())
     try:
@@ -218,10 +238,8 @@ cdef list[object] s():
             while 1:
                 particles.push_back(handler.move_timestep())
                 c += 1.0
-                i += 1
-                if (i==5000):
-                    PyErr_CheckSignals()
-                    i = 0
+                PyErr_CheckSignals()
+
                     
                 printf("%1.f\r", c)
         else:
@@ -229,7 +247,7 @@ cdef list[object] s():
                 # running without printing timestep is faster than doing so
                 particles.push_back(handler.move_timestep())
                 i += 1
-                if (i==5000):
+                if (i==100):
                     PyErr_CheckSignals()
                     i = 0
     except BaseException as e:
