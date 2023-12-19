@@ -1,14 +1,14 @@
 from setuptools import setup, Extension
 import setuptools
 from Cython.Build import cythonize
-import numpy
 import os
-import sys
 # os.environ['CC'] = 'clang-cl'  # following is for compilation with clang
 # os.environ['LDSHARED'] = 'clang -shared'
 # os.environ['CXX'] = 'clang++'
 
-include = [numpy.get_include(), 'gravity']
+include = ['gravity']
+if os.path.isdir('/MinGW/bin/'):
+    include.append('/MinGW/bin/')
 pk=[*setuptools.find_packages('gravity'), 'gravity']
 cd = {'language_level' : "3"}
 

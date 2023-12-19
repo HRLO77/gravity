@@ -65,11 +65,11 @@ def animate(i):
             ax1.set_zmargin(pad_z)
         x = data[i]
         xs, ys, zs, mass = zip(*x)
-        print(xs[LOG_INDICE], ys[LOG_INDICE], zs[LOG_INDICE], max(mass), len(mass), i, end='\r')
+        #print(xs[LOG_INDICE], ys[LOG_INDICE], zs[LOG_INDICE], max(mass), len(mass), i, end='\r')
         # 126666666f666 for good one
         #9223372036854775807*1000000
-        #6543629874590
-        sizes = [(1 if i < 50_131_540_000*(6543629874590) else (2 if i < 90_131_540_000*(6543629874590) else (3 if i < 130_131_540_000*(6543629874590) else (4 if i < 170_131_540_000*(6543629874590) else (5 if i < 210_131_540_000*(6543629874590) else (6 if i < 250_131_540_000*(6543629874590) else (22 if i < 500_131_540_000*(6543629874590) else (45 if i < 802_122_547_050*(6543629874590) else 120)))))))) for i in mass]
+        #654362987459
+        sizes = [(1 if i < 50_131_540_000*(654362987459) else (2 if i < 90_131_540_000*(654362987459) else (3 if i < 130_131_540_000*(654362987459) else (4 if i < 170_131_540_000*(654362987459) else (5 if i < 210_131_540_000*(654362987459) else (6 if i < 250_131_540_000*(654362987459) else (22 if i < 500_131_540_000*(654362987459) else (45 if i < 802_122_547_050*(654362987459) else 120)))))))) for i in mass]
         if move:
             if side:
                 azim += 0.25
@@ -82,6 +82,7 @@ def animate(i):
         ax1.set_ylabel('X')
         ax1.set_zlabel('Y')
         plt.title('Gravitational simulation')
+        del data[i]
     except BaseException as e:
         # if save:
             # ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=30))

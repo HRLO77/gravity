@@ -7,13 +7,15 @@
 from libc.stdlib cimport realloc, malloc, free
 from libcpp.unordered_set cimport unordered_set as cset
 from libcpp.vector cimport vector
-from libcpp.cmath cimport sqrt as cpsqrt, fabs as cpabs, fma
-from libc.math cimport sqrt as csqrt, fabs as cabs, cbrt
+from libcpp.cmath cimport sqrt, fma, sin, cos, cbrt
 from cpython.exc cimport PyErr_CheckSignals
 from libc.stdio cimport printf, puts
 from . cimport constants_cy as constants
-from random import randint
+from random import randint, uniform
 import time
+ctypedef (double, double, double, double, double, double, double) dtuple
+
+
 
 cdef extern from "<stdbool.h>" nogil:
     ctypedef bint _Bool
@@ -24,7 +26,6 @@ cdef extern from * nogil:
     #define __MSVCRT_VERSION__ 0x1935
     #define PI 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930382
     #define VOL_MUL 0.23873241463784300365332564505877154305168946861068467312150101608834519645133980263517070414937962893410926409013693705533936776917186797931695111609754975884385995040611361635961661959538796153307609
-
     #define GRAVITY_CONST (6.6743 * 10e-11)
     #define GRAVITY_CONST_D (6.6743 * 10e-11)*2
     #define C_CONST 23983396.64  // max speed
@@ -34,7 +35,6 @@ cdef extern from * nogil:
         u.i = 0x2035AD0C + (*(int*)&n >> 1);
         return (double)(n / u.f + u.f * 0.25f);
     }
-
     static inline double time_dilation(const double& mass, const double& dist){
         return sqrt2(1-((GRAVITY_CONST_D*mass)/(dist*C_CONST_D)));
     }  // 1.0370633164556336e+33
@@ -70,11 +70,15 @@ cdef extern from * nogil:
     const double icbrt(const float& n) noexcept nogil
     const double sqrt2(const float& n) noexcept nogil
 
+cdef inline dtuple rand_point() noexcept:
+    cdef double x, y, theta, phi,z
+    phi = uniform(0, PI)
+    theta = uniform(0, 2*PI)
+    x = 50_000_000*cos(theta)*sin(phi)
+    y = 50_000_000*sin(theta)*sin(phi)
+    z = 50_000_000*cos(phi)
+    return uniform(1_000_000, 9_223_372_036_854_775_807)*10_000, x, y, z, uniform(-10, 10), uniform(-10, 10), uniform(-10, 10)
 
-
-import numpy as np
-from numpy import array
-import random
 cdef struct particle_s:
     double mass
     double x
@@ -160,13 +164,13 @@ cdef class Handler:
     cdef particle_s* particles 
     cdef unsigned int length
 
-    def __cinit__(Handler self, const double[:,:,] weights):
+    def __cinit__(Handler self, const vector[dtuple]& weights):
         '''Accepts a tuple of tuples, each tuple having the mass, starting x, and starting y positions for each particle.'''
         cdef unsigned int i
         self.length = constants.BODIES
-        self.particles = <particle_s*>malloc((sizeof(particle_s)*weights.shape[0]))
-        cdef const double[:,] o
-        for i in range(weights.shape[0]):
+        self.particles = <particle_s*>malloc((sizeof(particle_s)*weights.size()))
+        cdef dtuple o
+        for i in range(weights.size()):
             o = weights[i]
             self.particles[i] = particle_s(mass=o[0], x=o[1], y=o[2], z=o[3], vx=o[4], vy=o[5], vz=o[6], hashed=i, r=rad(o[0]))
 
@@ -215,22 +219,18 @@ cdef class Handler:
         self.length = 0
 
 cdef list[object] s() noexcept:
-    cdef double[:,:,] np_data
-    # this line creates the particles, you can change the range of where they start, their mass, and beginning velocity to whatever you wish.
-    np_data = array(
-        [#randint(1_000_000, 2_147_483_647)*19000000000000, 10
-                                #9_223_372_036_854_775_807
-            (randint(1_000_000, 9_223_372_036_854_775_807)*10_000, randint(-50_000_000, 50_000_000), randint(-50_000_000, 50_000_000), randint(-50_000_000, 50_000_000), randint(-10, 10), randint(-10, 10), randint(-10, 10))
-            for i in range(constants.BODIES)
-        ],
-        dtype = np.double,
-    )
-    cdef Handler handler = Handler(np_data)
-    np_data = np.array([[1], [1]], dtype=np.double)
+    cdef unsigned int i
+    cdef float c, begin, end
+    cdef vector[dtuple] data
+    data.reserve(constants.BODIES)
+    for i in range(constants.BODIES):
+        data.push_back(rand_point())
+    
+    cdef Handler handler = Handler(data)
+    data.clear()
+    data.shrink_to_fit()
     cdef vector[vec3] particles
     particles.reserve(constants.N_FRAMES)
-    cdef float c, begin, end
-    cdef unsigned int i
     c = 0.0
     begin = (time.perf_counter())
     try:
@@ -258,7 +258,7 @@ cdef list[object] s() noexcept:
     #push = np.array(particles, dtype=np.double32)#.reshape((len(particles)/constants.BODIES, constants.BODIES, 2))
 
     puts('\nDone!\n')
-    globals()['session'] = np.array([(handler.particles[i].mass,  handler.particles[i].x,  handler.particles[i].y, handler.particles[i].z, handler.particles[i].vx, handler.particles[i].vy, handler.particles[i].vz) for i in range(handler.length)], dtype=np.double)
+    globals()['session'] = [(handler.particles[i].mass,  handler.particles[i].x,  handler.particles[i].y, handler.particles[i].z, handler.particles[i].vx, handler.particles[i].vy, handler.particles[i].vz) for i in range(handler.length)]
     
     return ([vector_2_list(particles[i]) for i in range(particles.size())])
 
