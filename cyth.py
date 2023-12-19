@@ -19,7 +19,7 @@ args = ['-Ofast', '-funsafe-math-optimizations', '-mtune=native', '-march=native
 
 # args = ['-Ofast', '-ffast-math', '-DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION', '-mtune=native', '-march=native', '-fapprox-func', '-fno-honor-infinities', '-fno-honor-nans', '-cl-mad-enable', '-cl-no-signed-zeros', '-ffinite-loops', '-cl-fast-relaxed-math', '-shared', '-std=c++20', '-fno-signed-zeros', '-falign-loops'] # args for clang
 
-link_args = ['-static-libgcc', '-static-libstdc++', '-W','-Bstatic','--whole-file', '-lwinpthread']
+link_args = ['-static-libgcc', '-static-libstdc++', '-W','-Bstatic','--whole-file', '-lpthread']
 
 
 setup(

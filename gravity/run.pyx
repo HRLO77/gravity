@@ -36,7 +36,7 @@ cdef extern from * nogil:
         return (double)(n / u.f + u.f * 0.25f);
     }
     static inline double time_dilation(const double& mass, const double& dist){
-        return sqrt2(1-((GRAVITY_CONST_D*mass)/(dist*C_CONST_D)));
+        return std::sqrt(1-((GRAVITY_CONST_D*mass)/(dist*C_CONST_D)));
     }  // 1.0370633164556336e+33
 
     static double inline __fastcall icbrt(const float& n){
@@ -50,7 +50,7 @@ cdef extern from * nogil:
     
     static double inline __fastcall rad(const double& n){
         double x;
-        x = icbrt((n)*0.00006043858598426405155780396077437254254473151104067966408139266230084688517755438041396726687326066555293905420003466760894667538460047290615619015597406323008705315200154775097711813154313619279318382)*1.2599210498948731647672106072782283505702514647015079800819751121552996765139594837293965624362550941543102560356156652593990240406137372284591103042693552469606426166250009774745265654803068671854055;
+        x = std::cbrt((n)*0.00006043858598426405155780396077437254254473151104067966408139266230084688517755438041396726687326066555293905420003466760894667538460047290615619015597406323008705315200154775097711813154313619279318382)*1.2599210498948731647672106072782283505702514647015079800819751121552996765139594837293965624362550941543102560356156652593990240406137372284591103042693552469606426166250009774745265654803068671854055;
         return x*x; // basically convert mass to volume & finds roche limit squared
         // 0.23873241463d, 0.00040816326d
     }
@@ -127,7 +127,7 @@ cdef int move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore,
                 self.r = rad(self.mass)
                 ignore.insert(part.hashed)
                 continue
-        sqr_mag = sqrt2(temp)  # apparently this should be fast enough
+        sqr_mag = sqrt(temp)  # apparently this should be fast enough
         sqr_mag1 = 1/sqr_mag
         temp_force = (GRAVITY_CONST*mass/temp)
         if temp_force > C_CONST:  # cap
@@ -191,7 +191,7 @@ cdef class Handler:
             length += i
             
         #merged = array(merged_list)
-        if (length!=self.length):
+        if unlikely(length!=self.length):
             merging = <particle_s*>realloc(merging, (sizeof(particle_s)*length))
         free(self.particles)
         self.particles = merging
@@ -246,10 +246,7 @@ cdef list[object] s() noexcept:
             while 1:
                 # running without printing timestep is faster than doing so
                 particles.push_back(handler.move_timestep())
-                i += 1
-                if (i==100):
-                    PyErr_CheckSignals()
-                    i = 0
+                PyErr_CheckSignals()
     except BaseException as e:
         end = (time.perf_counter())
         print(f'\n\nError: {e}')
