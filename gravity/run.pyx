@@ -1,4 +1,4 @@
-#cython: language_level=3, binding=False, infer_types=False, wraparound=False, boundscheck=False, cdivision=True, overflowcheck=False, overflowcheck.fold=False, nonecheck=False, initializedcheck=False, always_allow_keywords=False, c_api_binop_methods=True, warn.undeclared=True
+# cython: language_level=3, binding=False, infer_types=False, wraparound=False, boundscheck=False, cdivision=True, overflowcheck=False, overflowcheck.fold=False, nonecheck=False, initializedcheck=False, always_allow_keywords=False, c_api_binop_methods=True, warn.undeclared=True
 # distutils: language=c++
 # distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
@@ -11,6 +11,7 @@ from libcpp.cmath cimport sqrt, fma, sin, cos, cbrt
 from cpython.exc cimport PyErr_CheckSignals
 from libc.stdio cimport printf, puts
 from . cimport constants_cy as constants
+from .constants_cy cimport X_LIM, Y_LIM, Z_LIM, RAND_SPEED
 from random import randint, uniform
 import time
 ctypedef (double, double, double, double, double, double, double) dtuple
@@ -70,14 +71,39 @@ cdef extern from * nogil:
     const double icbrt(const float& n) noexcept nogil
     const double sqrt2(const float& n) noexcept nogil
 
-cdef inline dtuple rand_point() noexcept:
-    cdef double x, y, theta, phi,z
-    phi = uniform(0, PI)
-    theta = uniform(0, 2*PI)
-    x = 50_000_000*cos(theta)*sin(phi)
-    y = 50_000_000*sin(theta)*sin(phi)
-    z = 50_000_000*cos(phi)
-    return uniform(1_000_000, 9_223_372_036_854_775_807)*10_000, x, y, z, uniform(-10, 10), uniform(-10, 10), uniform(-10, 10)
+cdef dtuple rand_point(const bool clockwise) noexcept:
+    cdef double x, y, theta, phi,z, tx=0, ty=0, tz=0
+    if ((constants.START_MODE==2) or (constants.START_MODE==3)): # sphere with/out spin
+        phi = uniform(0, PI)
+        theta = uniform(0, 2*PI)
+        x = uniform(0, X_LIM)*cos(theta)*sin(phi)
+        y = uniform(0, Y_LIM)*sin(theta)*sin(phi)
+        z = uniform(-Z_LIM, Z_LIM)*cos(phi)
+    elif (constants.START_MODE>3): # disk with/out spin
+        theta = uniform(0, 2*PI)
+        x = uniform(0, X_LIM)*cos(theta)#*sin(phi)  # use x_lim for disk/sphere to keep consistent
+        y = uniform(0, Y_LIM)*sin(theta)#*sin(phi)
+        z = uniform(-Z_LIM, Z_LIM) #  *cos(phi)
+    else: # random or cube
+        x = uniform(-X_LIM, X_LIM)
+        y = uniform(-Y_LIM, Y_LIM)
+        z = uniform(-Z_LIM, Z_LIM)
+
+    # tangent lines
+    if (constants.START_MODE==5 or constants.START_MODE==3): # disk or sphere with spin
+        tz = uniform(-500, 500)
+        if clockwise:
+            tx = -sin(theta)*uniform(0, RAND_SPEED)
+            ty = cos(theta)*uniform(0, RAND_SPEED)
+        else:
+            tx = sin(theta)*uniform(0, RAND_SPEED)
+            ty = -cos(theta)*uniform(0, RAND_SPEED)
+    elif constants.RAND_SPIN:
+        tx = uniform(-RAND_SPEED, RAND_SPEED)
+        ty = uniform(-RAND_SPEED, RAND_SPEED)
+        tz = uniform(-RAND_SPEED, RAND_SPEED)
+
+    return uniform(1_000_000, 9_223_372_036_854_775_807)*10_000, x, y, z, tx, ty, tz
 
 cdef struct particle_s:
     double mass
@@ -92,7 +118,7 @@ cdef struct particle_s:
 
 ctypedef vector[(double, double, double, double)] vec3
 
-cdef int move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore, vec3& mlist, unsigned int& length) noexcept:
+cdef bool move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore, vec3& mlist, unsigned int& length) noexcept:
     '''Moves a particle through space based on the positions of others particles
     Parameters
     :self: the particle being moved
@@ -100,9 +126,9 @@ cdef int move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore,
     Returns void'''
     '''Dist func: |(1/sin(θ))*base|'''
     if (ignore.contains(self.hashed)):
-        return 0
+        return False
     cdef int index = 0
-    cdef double temp_force, temp, sqr_mag1, x, y, z, tx, ty, tz, mass, sqr_mag, time_d=1, time_temp=0
+    cdef double temp_force, temp, sqr_mag1, x, y, z, tx, ty, tz, mass, sqr_mag, time_d=1, tot_dist=0, tot_mass=0
     cdef double net_f_x = 0
     cdef double net_f_y = 0
     cdef double net_f_z = 0
@@ -132,31 +158,30 @@ cdef int move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore,
         temp_force = (GRAVITY_CONST*mass/temp)
         if temp_force > C_CONST:  # cap
             temp_force = C_CONST
-        time_temp = time_dilation(mass, sqr_mag)  # time dilation
-        if time_temp < time_d:time_d = time_temp
+        tot_mass+=mass
+        tot_dist+=sqr_mag
         net_f_x = fma(temp_force, tx*sqr_mag1, net_f_x)
         net_f_y = fma(temp_force, ty*sqr_mag1, net_f_y)
         net_f_z = fma(temp_force, tz*sqr_mag1, net_f_z)
 
 
-    self.vx += net_f_x  # increase velocity according to gravity
-    self.vy += net_f_y
-    self.vz += net_f_z
+    time_d = time_dilation(tot_mass, tot_dist)
+    self.vx += net_f_x*time_d  # increase velocity according to gravity
+    self.vy += net_f_y*time_d
+    self.vz += net_f_z*time_d
     self.x += self.vx*time_d  # move according to velocity
     self.y += self.vy*time_d
     self.z += self.vz*time_d
 
     mlist.push_back((self.x, self.y, self.z, self.mass))
-    return 1
-
+    return True
+    
 cdef inline list vector_2_list(vec3& vec,) noexcept:
     cdef list l = []
     cdef int i
     for i in range(vec.size()):
         l.append(vec[i])
     return l
-
-
 
 cdef class Handler:
     '''A class wrapper to handle multiple Particle objects easily.'''
@@ -196,6 +221,7 @@ cdef class Handler:
         free(self.particles)
         self.particles = merging
         self.length = length
+        merged_list.shrink_to_fit()
         return merged_list
 
     #cdef vec3 get(Handler self) noexcept:
@@ -220,28 +246,29 @@ cdef class Handler:
 
 cdef list[object] s() noexcept:
     cdef unsigned int i
-    cdef float c, begin, end
+    cdef float begin, end
     cdef vector[dtuple] data
+    cdef bool clockwise = uniform(0, 1) > 0.5
     data.reserve(constants.BODIES)
     for i in range(constants.BODIES):
-        data.push_back(rand_point())
+        data.push_back(rand_point(clockwise))
     
     cdef Handler handler = Handler(data)
     data.clear()
     data.shrink_to_fit()
     cdef vector[vec3] particles
     particles.reserve(constants.N_FRAMES)
-    c = 0.0
+    i = 0
     begin = (time.perf_counter())
     try:
         if constants.OUTPUT:
             while 1:
                 particles.push_back(handler.move_timestep())
-                c += 1.0
+                i += 1
                 PyErr_CheckSignals()
 
                     
-                printf("%1.f\r", c)
+                printf("%u\r", i)
         else:
             while 1:
                 # running without printing timestep is faster than doing so

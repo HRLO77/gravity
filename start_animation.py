@@ -76,6 +76,7 @@ def animate(i):
             if vertical:
                 el += 0.25
             ax1.view_init(el, azim, 0)
+        print(f'{i}', len(xs), max(mass), end='\r')
         ax1.scatter3D(xs, ys, zs, s=sizes, depthshade=1)
 
         ax1.set_xlabel('Z')
@@ -87,7 +88,8 @@ def animate(i):
         # if save:
             # ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=30))
         # else:
-        print(e)
+        print('err:', e)
+        exit()
             # plt.show()
 plt.ioff()
 
