@@ -76,7 +76,7 @@ def animate(i):
             if vertical:
                 el += 0.25
             ax1.view_init(el, azim, 0)
-        print(f'{i}', len(xs), max(mass), end='\r')
+        print(f'{i}', len(xs), max(mass), ' kgs', end='\r')
         ax1.scatter3D(xs, ys, zs, s=sizes, depthshade=1)
 
         ax1.set_xlabel('Z')
@@ -95,9 +95,8 @@ plt.ioff()
 
 ani = animation.FuncAnimation(fig, animate, interval=1000/30, frames=len(data))
 try:
-    
     if save:
-        ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=30, bitrate=-1), dpi=200)
+        ani.save(f'./{np.random.randint(0, 2147483647)}.mp4', writer=FFMpegWriter(fps=30, bitrate=-1), dpi=300)
     else:
         plt.show()
 except BaseException as e:

@@ -14,6 +14,7 @@ from . cimport constants_cy as constants
 from .constants_cy cimport X_LIM, Y_LIM, Z_LIM, RAND_SPEED
 from random import randint, uniform
 import time
+from cython.parallel cimport prange
 ctypedef (double, double, double, double, double, double, double) dtuple
 
 
@@ -36,9 +37,6 @@ cdef extern from * nogil:
         u.i = 0x2035AD0C + (*(int*)&n >> 1);
         return (double)(n / u.f + u.f * 0.25f);
     }
-    static inline double time_dilation(const double& mass, const double& dist){
-        return std::sqrt(1-((GRAVITY_CONST_D*mass)/(dist*C_CONST_D)));
-    }  // 1.0370633164556336e+33
 
     static double inline __fastcall icbrt(const float& n){
         int i = *(int*)&n;
@@ -48,13 +46,27 @@ cdef extern from * nogil:
         //y = y*(1.333333985f - 0.33333333f*n*y*y*y); // second iteration not necessary
         return (double)(1/y);
     }
-    
+
+    static inline double time_dilation(const double& mass, const double& dist){
+        return sqrt2(1-((GRAVITY_CONST_D*mass)/(dist*C_CONST_D)));
+    }  // 1.0370633164556336e+33
+
+
+
+    // rigid rad    
+
     static double inline __fastcall rad(const double& n){
-        double x;
-        x = std::cbrt((n)*0.00006043858598426405155780396077437254254473151104067966408139266230084688517755438041396726687326066555293905420003466760894667538460047290615619015597406323008705315200154775097711813154313619279318382)*1.2599210498948731647672106072782283505702514647015079800819751121552996765139594837293965624362550941543102560356156652593990240406137372284591103042693552469606426166250009774745265654803068671854055;
+        const double x = 2.423*std::cbrt(n*0.00006043858598426405155780396077437254254473151104067966408139266230084688517755438041396726687326066555293905420); // assume the densities are the same
+        return x*x;
+    }
+
+
+    static double inline __fastcall rad1(const double& n){
+        const double x = std::cbrt((n)*0.000060438585984264051557803960774372542544731511040679664081392662300846885177554380413967266873260665552939054200034667608946675384600472906156190155974063230087053152001547)*1.2599210498948731647672106072782283505702514647015079800819751121552996765139594837293965624362550941543102560356156652593990240406137372284591103042693552469606;
         return x*x; // basically convert mass to volume & finds roche limit squared
         // 0.23873241463d, 0.00040816326d
     }
+
 
 
     """
@@ -69,7 +81,7 @@ cdef extern from * nogil:
     const double time_dilation(const double& mass, const double& dist) noexcept nogil
     const double rad(const double& n) noexcept nogil
     const double icbrt(const float& n) noexcept nogil
-    const double sqrt2(const float& n) noexcept nogil
+    const double sqrt2(const float& n, const float& x) noexcept nogil
 
 cdef dtuple rand_point(const bool clockwise) noexcept:
     cdef double x, y, theta, phi,z, tx=0, ty=0, tz=0
@@ -118,7 +130,7 @@ cdef struct particle_s:
 
 ctypedef vector[(double, double, double, double)] vec3
 
-cdef bool move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore, vec3& mlist, unsigned int& length) noexcept:
+cdef bool move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore, vec3& mlist, unsigned int& length) noexcept nogil:
     '''Moves a particle through space based on the positions of others particles
     Parameters
     :self: the particle being moved
@@ -148,7 +160,6 @@ cdef bool move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore
         #temp = (tx*tx)+(ty*ty)+(tz*tz)# pythagorean theorem
         if (self.mass > mass):
             if (temp < (self.r)):
-                
                 self.mass += mass
                 self.r = rad(self.mass)
                 ignore.insert(part.hashed)
@@ -163,6 +174,9 @@ cdef bool move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore
         net_f_x = fma(temp_force, tx*sqr_mag1, net_f_x)
         net_f_y = fma(temp_force, ty*sqr_mag1, net_f_y)
         net_f_z = fma(temp_force, tz*sqr_mag1, net_f_z)
+        #net_f_x += (temp_force)+(tx*sqr_mag1)
+        #net_f_y += (temp_force)+(ty*sqr_mag1)
+        #net_f_z += (temp_force)+(tz*sqr_mag1)
 
 
     time_d = time_dilation(tot_mass, tot_dist)

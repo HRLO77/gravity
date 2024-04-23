@@ -28,9 +28,18 @@ if (bool(int(input('Pick start mode? [1/0]: ')))):
             if START_MODE>3:
                 Z_LIM = random.uniform(2_000_000, 20_000_000) # cuz its a disk
         else:
-            X_LIM = abs(int(input('Enter X_LIM: ')))
-            Y_LIM = abs(int(input('Enter Y_LIM: ')))
-            Z_LIM = abs(int(input('Enter Z_LIM: ')))
+            if START_MODE!=1:
+                X_LIM = abs(int(input('Enter X_LIM: ')))
+                Y_LIM = abs(int(input('Enter Y_LIM: ')))
+                Z_LIM = abs(int(input('Enter Z_LIM: ')))
+                if START_MODE>3:
+                    if Z_LIM >= (X_LIM*0.5):
+                        if input('You entered a large Z_LIM for the disk init, proceed anyway? [Y/n]: ')!='Y':
+                            Z_LIM = abs(int(input('Enter Z_LIM: ')))
+                        else:
+                            pass
+            else:
+                X_LIM=Y_LIM=Z_LIM=abs(int(input('Enter 1/2 of cube side length: ')))
     if (START_MODE!=3 and START_MODE!=5):
         RAND_SPIN = (bool(int(input('Initialize random start velocities? [1/0]: '))))
     if RAND_SPIN:
