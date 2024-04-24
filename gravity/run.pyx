@@ -4,6 +4,7 @@
 
 
 # density = 3.95g/cm^3
+# assume all bodies are perfect spheres, bodies immediately consume their ring systems, have same densities, exist in 3d euclidean space
 from libc.stdlib cimport realloc, malloc, free
 from libcpp.unordered_set cimport unordered_set as cset
 from libcpp.vector cimport vector
@@ -14,7 +15,6 @@ from . cimport constants_cy as constants
 from .constants_cy cimport X_LIM, Y_LIM, Z_LIM, RAND_SPEED
 from random import randint, uniform
 import time
-from cython.parallel cimport prange
 ctypedef (double, double, double, double, double, double, double) dtuple
 
 
@@ -48,7 +48,7 @@ cdef extern from * nogil:
     }
 
     static inline double time_dilation(const double& mass, const double& dist){
-        return sqrt2(1-((GRAVITY_CONST_D*mass)/(dist*C_CONST_D)));
+        return std::sqrt(1-((GRAVITY_CONST_D*mass)/(dist*C_CONST_D)));
     }  // 1.0370633164556336e+33
 
 
