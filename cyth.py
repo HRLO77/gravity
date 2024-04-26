@@ -12,7 +12,7 @@ if os.path.isdir('/MinGW/bin/'):
 pk=[*setuptools.find_packages('gravity'), 'gravity']
 cd = {'language_level' : "3"}
 
-# args = ['/O2', '/fp:fast', '/Qfast_transcendentals', '/std:c++latest']  # args for MSVC
+#args = ['/O2', '/fp:fast', '/Qfast_transcendentals', '/std:c++latest']  # args for MSVC
 
 args = ['-Ofast', '-ffast-math','-funsafe-math-optimizations', '-mtune=native', '-march=native', '-ffinite-math-only', '-freciprocal-math', '-shared', '-DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION', '-std=c++20', '-fno-trapping-math', '-fno-math-errno', '-fno-signed-zeros', '-funroll-loops', '-ffp-contract=fast'] # args for GCC
 

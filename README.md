@@ -9,19 +9,17 @@ install by `py -m pip install -r requirements.txt` and `py -m pip install setupt
 
 # realtime rendering
 
-What you need to perform realtime rendering is in `./gravity/python_code/main.py`
-
-Simply change the masses of particles and creating as many bodies as you want. Starts a real-time simulation in pygame.
+Realtime rendering using python is no longer supported or maintained `./gravity/deprecated`
 
 # cython
 
 This is the most recommended way to calculate particle before rendering, pypy is fast, but not nearly as fast as this.
 
-Go to `./cyth.py` to enable the arguments that you wish to use based on your compiler!
+Go to `./cyth.py` to enable the arguments that you wish to use based on your compiler.
 
 Cython files are in `./gravity/` . If you need to compile them again, run `py cyth.py build_ext --inplace` in `/`
 
-run `py main.py` to start the computing. When ctrl+c is pressed, computing is stopped and the particles collected are dumped in-order in `data.pickle`, along with a detailed last frame in-case you want to pick-up where you left off.
+run `py main.py` to start the computing. When ctrl+c is pressed, computing is stopped and the particles collected are dumped in-order in `data.pickle` , along with a detailed last frame in-case you want to pick-up where you left off.
 
 Running `py start_animate.py` will start a matplotlib animation or create a video of the computed data in `data.pickle`.
 
