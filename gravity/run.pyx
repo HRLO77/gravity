@@ -180,12 +180,12 @@ cdef bool move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore
 
 
     time_d = time_dilation(tot_mass, tot_dist)
-    self.vx += net_f_x*time_d  # increase velocity according to gravity
-    self.vy += net_f_y*time_d
-    self.vz += net_f_z*time_d
-    self.x += self.vx*time_d  # move according to velocity
-    self.y += self.vy*time_d
-    self.z += self.vz*time_d
+    self.vx = fma(net_f_x,time_d, self.vx)  # increase velocity according to gravity
+    self.vy = fma(net_f_y,time_d, self.vy)
+    self.vz = fma(net_f_z,time_d, self.vz)
+    self.x = fma(self.vx,time_d, self.vx)  # move according to velocity
+    self.y = fma(self.vy,time_d, self.vy)
+    self.z = fma(self.vz,time_d, self.vz)
 
     mlist.push_back((self.x, self.y, self.z, self.mass))
     return True
