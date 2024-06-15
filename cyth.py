@@ -14,7 +14,7 @@ cd = {'language_level' : "3"}
 
 #args = ['/O2', '/fp:fast', '/Qfast_transcendentals', '/std:c++latest']  # args for MSVC
 
-args = ['-Ofast', '-ffast-math','-funsafe-math-optimizations', '-mtune=native', '-march=native', '-ffinite-math-only', '-freciprocal-math', '-shared', '-DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION', '-std=c++20', '-fno-trapping-math', '-fno-math-errno', '-fno-signed-zeros', '-funroll-loops', '-ffp-contract=fast'] # args for GCC
+args = ['-Ofast', '-ffast-math','-funsafe-math-optimizations', '-mtune=native', '-march=native', '-ffinite-math-only', '-freciprocal-math', '-shared', '-DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION', '-std=c++20', '-fno-trapping-math', '-fno-math-errno', '-fno-signed-zeros', '-ffp-contract=fast'] # args for GCC
 
 
 # args = ['-Ofast', '-ffast-math', '-DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION', '-mtune=native', '-march=native', '-fapprox-func', '-fno-honor-infinities', '-fno-honor-nans', '-cl-mad-enable', '-cl-no-signed-zeros', '-ffinite-loops', '-cl-fast-relaxed-math', '-shared', '-std=c++20', '-fno-signed-zeros', '-funroll-loops', '-ffp-contract=fast','-funsafe-math-optimizations'] # args for clang

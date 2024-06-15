@@ -47,11 +47,13 @@ cdef extern from * nogil:
         return (double)(1/y);
     }
 
+    static inline double speed_dilation(const double& speed){
+        return std::sqrt(1-((speed)/C_CONST_D));
+    }
+
     static inline double time_dilation(const double& mass, const double& dist){
         return std::sqrt(1-((GRAVITY_CONST_D*mass)/(dist*C_CONST_D)));
     }  // 1.0370633164556336e+33
-
-
 
     // rigid rad    
 
@@ -82,6 +84,7 @@ cdef extern from * nogil:
     const double rad(const double& n) noexcept nogil
     const double icbrt(const float& n) noexcept nogil
     const double sqrt2(const float& n, const float& x) noexcept nogil
+    const double speed_dilation(const double& speed) noexcept nogil
 
 cdef dtuple rand_point(const bool clockwise) noexcept:
     cdef double x, y, theta, phi,z, tx=0, ty=0, tz=0
@@ -130,7 +133,7 @@ cdef struct particle_s:
 
 ctypedef vector[(double, double, double, double)] vec3
 
-cdef bool move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore, vec3& mlist, unsigned int& length) noexcept nogil:
+cdef bool move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore, vec3& mlist, unsigned int& length) noexcept:
     '''Moves a particle through space based on the positions of others particles
     Parameters
     :self: the particle being moved
@@ -140,7 +143,7 @@ cdef bool move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore
     if (ignore.contains(self.hashed)):
         return False
     cdef int index = 0
-    cdef double temp_force, temp, sqr_mag1, x, y, z, tx, ty, tz, mass, sqr_mag, time_d=1, tot_dist=0, tot_mass=0
+    cdef double temp_force, temp, sqr_mag1, x, y, z, tx, ty, tz, mass, sqr_mag, time_d=1, tot_dist=0, tot_mass=0, 
     cdef double net_f_x = 0
     cdef double net_f_y = 0
     cdef double net_f_z = 0
@@ -179,13 +182,23 @@ cdef bool move_particle(particle_s& self, particle_s*& merged, cset[int]& ignore
         #net_f_z += (temp_force)+(tz*sqr_mag1)
 
 
+    #TODO: this code - (self.vx*self.vx)+(self.vy*self.vy)+(self.vz*self.vz)
+    # it is sometimes greater than C^2, which results in a NaN value after a square root, resulting in a broken simulation, figure out a way to efficiently limit speed.
+
     time_d = time_dilation(tot_mass, tot_dist)
+    #speed_d = speed_dilation((self.vx*self.vx)+(self.vy*self.vy)+(self.vz*self.vz))*time_d
+
+
     self.vx = fma(net_f_x,time_d, self.vx)  # increase velocity according to gravity
     self.vy = fma(net_f_y,time_d, self.vy)
     self.vz = fma(net_f_z,time_d, self.vz)
-    self.x = fma(self.vx,time_d, self.vx)  # move according to velocity
-    self.y = fma(self.vy,time_d, self.vy)
-    self.z = fma(self.vz,time_d, self.vz)
+
+
+
+
+    self.x = fma(self.vx,time_d, self.x)  # move according to velocity
+    self.y = fma(self.vy,time_d, self.y)
+    self.z = fma(self.vz,time_d, self.z)
 
     mlist.push_back((self.x, self.y, self.z, self.mass))
     return True
@@ -227,7 +240,7 @@ cdef class Handler:
             i = move_particle(part, self.particles, ignore, merged_list, self.length)
             if likely(i):
                 merging[length] = part
-            length += i
+                length += i
             
         #merged = array(merged_list)
         if unlikely(length!=self.length):
